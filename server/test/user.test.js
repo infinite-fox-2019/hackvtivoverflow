@@ -4,18 +4,19 @@ const chaiHTTP = require('chai-http')
 chai.use(chaiHTTP)
 const app = require('../app')
 const expect = chai.expect
+const User = require('../models/user')
 
 
 
-describe('User Route', function () {
+describe.only('User Route', function () {
     before(function (done) {
         // Seed Here
         done()
     })
 
-    after(function (done) {
+    after(function () {
         // Erase Data Here
-        done()
+        return User.deleteMany()
     })
 
     describe('Create User', function () {
