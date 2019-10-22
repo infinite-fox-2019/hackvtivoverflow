@@ -56,7 +56,7 @@ class ThreadController {
             .populate('owner', '-password')
             .populate('tags')
             .populate({
-                path: 'Replies',
+                path: 'replies',
                 populate: {
                     path: 'owner',
                     select: '-password'
