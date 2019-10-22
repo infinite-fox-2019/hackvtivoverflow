@@ -35,6 +35,11 @@ const userSchema = new Schema({
   versionKey: false
 })
 
+userSchema.pre('save', function(next) {
+  this.password = hashPassword(this.password)
+  next()
+})
+
 const User = mongoose.model('User', userSchema)
 
 module.exports = User
