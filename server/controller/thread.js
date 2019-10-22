@@ -2,6 +2,7 @@ const Thread = require('../models/thread')
 const Reply = require('../models/reply')
 const Tag = require('../models/tag')
 const queryOptions = require('../helpers/threadQuery')
+const { Types } = require('mongoose')
 
 class ThreadController {
     static create(req, res, next) {
@@ -54,7 +55,13 @@ class ThreadController {
         Thread.findOne({ $or: [{ _id: id }, { slug: id }] })
             .populate('owner', '-password')
             .populate('tags')
-            .populate('replies')
+            .populate({
+                path: 'Replies',
+                populate: {
+                    path: 'owner',
+                    select: '-password'
+                }
+            })
             .then((thread) => {
                 if (thread) {
                     thread.views++
@@ -64,6 +71,66 @@ class ThreadController {
             })
             .then((thread) => res.status(200).json(thread))
             .catch(next)
+        /* Thread.aggregate([
+            { $match: { _id: Types.ObjectId(id) } },
+            {
+                $project:
+                {
+                    title: 1,
+                    content: 1,
+                    owner: 1,
+                    tags: 1,
+                    replies: 1,
+                    upvotes: 1,
+                    downvotes: 1,
+                    views: 1,
+                    slug: 1,
+                    upvotesAmount: { $size: "$upvotes" },
+                    downvotesAmount: { $size: "$downvotes" },
+                    votes: { $subtract: ["$upvotesAmount", "$downvotesAmount"] }
+                }
+            },
+            {
+                $lookup:
+                {
+                    from: 'User',
+                    localField: 'owner',
+                    foreignField: '_id',
+                    as: 'ownerDetail'
+                }
+            },
+            {
+                $lookup:
+                {
+                    from: 'Replies',
+                    pipeline:
+                        [
+                            {
+                                $project:
+                                {
+                                    title: 1,
+                                    content: 1,
+                                    owner: 1,
+                                    upvotes: 1,
+                                    downvotes: 1,
+                                    upvotesAmount: { $size: "$upvotes" },
+                                    downvotesAmount: { $size: "$downvotes" },
+                                    votes: { $subtract: ["$upvotesAmount", "$downvotesAmount"] }
+                                },
+                                $lookup:
+                                {
+                                    from: 'User',
+                                    localField: 'owner',
+                                    foreignField: '_id',
+                                    as: 'ownerDetail'
+                                }
+                            }
+                        ],
+                    as: "SortedReplies"
+                }
+            }
+        ]) */
+
     }
 
     static delete(req, res, next) {
