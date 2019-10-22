@@ -224,6 +224,18 @@ describe('Thread Route', function () {
         })
         it('Success Delete Thread', function (done) {
             chai.request(app)
+                .delete('/threads/' + threadId)
+                .set({ authorization: tigor })
+                .end(function (err, res) {
+                    expect(err).to.be.null
+                    expect(res).to.have.status(200)
+                    expect(res.body).to.be.an('object')
+                    expect(res.body).to.have.property('message')
+                    done()
+                })
+        })
+        it('Success Delete Thread - Slug', function (done) {
+            chai.request(app)
                 .delete('/threads/' + slug)
                 .set({ authorization: tigor })
                 .end(function (err, res) {
