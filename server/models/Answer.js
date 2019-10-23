@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 const { Schema } = mongoose
 
-const questionSchema = new Schema({
+const answerSchema = new Schema({
   title: {
     type: String,
     required: [true, 'Title is missing']
@@ -26,16 +26,14 @@ const questionSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'User'
   },
-  answers: [
-    {
-      type: Schema.Types.ObjectId,
-      ref: 'Answer',
-    }
-  ]
+  question: {
+    type: Schema.Types.ObjectId,
+    ref: 'Question'
+  }
 }, {
   versionKey: false
 })
 
-const Question = mongoose.model('Question', questionSchema)
+const Answer = mongoose.model('Answer', answerSchema)
 
-module.exports = Question
+module.exports = Answer

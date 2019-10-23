@@ -1,23 +1,33 @@
 <template>
-  <div class="columns">
-    <div class="column question-counts has-text-grey">
-      <div class="question-counts-item num">
-        0
+  <div>
+    <div class="header">
+      <div>
+        <h1>{{ question.title }}</h1>
       </div>
-      <div class="question-counts-item">
-        votes
-      </div>
-        <div class="question-counts-item num">
-        {{ question.answers.length }}
-      </div>
-      <div class="question-counts-item">
-        answers
+      <div>
+        <router-link to="/questions/ask"><button class="button is-info">Ask Question</button></router-link>
       </div>
     </div>
-    <div class="column question-details is-three-fifths">
-      <span class="q-title has-text-info" @click="$router.push(`/questions/${question._id}`)">
-        {{ question.title }}
-      </span>
+    <hr>
+  <div class="columns">
+    <div class="column question-counts has-text-grey">
+      <div class="question-counts-item" @click="upvote">
+        <b-icon class="vote"
+          pack="fas"
+          icon="caret-up">
+        </b-icon>
+      </div>
+      <div class="question-counts-item num">
+        {{ question.upvotes.length }}
+      </div>
+      <div class="question-counts-item">
+        <b-icon @click="downvote" class="vote"
+          pack="fas"
+          icon="caret-down">
+        </b-icon>
+      </div>
+    </div>
+    <div class="column question-details is-two-thirds">
       <div class="question-details-item">
         {{ normalizedDescription }}
       </div>
@@ -26,21 +36,23 @@
       <div class="question-poster-item">
        {{ timeAgoDate }}
       </div>
-      <div class="question-poster-item">
+      <!-- <div class="question-poster-item">
         <button class="button is-dark">{{ userInitial }}</button>
         {{ question.user.username }}
-      </div>
+      </div> -->
     </div>
+  </div>
   </div>
 </template>
 
 <script>
 import timeAgo from '../helpers/timeAgo'
+import { mapState } from 'vuex'
 
 export default {
-  name: 'Question',
-  props: ['question'],
+  name: 'QuestionContent',
   computed: {
+    ...mapState(['question']),
     timeAgoDate () {
       return timeAgo.format(new Date(this.question.created_at))
     },
@@ -56,6 +68,21 @@ export default {
       }
       return result
     }
+  },
+  methods: {
+    getQuestion (id) {
+      this.$store.dispatch('fetchQuestion', id)
+    },
+    upvote () {
+      console.log('upvote')
+      this.$store.dispatch('upvote', this.question._id)
+    },
+    downvote () {
+      this.$store.dispatch('downvote', this.question._id)
+    }
+  },
+  created () {
+    this.getQuestion(this.$route.params.id)
   }
 }
 </script>
@@ -84,6 +111,17 @@ export default {
 }
 .columns {
   padding: 5px;
+}
+h1 {
+  font-size: 28px;
+}
+.header {
+  display: flex;
+  justify-content: space-between;
+  margin: 15px;
+}
+.vote {
+  cursor: pointer;
 }
 @media (max-width: 600px) {
   .question-counts {

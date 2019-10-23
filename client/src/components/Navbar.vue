@@ -1,11 +1,13 @@
 <template>
-  <b-navbar class="navbar">
+  <b-navbar class="navbar has-background-light">
     <template slot="brand">
       <b-navbar-item tag="router-link" :to="{ path: '/' }" class="brand">
+        <div>
         <img
-          src="../assets/brand.png"
-          alt="Lightweight UI components for Vue.js based on Bulma"
-        >
+          src="../assets/logo.png"
+          alt="Fake Overflow Logo"
+        >fake<strong>overflow</strong>
+        </div>
       </b-navbar-item>
     </template>
 
@@ -13,7 +15,7 @@
     <b-navbar-item tag="div" class="end-item">
       <div class="buttons">
         <router-link v-if="!$store.state.isLogin" to="/login">
-          <a class="button has-text-info login-button">
+          <a class="button is-light has-text-info login-button">
             Log in
           </a>
         </router-link>
@@ -24,7 +26,7 @@
         </router-link>
         <button v-if="$store.state.isLogin" class="button is-dark">{{ $store.state.loggedUser.username.charAt(0).toUpperCase() }}</button>
         <router-link v-if="$store.state.isLogin" to="/login">
-          <a @click="logout" class="button has-text-dark login-button">
+          <a @click="logout" class="button has-text-dark is-light login-button">
             Log out
           </a>
         </router-link>
@@ -51,6 +53,8 @@ export default {
 }
 .brand {
   margin-left: 10%;
+  font-family: 'Ubuntu', sans-serif;
+  font-size: 20px;
 }
 .end-item {
   margin-right: 10%;

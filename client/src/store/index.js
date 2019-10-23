@@ -11,7 +11,8 @@ export default new Vuex.Store({
     loggedUser: {},
     isLogin: false,
     errMessages: '',
-    questions: []
+    questions: [],
+    question: {}
   },
   mutations: {
     SET_LOGGED_USER (state, payload) {
@@ -22,6 +23,9 @@ export default new Vuex.Store({
     },
     SET_QUESTIONS (state, payload) {
       state.questions = payload
+    },
+    SET_QUESTION (state, payload) {
+      state.question = payload
     }
   },
   actions: {
@@ -74,8 +78,46 @@ export default new Vuex.Store({
         }
       })
         .then(({ data }) => {
-          this.dispatch('fetchQuestions')
+          dispatch('fetchQuestions')
           router.push('/questions')
+        })
+        .catch(alert)
+    },
+    fetchQuestion ({ commit }, payload) {
+      console.log('fetch lagi')
+      axios.get(`questions/${payload}`, {
+        headers: {
+          access_token: localStorage.getItem('access_token')
+        }
+      })
+        .then(({ data }) => {
+          commit('SET_QUESTION', data)
+        })
+        .catch(alert)
+    },
+    upvote ({ dispatch }, payload) {
+      console.log('upvote')
+      axios.patch(`questions/upvote/${payload}`, null, {
+        headers: {
+          access_token: localStorage.getItem('access_token')
+        }
+      })
+        .then(({ data }) => {
+          console.log('masuuk')
+          dispatch('fetchQuestions')
+          dispatch('fetchQuestion', payload)
+        })
+        .catch(alert)
+    },
+    downvote ({ dispatch }, payload) {
+      axios.post(`questions/${payload}/downvote`, {
+        headers: {
+          access_token: localStorage.getItem('access_token')
+        }
+      })
+        .then(({ data }) => {
+          dispatch('fetchQuestions')
+          dispatch('fetchQuestion')
         })
         .catch(alert)
     }

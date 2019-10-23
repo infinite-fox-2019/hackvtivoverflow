@@ -6,18 +6,6 @@ Vue.use(VueRouter)
 
 const routes = [
   {
-    path: '/',
-    name: 'home',
-    component: Home,
-    children: [
-      {
-        path: '/questions',
-        name: 'questions',
-        component: () => import('../views/Questions.vue')
-      }
-    ]
-  },
-  {
     path: '/login',
     name: 'login',
     component: () => import('../views/Login.vue')
@@ -31,6 +19,23 @@ const routes = [
     path: '/questions/ask',
     name: 'ask',
     component: () => import('../views/Ask.vue')
+  },
+  {
+    path: '/',
+    name: 'home',
+    component: Home,
+    children: [
+      {
+        path: '/questions',
+        name: 'questions',
+        component: () => import('../views/Questions.vue')
+      },
+      {
+        path: '/questions/:id',
+        name: 'questionDetail',
+        component: () => import('../views/QuestionDetail.vue')
+      }
+    ]
   }
 ]
 
