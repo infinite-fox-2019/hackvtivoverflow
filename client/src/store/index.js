@@ -8,7 +8,9 @@ export default new Vuex.Store({
   state: {
     user: '',
     islogin: false,
-    questions: ''
+    questions: '',
+    newQuestion: '',
+    answers: ''
   },
   mutations: {
     LOGIN_SUCCESS (state, payload) {
@@ -25,6 +27,16 @@ export default new Vuex.Store({
     },
     FETCHING_DATA (state, payload) {
       state.questions = payload;
+    },
+    NEW_QUESTION (state, payload) {
+      state.newQuestion = payload;
+    },
+    REGISTER_STATUS_LOGIN (state,payload) {
+      state.user = payload.data
+      state.islogin = true
+    },
+    GET_ANSWER (state, payload) {
+      state.answers = payload
     }
   },
   actions: {
@@ -41,6 +53,27 @@ export default new Vuex.Store({
           .catch(err => {
             rejext(err.response.data.msg)
           });
+      })
+    },
+    register ({ commit }, payload) {
+      return new Promise ((resolve,reject) => {
+        axios({
+          method: 'post',
+          url: 'http://localhost:3000/users/register',
+          data: {
+            username: payload.username,
+            password: payload.password,
+            email: payload.email
+          }
+        })
+          .then(({data}) => {
+            localStorage.setItem('token', data.token)
+            commit('REGISTER_STATUS_LOGIN', data)
+            resolve(data.msg)
+          })
+          .catch(err => {
+            reject(err)
+          })
       })
     },
     signout ({ commit }) {
@@ -90,6 +123,124 @@ export default new Vuex.Store({
       } else {
         commit('CHECK_LOGIN', false)
       }
+    },
+    sendQuestion (context, payload) {
+      return new Promise ((resolve,reject) => {
+        axios({
+          method: 'post',
+          url: 'http://localhost:3000/questions/ask',
+          headers: {
+            token: localStorage.getItem('token')
+          },
+          data: {
+            title: payload.title,
+            description: payload.question,
+            tags: payload.tags
+          }
+        })
+          .then(({data}) => {
+            context.commit('NEW_QUESTION', data.question);
+            resolve(data.msg)
+          })
+          .catch(err => {
+            reject(err)
+          })
+      })
+    },
+    getAnswer (context, payload) {
+      return new Promise ((resolve, reject) => {
+        axios({
+          method: 'get',
+          url: `http://localhost:3000/answers/${payload}`
+        })
+            .then(({data}) => {
+              context.commit('GET_ANSWER', data)
+              resolve(data)
+            })
+            .catch(err => {
+              reject(err)
+            })
+      })
+    },
+    plusVote (context, payload) {
+      return new Promise ((resolve, reject) => {
+        axios({
+          method: 'patch',
+          url: `http://localhost:3000/questions/up`,
+          data: {
+            id: payload
+          },
+          headers: {
+            token: localStorage.getItem('token')
+          }
+        })
+          .then(({data}) => {
+            resolve(data)
+          })
+          .catch(err => {
+            reject(err)
+          })
+      })
+    },
+    minVote (context, payload) {
+      return new Promise ((resolve, reject) => {
+        axios({
+          method: 'patch',
+          url: 'http://localhost:3000/questions/down',
+          data: {
+            id: payload
+          },
+          headers: {
+            token: localStorage.getItem('token')
+          }
+        })
+          .then(({data}) => {
+            resolve(data)
+          })
+          .catch(err => {
+            reject(err)
+          })
+      })
+    },
+    plusVoteAnswer (context, payload) {
+      return new Promise ((resolve, reject) => {
+        axios({
+          method: 'patch',
+          url: 'http://localhost:3000/answers/up',
+          data: {
+            id: payload
+          },
+          headers: {
+            token: localStorage.getItem('token')
+          }
+        })
+          .then(({data}) => {
+            resolve(data)
+          })
+          .catch(err => {
+            reject(err)
+          })
+      })
+    },
+    minVoteAnswer (context, payload) {
+      return new Promise ((resolve, reject) => {
+        axios({
+          method: 'patch',
+          url: 'http://localhost:3000/answers/down',
+          data: {
+            id: payload
+          },
+          headers: {
+            token: localStorage.getItem('token')
+          }
+        })
+        .then(({data}) => {
+          resolve(data)
+        })
+        .catch(err => {
+          reject(err)
+        })
+      })
     }
   },
   modules: {

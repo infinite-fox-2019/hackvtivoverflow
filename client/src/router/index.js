@@ -22,6 +22,26 @@ const routes = [
     path: '/ask',
     name: 'ask',
     component: () => import(/* webpackChunkName: 'ask' */ '../views/Ask.vue')
+  },
+  {
+    path: '/register',
+    name: 'register',
+    component: () => import(/* webpackChunkName: 'register' */ '../views/Register.vue')
+  },
+  {
+    path: '/detail/:id',
+    name: 'detail',
+    component: () => import(/* webpackChunkName: 'details' */ '../views/Detail.vue')
+  },
+  {
+    path: '/tag/:name',
+    name: 'tag',
+    component: () => import(/* webpackChunkName: 'tag' */ '../views/FindTag.vue')
+  },
+  {
+    path: '/search/:name',
+    name: 'search',
+    component: () => import(/* webpackChunkName: 'search' */ '../views/Search.vue')
   }
 ]
 

@@ -11,39 +11,20 @@
           </div>
         </div>
         <div class="col-4">
-          <router-link to='/ask'><a class='btn-primary'>Ask Question</a></router-link>
+          <div class='askquestion'>
+            <router-link to='/ask'><a class='h2'>Ask Question</a></router-link>
+          </div>
         </div>
       </div>
       <hr>
     </div>
     <div class="body">
-
-        <q-virtual-scroll
-          style="max-height: 300px;"
-          :items="heavyList"
-          separator
-        >
-          <template v-slot="{ item, index }">
-            <q-item
-              :key="index"
-              dense
-            >
-              <q-item-section>
-                <q-item-label>
-                  #{{ index }} - {{ item.label }}
-                </q-item-label>
-              </q-item-section>
-            </q-item>
-          </template>
-        </q-virtual-scroll>
-
-        
       <div v-for='(question,i) in questions' :key='i'>
-        <QuestionHome :question='question'/>
+        <QuestionHome :question='question' @fetchAgain='okeFetch'/>
     </div>
   </div>
     <div class="foot">
-fsa
+      'sfasa
     </div>
 </div>
 </template>
@@ -61,9 +42,13 @@ export default {
     QuestionHome
   },
   methods: {
+    okeFetch () {
+      this.fetchData()
+    },
     fetchData () {
       this.$store.dispatch('fetchData')
         .then(data => {
+          console.log(data)
           this.questions = data
         })
         .catch(console.log);
@@ -75,15 +60,20 @@ export default {
 }
 </script>
 
-<style scoped>
+<style scoped lang='scss'>
+
+.h2{
+  font-size:14px;
+  text-transform:uppercase;
+  letter-spacing:3px;
+}
+.askquestion{
+  margin-top: 10px;
+  margin-left: 25px;
+  font-size: 25px;
+}
 .col-4 {
   padding: 20px;
-}
-a{
-  color: black;
-}
-a:hover{
-  background-color: salmon;
 }
 .h2{
   position: absolute
@@ -99,10 +89,10 @@ p {
 .body{
   overflow: auto;
   height: 41vw;
-  background-color: rosybrown;
 }
 .foot{
   height: 5vw;
   background-color: salmon;
 }
+
 </style>

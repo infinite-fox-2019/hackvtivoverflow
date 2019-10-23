@@ -1,20 +1,17 @@
 <template>
-<div>
-  <b-navbar toggleable="lg" type="dark" variant="info">
-    <b-navbar-brand href="#">Hacktiv Overflow</b-navbar-brand>
-    <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
+<div class='container'>
+  <b-navbar toggleable="lg" type="dark" variant="dark">
+    <b-navbar-brand href="#"><router-link to='/'>Hacktiv Overflow</router-link></b-navbar-brand>
        
     <b-collapse id="nav-collapse" is-nav>
       <b-navbar-nav>
-        <b-nav-item href="#" disabled>{{ name }}</b-nav-item>
+        <b-nav-item href="#" disabled v-if='userr'>{{userr}}</b-nav-item>
       </b-navbar-nav>
     </b-collapse>
       <!-- Right aligned nav items -->
       <b-navbar-nav class="ml-auto">
-        <b-nav-form>
-          <b-form-input size="sm" class="mr-sm-2" placeholder="Search"></b-form-input>
-          <b-button size="sm" class="my-2 my-sm-0" type="submit">Search</b-button>
-        </b-nav-form>
+          <b-form-input size="sm" class="mr-sm-2" placeholder="Search Title" v-model='searchTitle'></b-form-input>
+          <b-button size="sm" class="my-2 my-sm-0" type="button"><router-link :to='{ name: "search", params: { name: searchTitle } }'>Search</router-link></b-button>
 
         <b-nav-item-dropdown right>
           <!-- Using 'button-content' slot -->
@@ -41,7 +38,8 @@ import { mapState, mapActions } from 'vuex';
 export default {
   data () {
     return {
-      name: ''
+      userr: '',
+      searchTitle: ''
     }
   },
   name: 'home',
@@ -50,16 +48,22 @@ export default {
   methods: {
       signout () {
           this.$store.dispatch('signout');
+          this.$router.push('/')
+          this.$awn.info('please comeback again :)')
+      },
+      search () {
+        const title = this.searchTitle;
+        axios
       }
   },
   computed: {
       ...mapState(['islogin', 'user']),
       status () {
           return this.islogin
-      },
-      name () {
-        return this.user.username
       }
   },
+  created () {
+    this.userr = this.$store.state.user.username
+  }
 }
 </script>

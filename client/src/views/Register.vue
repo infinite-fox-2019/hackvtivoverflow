@@ -1,53 +1,53 @@
 <template>
   <div class="container">
-    <form autocomplete="off" @submit.prevent="login()">
+    <form autocomplete="off" @submit.prevent="register()">
       <div class="group">
-        <label for="email">Email:</label>
-        <input type="email" id="email" name="email" v-model='email'>
+        <label for="email">Username:</label>
+        <input type="text" id="username" name="username" v-model='username'>
       </div>
       <div class="group">
         <label for="password">Password:</label>
         <input id="password" type="password" name="password" v-model='password'>
       </div>
-        <router-link
-          :to='{ name: "register" }'>
-          <a class="forget-link">Dont have account?</a>
-        </router-link>
-      <input type="submit" value="Login" id="submit">
+      <div class="group">
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" v-model='email'>
+      </div>
+      <input type="submit" value="register" id="submit">
     </form>
   </div>
 </template>
 
 <script>
-import axios from 'axios';
-
 export default {
-    data () {
-        return {
-            email: '',
-            password: ''
-        }
-    },
-    methods: {
-        login () {
-            const payload = {
-                email: this.email,
-                password: this.password
-            }
-            this.$store.dispatch('login', payload)
-                .then(data => {
-                  this.$awn.success('You\'re online now!')
-                  this.$router.push('/');
-                })
-                .catch(err=>{
-                  this.$awn.warning(err.response.data.msg)
-                })
-        }
-    }
+  data () {
+      return {
+          username: '',
+          password: '',
+          email: ''
+      }
+  },
+  methods: {
+      register () {
+          const payload = {
+              username: this.username,
+              password: this.password,
+              email: this.email
+          }
+          this.$store.dispatch('register', payload)
+            .then(success => {
+                this.$awn.success(success.msg);
+                this.$router.push('/')
+            })
+            .catch(err => {
+                this.$awn.warning(err.response.data.msg)
+            })
+      }
+  }
 }
 </script>
 
-<style lang='scss' scoped>
+<style scoped>
 .wrapper{
   min-height:100vh;
   background-color:rgba(0,0,0,.4);

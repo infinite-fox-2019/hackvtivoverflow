@@ -4,15 +4,17 @@ const Schema = Mongoose.Schema;
 const QSchema = new Schema ({
     title: { type: String, required: true },
     description: { type: String, required: true },
-    upvotes: Number,
-    downvotes: Number,
+    upvotes: [],
+    downvotes: [],
     tags: [],
-    UserId: { type: Schema.Types.ObjectId, ref: 'users' }
+    UserId: { type: Schema.Types.ObjectId, ref: 'users' },
+    createdAt: Date
 })
 
 QSchema.pre('save', function (next) {
-    this.upvotes = 0;
-    this.downvotes = 0;
+    this.createdAt = new Date()
+    this.upvotes = [];
+    this.downvotes = [];
     next()
 })
 

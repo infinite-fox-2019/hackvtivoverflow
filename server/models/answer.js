@@ -3,15 +3,15 @@ const Schema = Mongoose.Schema;
 
 const ASchema = new Schema ({
     response: { type: String, required: true },
-    upvotes: Number,
-    downvotes: Number,
+    upvotes: [],
+    downvotes: [],
     QuestionId: { type: Schema.Types.ObjectId, ref: 'questions' },
     UserId: { type: Schema.Types.ObjectId, ref: 'users' }
 });
 
 ASchema.pre('save', function(next) {
-    this.upvotes = 0;
-    this.downvotes = 0;
+    this.upvotes = [];
+    this.downvotes = [];
     next();
 })
 
