@@ -15,7 +15,7 @@ class ReplyController {
 
     static async read(req, res, next) {
         try {
-            let replies = await Reply.find({ _id: req.decode.id })
+            let replies = await Reply.find({ owner: req.decode.id })
             res.status(200).json(replies)
         } catch (err) {
             next(err)
@@ -24,8 +24,8 @@ class ReplyController {
 
     static async delete(req, res, next) {
         try {
-            await Reply.findByIdAndDelete(req.params.id)
-            await Thread.findOneAndUpdate({ $in: { replies: req.params.id } }, { $pull: { replies: req.params.id } })
+            await Reply.findByIdAndDelete(req.params.replyId)
+            await Thread.findByIdAndUpdate(req.params.id, { $pull: { replies: req.params.replyId } })
             res.status(200).json({ message: "Reply deleted" })
         } catch (err) {
             next(err)
@@ -35,7 +35,7 @@ class ReplyController {
     static async update(req, res, next) {
         const { title, content } = req.body
         try {
-            let reply = await Reply.findByIdAndUpdate(req.params.id, { $set: { title, content } }, { new: true })
+            let reply = await Reply.findByIdAndUpdate(req.params.replyId, { $set: { title, content } }, { new: true })
             res.status(200).json(reply)
         } catch (err) {
             next(err)

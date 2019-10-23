@@ -51,15 +51,17 @@ class ThreadController {
     }
 
     static readOne(req, res, next) {
+        const options = queryOptions(req.query)
         const id = req.params.id
         Thread.findOne({ $or: [{ _id: id }, { slug: id }] })
             .populate('owner', '-password')
             .populate('tags')
             .populate({
                 path: 'replies',
+                options,
                 populate: {
                     path: 'owner',
-                    select: '-password'
+                    select: '-password',
                 }
             })
             .then((thread) => {

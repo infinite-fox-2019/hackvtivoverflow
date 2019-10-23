@@ -11,5 +11,5 @@ module.exports = (query) => {
     Number(order) === 1 || Number(order) === -1 ? order = Number(order) : order = -1
 
     Number(limit) ? limit = Number(limit) : limit = 10
-    return { sort, order, skip: page * 10, limit }
+    return { sort: { [sort]: order }, skip: page * 10, limit }
 }
