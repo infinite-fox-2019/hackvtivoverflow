@@ -63,26 +63,61 @@ class AnswerController {
         })
     }
 
-    static vote (req, res, next) {
-        let vote
-        let { votes, id } = req.body
-        Answer.findOne ({
-            _id: id
-        })
-        .then (result => {
-            vote = result.votes + votes
-            return Answer.findOneAndUpdate({
-                _id : id
-            }, {
-                votes: vote
+    static upVotes (req, res, next) {
+        let { UserId, _id } = req.body
+        Answer.findOne(_id)
+            .then (result => {
+                let temp = false
+                for (let i = 0; i < result.upVotes.length; i++) {
+                    if (UserId == result.upVotes[i]._id) {
+                        temp = true
+                    }
+                }
+                if (!temp) {
+                    result.upVotes.push({
+                        _id: UserId
+                    })
+                    res.status(200).json(result)
+                } else {
+                    let err = new Error ('tidak bisa memilih')
+                    err.name = 'UnAuthorized'
+                    next(err)
+                }
             })
-        })
-        .then (result => {
-            res.status(200).json(result)
-        })
-        .catch (err => {
-            next(err)
-        })
+            .catch (err => {
+                next(err)
+            })
+    }
+
+    static downVotes (req, res, next) {
+        let { UserId, _id } = req.body
+        Answer.findOne(_id)
+            .then (result => {
+                let temp
+                for (let i = 0; i < result.upVotes.length; i++) {
+                    if (UserId == result.upVotes[i]._id) {
+                        result.upVotes.splice(i, 1)
+                    }
+                }
+                for (let i = 0; i < result.downVotes.length; i++) {
+                    if (UserId == result.downVotes[i]._id) {
+                        temp = true
+                    }
+                }
+                if (!temp) {
+                    result.downVotes.push({
+                        _id: UserId
+                    })
+                    res.status(200).json(result)
+                } else {
+                    let err = new Error ('tidak bisa memilih')
+                    err.name = 'UnAuthorized'
+                    next(err)
+                }
+            })
+            .catch (err => {
+                next(err)
+            })
     }
 
     static findOne (req, res, next) {

@@ -15,7 +15,7 @@
         </template>
     </NavBar>
     <button @click.prevent="showQuestion" class="btn btn-primary">Ask Question !</button>
-    <div class="container" style="width: 400px" v-if="showFormQuestion">
+    <div class="container" style="width: 800px" v-if="showFormQuestion">
       <button type="button" class="close" @click.prevent="closeFormQuestion">&times;</button>
       <form @submit.prevent="createQuestion">
         <label>Title</label>
@@ -68,7 +68,7 @@
         </template>
         <template v-slot:questionList>
             <div class="col-6">
-            <a href='#' @click.prevent="questionDetail(item.id)">{{ item.title }}</a>
+            <a href='#' @click.prevent="questionDetail(item._id)">{{ item.title }}</a>
             <p v-html="getDescription(index)"></p>
             </div>
         </template>
@@ -97,7 +97,7 @@ export default {
       description: '',
       showFormQuestion: false,
       editor: ClassicEditor,
-      editorData: '',
+      editorData: ''
     }
   },
   methods: {
@@ -118,6 +118,7 @@ export default {
         description: this.editorData
       }
       this.$store.dispatch('createQuestion', payload)
+      this.$store.dispatch('setListQuestion')
       this.showFormQuestion = false
       this.title = ''
       this.tags = ''
@@ -127,12 +128,12 @@ export default {
       this.$store.dispatch('questionDetail', id)
     },
     getDescription (index) {
-        let arr = this.listQuestion[index]
-        if (arr.description.length >= 50) {
-            return arr.description.slice(0, 50) + "..."
-        } else {
-            return arr.description
-        }
+      let arr = this.listQuestion[index]
+      if (arr.description.length >= 50) {
+        return arr.description.slice(0, 50) + '...'
+      } else {
+        return arr.description
+      }
     }
   },
   computed: {

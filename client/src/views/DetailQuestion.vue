@@ -15,12 +15,13 @@
         </template>
     </NavBar>
     <div class="container d-flex">
-        <div class="row">
-        <List v-for="(item, index) in listQuestion" :key="index" class="card" id="questionList">
+        <div class="Ccol">
+        <List class="card" id="questionList">
         <template v-slot:totalVotes>
             <div class="col sm-1 ml-1">
-            <h4>0</h4>
-            <h6>Votes</h6>
+            <button type="button" class="btn btn-default" aria-label="Left Align" @click.prevent="downVotes">
+              <span class="glyphicon glyphicon-chevron-up" aria-hidden="true"></span>
+            </button>
             </div>
         </template>
         <template v-slot:totalAnswers>
@@ -31,15 +32,15 @@
         </template>
         <template v-slot:totalViews>
             <div class="col sm-1 ml-1">
-            <h4>0</h4>
-            <h6>Views</h6>
+            <button type="button" class="btn btn-default" aria-label="Left Align" @click.prevent="upVotes">
+              <span class="glyphicon glyphicon-chevron-up" aria-hidden="true"></span>
+            </button>
             </div>
         </template>
         <template v-slot:questionList>
             <div class="col-6">
-            <a href='#' @click.prevent="questionDetail(item.id)">{{ item.title }}</a>
-            <p v-if="item.description.length >= 30">{{ item.description.substring(0, 30) + '...' }}</p>
-            <p v-else>{{ item.description }}</p>
+            <h1>{{ question.title }}</h1>
+            <p v-html="question.description"></p>
             </div>
         </template>
         </List>
@@ -54,7 +55,7 @@ import List from '../components/List'
 import router from '../router.js'
 import { mapState } from 'vuex'
 export default {
-  name: 'question',
+  name: 'detailquestion',
   components: {
     NavBar,
     List
@@ -68,6 +69,12 @@ export default {
     }
   },
   methods: {
+    downVotes () {
+
+    },
+    upVotes () {
+
+    },
     signOut () {
       localStorage.clear()
       router.push('/')
@@ -95,7 +102,7 @@ export default {
     }
   },
   computed: {
-    ...mapState(['listQuestion'])
+    ...mapState(['question'])
   },
   created () {
     this.$store.dispatch('setListQuestion')

@@ -4,6 +4,7 @@ import Home from './views/Home.vue'
 import Question from './views/Question.vue'
 import Login from './views/Login'
 import Register from './views/Register'
+import DetailQuestion from './views/DetailQuestion'
 
 Vue.use(Router)
 
@@ -27,17 +28,17 @@ const router = new Router({
       component: Register
     },
     {
+      path: '/question/:id',
+      name: 'detailquestion',
+      component: DetailQuestion
+    },
+    {
       path: '/question',
       name: 'question',
       // route level code-splitting
       // this generates a separate chunk (about.[hash].js) for this route
       // which is lazy-loaded when the route is visited.
-      component: Question,
-      children: [
-        {
-          path: ':id'
-        }
-      ]
+      component: Question
     }
   ]
 })
@@ -45,7 +46,7 @@ const router = new Router({
 router.beforeEach((to, from, next) => {
   if (localStorage.getItem('token') && (to.name === 'login' || to.name === 'register' || to.name === 'home')) {
     next('/question')
-  } else if (to.name === 'login' || to.name === 'register' || to.name === 'home') {
+  } else if (to.name === 'detailquestion' || to.name === 'login' || to.name === 'register' || to.name === 'home') {
     next()
   } else if (localStorage.getItem('token')) {
     next()

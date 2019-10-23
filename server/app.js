@@ -15,8 +15,9 @@ const mongooseConfig = {
     useUnifiedTopology: true,
     useFindAndModify: false
 }
-
-mongoose.connect(process.env.MONGOOSE_URL, mongooseConfig)
+// \process.env.MONGOOSE_URL ||
+let mongoosedb =  "mongodb://localhost/hacktivoverflow"
+mongoose.connect(mongoosedb , mongooseConfig)
     .then((result) => {
         console.log("database connected")    
     })

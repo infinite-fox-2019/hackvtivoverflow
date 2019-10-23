@@ -28,9 +28,8 @@
       </template>
       <template v-slot:questionList>
         <div>
-          <a href='#' @click.prevent="questionDetail(item.id)">{{ item.title }}</a>
-          <p v-if="item.description.length >= 30">{{ item.description.substring(0, 30) + '...' }}</p>
-          <p v-else>{{ item.description }}</p>
+          <a href='#' @click.prevent="questionDetail(item._id)">{{ item.title }}</a>
+          <p v-html="getDescription(index)"></p>
         </div>
       </template>
     </List>
@@ -53,6 +52,19 @@ export default {
   },
   created () {
     this.$store.dispatch('setListQuestion')
+  },
+  methods: {
+    questionDetail (id) {
+      this.$store.dispatch('questionDetail', id)
+    },
+     getDescription (index) {
+      let arr = this.listQuestion[index]
+      if (arr.description.length >= 50) {
+        return arr.description.slice(0, 50) + '...'
+      } else {
+        return arr.description
+      }
+    }
   }
 
 }

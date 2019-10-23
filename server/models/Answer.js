@@ -14,12 +14,15 @@ const AnswerSchema = new Schema ({
         type: Schema.Types.ObjectId,
         ref: "Users"
     },
-    votes: {
-        type: Number
-    },
     QuestionId : {
         type: Schema.Types.ObjectId,
         ref: "Questions"
+    },
+    upVotes: {
+        type: Array
+    },
+    downVotes: {
+        type: Array
     }
 }, {
     versionKey: false

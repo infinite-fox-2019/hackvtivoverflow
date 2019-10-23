@@ -67,6 +67,7 @@ export default new Vuex.Store({
         showConfirmButton: false,
         allowOutsideClick: () => swal.isLoading()
       })
+      console.log(payload)
       Axios({
         url: `http://localhost:3000/question/${payload}`,
         method: 'get',
@@ -74,10 +75,11 @@ export default new Vuex.Store({
           token: localStorage.getItem('token')
         }
       })
-      .then(({ data }) => {
-        swal.close()
-        commit('QUESTIONDETAIL', data)
-      })
+        .then(({ data }) => {
+          swal.close()
+          commit('QUESTIONDETAIL', data)
+          router.push(`/question/${payload}`)
+        })
     },
     createQuestion ({ commit }, payload) {
       swal.fire({
