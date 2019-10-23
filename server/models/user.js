@@ -15,7 +15,8 @@ const userSchema = new Schema({
   password : {
     type :  String,
     required : "Password required"
-  }
+  },
+  tags:[{type:String, ref:'Tag'}]
 })
 
 userSchema.pre('save', function(next){

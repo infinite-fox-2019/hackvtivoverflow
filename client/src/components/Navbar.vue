@@ -1,5 +1,5 @@
 <template>
-    <b-navbar toggleable="lg" type="dark" variant="info">
+    <b-navbar toggleable="lg" type="dark" class="sticky-top" variant="primary">
       <router-link to="/"><b-navbar-brand class="nav-title">dipaoverflow</b-navbar-brand></router-link>
       <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
       <b-collapse id="nav-collapse" is-nav>

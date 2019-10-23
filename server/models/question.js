@@ -19,7 +19,8 @@ const questionShema = new Schema({
   AnswerId: [{
     type: Schema.Types.ObjectId,
     ref: 'Answer'
-  }]
+  }],
+  tags:[{type:String, ref:'Tag'}]
 })
 
 const Question = mongoose.model('Question', questionShema)
