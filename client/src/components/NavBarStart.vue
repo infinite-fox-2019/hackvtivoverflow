@@ -10,12 +10,9 @@
           </router-link>
         </div>
          <div class="clickable">
-             <slot name="home"></slot>
-             <slot name="login"></slot>
-             <slot name="register"></slot>
-             <slot name="question"></slot>
-             <slot name="answer"></slot>
-             <slot name="signout"></slot>
+            <router-link to="/" class="btn btn-primary">Home</router-link>
+            <router-link to="/register" class="btn btn-primary">Register</router-link>
+            <router-link to="/login" class="btn btn-primary">Login</router-link>
          </div>
       </nav>
   </div>

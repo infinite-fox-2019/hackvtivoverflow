@@ -14,11 +14,14 @@ const QuestionSchema = new Schema ({
         type: Schema.Types.ObjectId,
         ref: "Users"
     },
-    votes: {
-        type: Number
+    upVotes: {
+        type: Array
     },
     tags: {
         type: String
+    },
+    downVotes: {
+        type: Array
     }
 }, {
     versionKey: false

@@ -9,8 +9,7 @@ class QuestionController {
             title,
             description,
             tags,
-            UserId,
-            votes: 0
+            UserId
         })
         .then ( (result) => {
             res.status(201).json(result)
