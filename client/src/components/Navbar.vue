@@ -1,0 +1,27 @@
+<template>
+    <b-navbar toggleable="lg" type="dark" variant="info">
+      <router-link to="/"><b-navbar-brand class="nav-title">dipaoverflow</b-navbar-brand></router-link>
+      <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
+      <b-collapse id="nav-collapse" is-nav>
+        <!-- Right aligned nav items -->
+        <b-navbar-nav class="ml-auto">
+          <b-button size="sm" class="my-2 my-sm-0 mr-2">Login</b-button>
+          <b-button size="sm" class="my-2 my-sm-0 mr-2">Question?</b-button>
+          <b-button size="sm" class="my-2 my-sm-0 mr-2">Logout</b-button>
+        </b-navbar-nav>
+      </b-collapse>
+    </b-navbar>
+</template>
+
+<script>
+export default {
+
+}
+</script>
+
+<style>
+  .nav-title{
+    font-weight: bold;
+    margin-left: 15px;
+  }
+</style>
