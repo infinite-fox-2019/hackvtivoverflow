@@ -1,6 +1,7 @@
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 const { hash } = require('../helpers/bcryptjs')
+const md5 = require('md5')
 
 const userSchema = new Schema({
     username: {
@@ -17,11 +18,13 @@ const userSchema = new Schema({
     password: {
         type: String,
         required: [true, "Password required"]
-    }
+    },
+    gravatar: { type: String }
 }, { timestamps: true, versionKey: false })
 
 userSchema.pre('save', function (next) {
     this.password = hash(this.password)
+    this.gravatar = "https://www.gravatar.com/avatar/" + md5(this.email)
     next()
 })
 
