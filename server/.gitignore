@@ -4,3 +4,5 @@ node_modules
 keyfile.json
 dist
 /dist
+.env
+.env.local
