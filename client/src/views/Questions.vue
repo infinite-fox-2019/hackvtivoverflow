@@ -13,15 +13,18 @@ export default {
     Sidebar
   },
   computed: {
-    isLogin(){
-    return  this.$store.state.isLogin
+    isLogin () {
+      return this.$store.state.isLogin
+    },
+    user () {
+      return this.$store.state.user
     }
   },
-  created() {
-    if (this.isLogin){
+  created () {
+    if (this.isLogin) {
       this.$store.dispatch('getMyAcc')
     }
-  },
+  }
 }
 </script>
 

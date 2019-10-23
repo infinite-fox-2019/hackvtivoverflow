@@ -1,16 +1,16 @@
 <template>
   <div id="sidebar">
-    <div class="toregist">
+    <div class="toregista" v-if="!isLogin">
     <router-link to="/register">
       <h6>Register</h6>
     </router-link>
     </div>
-    <div class="modallogin">
       <router-link to="/questions/create">
+    <div class="modallogin a">
       <h6>Ask Question</h6>
-    </router-link>
     </div>
-    <div class="modallogin">
+    </router-link>
+    <div class="modallogin a">
       <router-link to="/questions/tag">
       <h6>Tags</h6>
     </router-link>
@@ -20,7 +20,12 @@
 
 <script>
 export default {
-  name: 'sidebar'
+  name: 'sidebar',
+  computed: {
+    isLogin () {
+      return this.$store.state.isLogin
+    }
+  }
 }
 </script>
 
@@ -29,6 +34,13 @@ export default {
     width: 17vw;
     height: 100vh;
     background: brown
+}
+.a{
+  padding: 10px
+}
+div a.router-link-exact-active {
+  background: white;
+  color: #42b983;
 }
 
 </style>

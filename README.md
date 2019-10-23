@@ -7,6 +7,7 @@
 | POST  | /users/            | none    | name, email, password, watchTag  | Create user                   |
 | POST  | /users/login       | none    | email, password                  | Login user                    |
 | PATCH | /users/tag         | token   | watchTag                         | Update watchTag               |
+| GET   | /users/            | token   |                                  | Get user information          |
 
 ## Question
 | HTTP   | Routes                 | Headers | Body                             | Description                   | 

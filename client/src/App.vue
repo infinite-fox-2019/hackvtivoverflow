@@ -13,12 +13,13 @@ export default {
   components: {
     Navbar
   },
-  created() {
-    if (localStorage.getItem("token") && localStorage.getItem("_id") &&localStorage.getItem("email")){
-      console.log('here');
+  created () {
+    if (localStorage.getItem('token') && localStorage.getItem('_id') && localStorage.getItem('email')) {
+      console.log('here')
       this.$store.commit('SET_ISLOGIN', true)
+      this.$store.dispatch('getMyAcc')
     }
-  },
+  }
 }
 </script>
 <style>

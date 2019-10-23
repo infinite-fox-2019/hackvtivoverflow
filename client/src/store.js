@@ -1,24 +1,27 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import axios from './config/axios'
-import { loadavg } from 'os'
 
 Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
     allTag: [],
-    isLogin : false
+    isLogin: false,
+    user: {}
   },
   mutations: {
     SET_ALL_TAG (state, payload) {
       state.allTag = payload
     },
-    SET_ISLOGIN(state, payload) {
+    SET_ISLOGIN (state, payload) {
       state.isLogin = payload
-      if (!payload){
+      if (!payload) {
         localStorage.clear()
       }
+    },
+    SET_USER (state, payload) {
+      state.user = payload
     }
   },
   actions: {
@@ -35,14 +38,21 @@ export default new Vuex.Store({
           console.log(err)
         })
     },
-    getMyAcc ({commit}, payload){
+    getMyAcc ({ commit }, payload) {
       axios({
         method: 'get',
         url: '/users',
-        headers : {
-          token : localStorage.getItem("token")
+        headers: {
+          token: localStorage.getItem('token')
         }
       })
+        .then(({ data }) => {
+          console.log(data)
+          commit('SET_USER', data)
+        })
+        .catch(err => {
+          console.log(err)
+        })
     }
   }
 })

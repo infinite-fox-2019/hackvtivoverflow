@@ -58,31 +58,31 @@ import Swal from 'sweetalert2'
 import axios from '../config/axios'
 export default {
   name: 'register',
-  data() {
+  data () {
     return {
-      namer: "",
-      emailr: "",
-      passwordr: "",
+      namer: '',
+      emailr: '',
+      passwordr: '',
       tagsf: [],
       tags: []
-    };
+    }
   },
   computed: {
-    existingTags() {
-      let formattag = [];
-      let tagnya = this.$store.state.allTag;
+    existingTags () {
+      let formattag = []
+      let tagnya = this.$store.state.allTag
       tagnya.forEach(el => {
         let obj = {
           key: el.name,
           value: el.display
-        };
-        formattag.push(obj);
-      });
-      return formattag;
+        }
+        formattag.push(obj)
+      })
+      return formattag
     }
   },
   methods: {
-    tryRegister(){
+    tryRegister () {
       axios({
         method: 'post',
         url: '/users/',
@@ -93,45 +93,45 @@ export default {
           watchTag: this.tags
         }
       })
-      .then(({data})=>{
-        localStorage.setItem("_id", data._id)
-        localStorage.setItem("email", data.email)
-        localStorage.setItem("token", data.token)
-        this.$store.commit("SET_ISLOGIN", true)
-        this.$router.push('/questions')
-        console.log(data);
-      })
-      .catch(err =>{
-        let errors = err.response.data.errMsg.join("<br>")
-        Swal.fire({
+        .then(({ data }) => {
+          localStorage.setItem('_id', data._id)
+          localStorage.setItem('email', data.email)
+          localStorage.setItem('token', data.token)
+          this.$store.commit('SET_ISLOGIN', true)
+          this.$router.push('/questions')
+          console.log(data)
+        })
+        .catch(err => {
+          let errors = err.response.data.errMsg.join('<br>')
+          Swal.fire({
             type: 'error',
             title: 'Error!',
             html: errors
+          })
+          console.log(err)
         })
-        console.log(err)
-      })
-      .finally(()=>{
-        this.namer = ""
-        this.emailr = ""
-        this.passwordr = ""
-        this.tagsf = []
-        this.tags = []
-      })
+        .finally(() => {
+          this.namer = ''
+          this.emailr = ''
+          this.passwordr = ''
+          this.tagsf = []
+          this.tags = []
+        })
     }
   },
   watch: {
-    tagsf() {
-      let arr = [];
+    tagsf () {
+      let arr = []
       this.tagsf.forEach(el => {
-        arr.push(el.key);
-      });
-      this.tags = arr;
+        arr.push(el.key)
+      })
+      this.tags = arr
     }
   },
-  created() {
-    this.$store.dispatch("getAllTag");
+  created () {
+    this.$store.dispatch('getAllTag')
   }
-};
+}
 </script>
 
 <style scoped>

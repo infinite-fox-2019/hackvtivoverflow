@@ -4,6 +4,8 @@ import Home from './views/Home.vue'
 import Questions from './views/Questions.vue'
 import ListTag from './views/ListTag.vue'
 import Register from './views/Register.vue'
+import ListQues from './views/ListQues.vue'
+import CreateQues from './views/CreateQues.vue'
 
 Vue.use(Router)
 
@@ -30,6 +32,16 @@ export default new Router({
       component: Questions,
       children: [
         {
+          path: '',
+          name: 'all',
+          component: ListQues
+        },
+        {
+          path: 'create',
+          name: 'create',
+          component: CreateQues
+        },
+        {
           path: 'tag',
           name: 'listtag',
           component: ListTag,
@@ -37,7 +49,7 @@ export default new Router({
             {
               path: ':tag',
               name: 'tagname',
-              component: Questions
+              component: ListQues
             }
           ]
         },

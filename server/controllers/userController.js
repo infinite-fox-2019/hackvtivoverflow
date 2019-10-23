@@ -74,12 +74,12 @@ class UserController {
 
 	static getDetail(req, res, next) {
 		console.log(req.decoded);
-		// 	User.findById(req.decoded._id)
-		// 		.select('-password -createdAt -updatedAt')
-		// 		.then((data) => {
-		// 			res.status(200).json(data);
-		// 		})
-		// 		.catch(next);
+			User.findById(req.decoded._id)
+				.select('-password -createdAt -updatedAt')
+				.then((data) => {
+					res.status(200).json(data);
+				})
+				.catch(next);
 	}
 }
 

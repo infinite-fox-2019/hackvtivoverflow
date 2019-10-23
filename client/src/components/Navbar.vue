@@ -46,11 +46,11 @@ export default {
     }
   },
   methods: {
-    ouut(){
-      this.$store.commit("SET_ISLOGIN", false)
+    ouut () {
+      this.$store.commit('SET_ISLOGIN', false)
       this.$router.push('/')
     }
-  },
+  }
 }
 </script>
 
