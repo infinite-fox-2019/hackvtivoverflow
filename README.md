@@ -337,7 +337,7 @@ Response :
 ```
 Response :
 {
-    message: "Data nopt found"
+    message: "Data not found"
 }
 ```
 - Status: **400**

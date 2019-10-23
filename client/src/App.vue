@@ -10,9 +10,15 @@
 import Navbar from './components/Navbar.vue'
 export default {
   name: 'app',
-  components : {
+  components: {
     Navbar
-  }
+  },
+  created() {
+    if (localStorage.getItem("token") && localStorage.getItem("_id") &&localStorage.getItem("email")){
+      console.log('here');
+      this.$store.commit('SET_ISLOGIN', true)
+    }
+  },
 }
 </script>
 <style>

@@ -8,21 +8,33 @@
 <script>
 import Sidebar from '../components/Sidebar.vue'
 export default {
-    name: 'questions',
-    components: {
-        Sidebar
+  name: 'questions',
+  components: {
+    Sidebar
+  },
+  computed: {
+    isLogin(){
+    return  this.$store.state.isLogin
     }
+  },
+  created() {
+    if (this.isLogin){
+      this.$store.dispatch('getMyAcc')
+    }
+  },
 }
 </script>
 
 <style>
 .background{
     display: flex;
-    flex-direction: row;
-    justify-content: space-between
 }
 sidebar{
-    align-self: flex-start
+    align-self: flex-start;
+    min-height: 100vh
+}
+router-view{
+  width: calc(100vw - 17vw)
 }
 
 </style>

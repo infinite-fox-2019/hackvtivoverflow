@@ -2,12 +2,17 @@
   <div id="sidebar">
     <div class="toregist">
     <router-link to="/register">
-      <h4>Register</h4>
+      <h6>Register</h6>
     </router-link>
     </div>
     <div class="modallogin">
-      <router-link to="/ask">
-      <h4>Ask Question</h4>
+      <router-link to="/questions/create">
+      <h6>Ask Question</h6>
+    </router-link>
+    </div>
+    <div class="modallogin">
+      <router-link to="/questions/tag">
+      <h6>Tags</h6>
     </router-link>
     </div>
   </div>
@@ -15,13 +20,13 @@
 
 <script>
 export default {
-name:'sidebar'
+  name: 'sidebar'
 }
 </script>
 
 <style scoped>
 #sidebar{
-    width: 16.8vw;
+    width: 17vw;
     height: 100vh;
     background: brown
 }
