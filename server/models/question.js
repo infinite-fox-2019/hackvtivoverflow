@@ -10,16 +10,16 @@ const questionShema = new Schema({
     type: String,
     required: true
   },
-  upvotes: {
-    type: Number
-  },
-  downvotes: {
-    type: Number
-  },
-  userId: {
+  upvotes: [Schema.Types.ObjectId],
+  downvotes: [Schema.Types.ObjectId],
+  UserId: {
     type: Schema.Types.ObjectId,
     ref: 'User'
-  }
+  },
+  AnswerId: [{
+    type: Schema.Types.ObjectId,
+    ref: 'Answer'
+  }]
 })
 
 const Question = mongoose.model('Question', questionShema)

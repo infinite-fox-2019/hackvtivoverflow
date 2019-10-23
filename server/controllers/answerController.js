@@ -1,30 +1,43 @@
-const Question = require('../models/question')
 const Answer = require('../models/answer')
+const Question = require('../models/question')
 
-class QuestionController {
-
-  static questionList(req,res,next){
-    Question.find()
+class AnswerController {
+  
+  static find(req,res,next){
+    const {QuestionId} = req.body // Need a question id for get question answer
+    Answer.findOne({QuestionId})
       .then(data => {
         res.status(200).json(data)
       })
       .catch(next)
   }
 
-  static questionDetail(req,res,next){
-    const {_id} = req.params //Id question, for question page
-    Question.findOne({_id})
-    .populate('AnswerId')
-    .populate('UserId')
+  static createAnswer(req,res,next){
+    const {QuestionId, description} = req.body
+    const UserId = req.loggedUser._id
+    Answer.create({QuestionId,description,UserId})
+      .then(data => {
+        return Question.update({_id:QuestionId},{$push:{AnswerId:data._id}})
+      })
+      .then(data => {
+        res.status(200).json({data})
+      })
+      .catch(next)
+  }
+
+  static deleteAnswer(req,res,next){
+    const {_id} = req.params // Need a answer id for delete the answer
+    Answer.deleteOne({_id})
       .then(data => {
         res.status(200).json(data)
       })
       .catch(next)
   }
 
-  static editQuestion(req,res,next){
-    const {_id} = req.params //question id
-    Question.updateOne({_id},{description})
+  static editAnswer(req,res,next){
+    const {_id} = req.params // Need a answer id for update
+    const {description} = req.body
+    Answer.updateOne({_id},{description})
       .then(data => {
         res.status(200).json(data)
       })
@@ -32,9 +45,9 @@ class QuestionController {
   }
 
   static updateUpvotes(req,res,next){
-    const {_id} = req.params // Need a question id for update upvotes
+    const {_id} = req.params // Need a answer id for update upvotes
     const UserId = req.loggedUser._id
-    Question.findOne({_id})
+    Answer.findOne({_id})
       .then(data => {
         if(data){
           for(let i = 0; i < data.upvotes.length; i++){
@@ -45,14 +58,14 @@ class QuestionController {
           for(let i = 0; i < data.downvotes.length; i++){
             if(data.downvotes[i] == UserId){
               Promise.all([
-                Question.updateOne({_id},{$pull:{downvotes:UserId}}),
-                Question.updateOne({_id},{$push:{upvotes:UserId}})
+                Answer.updateOne({_id},{$pull:{downvotes:UserId}}),
+                Answer.updateOne({_id},{$push:{upvotes:UserId}})
               ])
             }
           }
         }
         else{
-          return res.status(404).json({msg:"Question not found"})
+          return res.status(404).json({msg:"Answer not found"})
         }
       })
       .then(data => {
@@ -62,9 +75,9 @@ class QuestionController {
   }
 
   static updateDownvotes(req,res,next){
-    const {_id} = req.params // Need a question id for update upvotes
+    const {_id} = req.params // Need a answer id for update upvotes
     const UserId = req.loggedUser._id
-    Question.findOne({_id})
+    Answer.findOne({_id})
       .then(data => {
         if(data){
           for(let i = 0; i < data.downvotes.length; i++){
@@ -75,14 +88,14 @@ class QuestionController {
           for(let i = 0; i < data.upvotes.length; i++){
             if(data.upvotes[i] == UserId){
               Promise.all([
-                Question.updateOne({_id},{$pull:{upvotes:UserId}}),
-                Question.updateOne({_id},{$push:{downvotes:UserId}})
+                Answer.updateOne({_id},{$pull:{upvotes:UserId}}),
+                Answer.updateOne({_id},{$push:{downvotes:UserId}})
               ])
             }
           }
         }
         else{
-          return res.status(404).json({msg:"Question not found"})
+          return res.status(404).json({msg:"Answer not found"})
         }
       })
       .then(data => {
@@ -91,24 +104,8 @@ class QuestionController {
       .catch(next)
   }
 
-  static createQuestion(req,res,next){
-    const {_id} = req.loggedUser
-    const {title,description} = req.body
-    Question.create({title,description,UserId:_id})
-      .then(data => {
-        res.status(200).json(data)
-      })
-      .catch(next)
-  }
 
-  static deleteQuestion(req,res,next){
-    const {_id} = req.params //question id
-    Question.deleteOne({_id})
-      .then(data => {
-        res.status(200).json(data)
-      })
-      .catch(next)
-  }
+
 }
 
-module.exports = QuestionController
+module.exports = AnswerController

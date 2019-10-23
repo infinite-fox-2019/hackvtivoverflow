@@ -6,17 +6,13 @@ const answerSchema = new Schema({
     type: String,
     required: true
   },
-  upvotes: {
-    type: Number
-  },
-  downvotes: {
-    type: Number
-  },
-  questionId: {
+  upvotes: [Schema.Types.ObjectId],
+  downvotes: [Schema.Types.ObjectId],
+  QuestionId: {
     type: Schema.Types.ObjectId,
     ref: 'Question'
   },
-  userId: {
+  UserId: {
     type: Schema.Types.ObjectId,
     ref: 'User'
   }
