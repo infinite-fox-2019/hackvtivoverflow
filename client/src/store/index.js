@@ -8,16 +8,20 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    currentUser: {},
+    loggedUser: {},
     isLogin: false,
-    errMessages: ''
+    errMessages: '',
+    questions: []
   },
   mutations: {
-    SET_CURRENT_USER (state, payload) {
-      state.currentUser = payload
+    SET_LOGGED_USER (state, payload) {
+      state.loggedUser = payload
     },
     SET_IS_LOGIN (state, payload) {
       state.isLogin = payload
+    },
+    SET_QUESTIONS (state, payload) {
+      state.questions = payload
     }
   },
   actions: {
@@ -25,7 +29,7 @@ export default new Vuex.Store({
       axios.post('users/register', payload)
         .then(({ data }) => {
           const { username, email } = data
-          commit('SET_CURRENT_USER', { username, email })
+          commit('SET_LOGGED_USER', { username, email })
           localStorage.setItem('username', data.username)
           localStorage.setItem('email', data.email)
           localStorage.setItem('access_token', data.access_token)
@@ -38,7 +42,7 @@ export default new Vuex.Store({
       axios.post('users/login', payload)
         .then(({ data }) => {
           const { username, email } = data
-          commit('SET_CURRENT_USER', { username, email })
+          commit('SET_LOGGED_USER', { username, email })
           localStorage.setItem('username', data.username)
           localStorage.setItem('email', data.email)
           localStorage.setItem('access_token', data.access_token)
@@ -47,10 +51,33 @@ export default new Vuex.Store({
         })
         .catch(alert)
     },
-    logout ({ commit }, payload) {
+    logout ({ commit }) {
       commit('SET_IS_LOGIN', false)
-      commit('SET_CURRENT_USER', {})
+      commit('SET_LOGGED_USER', {})
       localStorage.clear()
+    },
+    fetchQuestions ({ commit }) {
+      axios.get('/questions', {
+        headers: {
+          access_token: localStorage.getItem('access_token')
+        }
+      })
+        .then(({ data }) => {
+          commit('SET_QUESTIONS', data)
+        })
+        .catch(alert)
+    },
+    addQuestion ({ dispatch }, payload) {
+      axios.post('/questions', payload, {
+        headers: {
+          access_token: localStorage.getItem('access_token')
+        }
+      })
+        .then(({ data }) => {
+          this.dispatch('fetchQuestions')
+          router.push('/questions')
+        })
+        .catch(alert)
     }
   },
   modules: {

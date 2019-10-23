@@ -11,6 +11,9 @@ module.exports = (err, req, res, next) => {
     for(let field in err.errors) {
       messages.push(err.errors[field].message)
     }
+  } else if(err.msg) {
+    err.status = 400
+    messages.push(err.msg)
   }
   res.status(err.status || 500).json({ messages: messages.length > 0 ? messages : 'Something went wrong in the server'})
 }

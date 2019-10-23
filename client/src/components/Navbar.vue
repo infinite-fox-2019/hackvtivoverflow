@@ -1,5 +1,5 @@
 <template>
-  <b-navbar>
+  <b-navbar class="navbar">
     <template slot="brand">
       <b-navbar-item tag="router-link" :to="{ path: '/' }" class="brand">
         <img
@@ -7,7 +7,7 @@
           alt="Lightweight UI components for Vue.js based on Bulma"
         >
       </b-navbar-item>
-  </template>
+    </template>
 
   <template slot="end">
     <b-navbar-item tag="div" class="end-item">
@@ -22,7 +22,7 @@
             <strong>Sign up</strong>
           </a>
         </router-link>
-        <button v-if="$store.state.isLogin" class="button is-dark">{{ $store.state.currentUser.username.charAt(0).toUpperCase() }}</button>
+        <button v-if="$store.state.isLogin" class="button is-dark">{{ $store.state.loggedUser.username.charAt(0).toUpperCase() }}</button>
         <router-link v-if="$store.state.isLogin" to="/login">
           <a @click="logout" class="button has-text-dark login-button">
             Log out
@@ -46,6 +46,9 @@ export default {
 </script>
 
 <style scoped>
+.navbar {
+  box-shadow: 0px 1px 10px 1px #e4e4e4;
+}
 .brand {
   margin-left: 10%;
 }

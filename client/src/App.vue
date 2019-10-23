@@ -15,7 +15,12 @@ export default {
     Navbar
   },
   created () {
-    if (localStorage.getItem('access_token')) {
+    if (localStorage.getItem('username') && localStorage.getItem('email') && localStorage.getItem('access_token')) {
+      this.$store.commit('SET_IS_LOGIN', true)
+      this.$store.commit('SET_LOGGED_USER', {
+        username: localStorage.getItem('username'),
+        email: localStorage.getItem('email')
+      })
     }
   }
 }
