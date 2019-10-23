@@ -20,9 +20,12 @@ const userSchema = new Schema({
     },
     password: {
         type: String,
-        minlength: [5, `password min 5 character`],
         required: [true, `Password must be filled`]
-    }
+    },
+    ask: [{
+        type: Schema.Types.ObjectId,
+        ref: 'Ask'
+    }]
 })
 
 userSchema.pre('save', function (next) {
