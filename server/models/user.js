@@ -1,6 +1,7 @@
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 const { hashPassword } = require('../helpers/bcrypt')
+const Tag = require('./tag')
 
 const userSchema = new Schema({
   name: {
@@ -36,9 +37,30 @@ userSchema.path('email').validate(function (value) {
 
 userSchema.pre('save', function () {
   this.password = hashPassword(this.password)
+  let id = this._id.toString()
+  Tag.updateMany({users : {$all: [id]}}, {$pull:{ users: id}})
+  .then(() =>{
+    Tag.updateMany({ name : { $in: this.watchTag }}, {$push:{users : id}})
+    .then(data => {
+      console.log(data);
+    })
+  })
   next()
 })
 
+userSchema.pre('findOneAndUpdate', function(next){
+  let _id = this.getQuery()._id
+  let id = _id.toString()
+  let watchTag = this.getUpdate().watchTag
+  Tag.updateMany({users : {$all: [_id]}}, {$pull:{ users: id}})
+  .then(data =>{
+    Tag.updateMany({ name : { $in: watchTag }}, {$push:{users : id}})
+    .then(data => {
+      next()
+    })
+  })
+
+})
 
 const User = mongoose.model('User', userSchema)
 

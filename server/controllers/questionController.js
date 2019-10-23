@@ -1,5 +1,6 @@
 const Question = require('../models/question')
 const Answer = require('../models/answer')
+const Tag = require('../models/tag')
 
 class QuestionController {
   static create(req, res, next) {
@@ -41,9 +42,13 @@ class QuestionController {
       _id: req.params.id
     })
       .then(() => {
-        res.status(200).json({
-          message: "Success delete question"
-        });
+        Tag.updateMany({questions : {$all: [req.params.id]}}, {$pull: {questions: req.params.id}})
+        .then(data =>{
+          // console.log(data);
+          res.status(200).json({
+            message: "Success delete question"
+          })
+        })
       })
       .catch(next);
     ;

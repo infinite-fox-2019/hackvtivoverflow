@@ -30,6 +30,12 @@
 | PATCH  | /answer/down/:id       | token   |                                  | Disike answer                 |
 | PATCH  | /answer/:id            | token   | answer                           | Update answer                 |
  
+## Tag
+| HTTP   | Routes                 | Headers | Body                             | Description                   | 
+| ---    | ---------              | ----    | -------                          | -----                         |
+| GET    | /tags/                 | none    |                                  | Get all tags                  |
+| GET    | /tags/:tag             | none    |                                  | Get question by tag           |
+
 ---
 
 # DETAIL
@@ -660,6 +666,79 @@ Response :
     "message": "answer successfully updated"
 }
 ```
+---
+
+# Tag
+
+## Get All Tag
+- HTTP: patch
+- Url: '/tags/'
+- Status: **200**
+```
+Response : 
+{
+    "tags": [
+        {
+            "users": [
+                "5db007dce7b42c1f608a19ca"
+            ],
+            "questions": [
+                "5db01062db8de228e0351da1"
+            ],
+            "_id": "5db002d4c3578c16d216bae1",
+            "display": "Javascript",
+            "name": "javascript",
+            "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse",
+            "createdAt": "2019-10-23T07:35:48.209Z",
+            "updatedAt": "2019-10-23T08:41:35.609Z"
+        },
+        {
+            "users": [],
+            "questions": [
+                "5db0176990e7d52b362c9c63"
+            ],
+            "_id": "5db002d4c3578c16d216bae2",
+            "display": "HTML",
+            "name": "HTML",
+            "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse",
+            "createdAt": "2019-10-23T07:35:48.210Z",
+            "updatedAt": "2019-10-23T09:03:37.906Z"
+        }, ...
+    ]
+}
+```
+
+## Get All Question By Tag
+- HTTP: patch
+- Url: '/tags/:tag'
+- Status: **200**
+```
+Response :
+{
+    "users": [],
+    "questions": [
+        {
+            "likes": [],
+            "dislikes": [],
+            "tags": [
+                "CSS",
+                "HTML"
+            ],
+            "_id": "5db0176990e7d52b362c9c63",
+            "title": "apa bedanya background aja sama background-color",
+            "description": "sama-sama bisa buat background color....",
+            "user": "5db007dce7b42c1f608a19ca"
+        }
+    ],
+    "_id": "5db002d4c3578c16d216bae2",
+    "display": "HTML",
+    "name": "HTML",
+    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse",
+    "createdAt": "2019-10-23T07:35:48.210Z",
+    "updatedAt": "2019-10-23T09:03:37.906Z"
+}
+```
+
 ---
 
 # ERROR

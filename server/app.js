@@ -9,8 +9,8 @@ const index = require('./routes')
 const errHandler = require('./middlewares/errHandler')
 const morgan = require('morgan')
 const cron = require('./helpers/cronjob')
-const database = 'mongodb://localhost:27017/codered'
-// const dbatlas = 'mongodb+srv://ayusudi:ayusudi@cluster0-acddn.mongodb.net/codered?retryWrites=true&w=majority'
+// const database = 'mongodb://localhost:27017/codered'
+const dbatlas = 'mongodb+srv://ayusudi:ayusudi@cluster0-acddn.mongodb.net/codered1?retryWrites=true&w=majority'
 
 app.use(cors())
 app.use(morgan('dev'))
@@ -19,7 +19,7 @@ app.use(express.json())
 app.use(express.urlencoded({extended : false}))
 
 
-mongoose.connect(database, {
+mongoose.connect(dbatlas, {
   useNewUrlParser : true , useUnifiedTopology: true , useFindAndModify :false
 }, function(err){
   if(err) {
