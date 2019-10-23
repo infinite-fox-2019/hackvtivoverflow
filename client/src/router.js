@@ -1,6 +1,8 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Home from './views/Home.vue'
+import Detail from './views/Detail.vue'
+import AskQuestion from './views/AddQuestion.vue'
 
 Vue.use(Router)
 
@@ -12,6 +14,30 @@ export default new Router({
       path: '/',
       name: 'home',
       component: Home,
+      beforeEnter: (to, from, next) => {
+        if (localStorage.getItem('token')) {
+          next()
+        } else {
+          next('/login')
+        }
+      }
+    },
+    {
+      path: '/ask',
+      name: 'askQuestion',
+      component: AskQuestion,
+      beforeEnter: (to, from, next) => {
+        if (localStorage.getItem('token')) {
+          next()
+        } else {
+          next('/login')
+        }
+      }
+    },
+    {
+      path: '/:id',
+      name: 'detail',
+      component: Detail,
       beforeEnter: (to, from, next) => {
         if (localStorage.getItem('token')) {
           next()

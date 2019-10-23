@@ -1,15 +1,15 @@
 <template>
   <div class="home">
+    <List/>
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
-
+import List from '../components/List'
 export default {
   name: 'home',
   components: {
-
+    List
   }
 }
 </script>
