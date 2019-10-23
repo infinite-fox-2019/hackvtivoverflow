@@ -37,10 +37,10 @@ export default {
         ...mapState("user", ["username", "gravatar"])
     },
     methods: {
-        ...mapMutations("user", ["destroyCredentials"]),
+        ...mapMutations("user", ["DESTROY_CREDENTIALS"]),
         signOut() {
             this.$emit("close");
-            this.destroyCredentials();
+            this.DESTROY_CREDENTIALS();
             this.$router.push("/bouncetohome");
             this.$router.push("/");
             this.$awn.info("User logged out");

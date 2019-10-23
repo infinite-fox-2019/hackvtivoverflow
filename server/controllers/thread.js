@@ -11,7 +11,7 @@ class ThreadController {
         const userId = req.decode.id
         Thread.create({ title, content, owner: userId })
             .then(async (thread) => {
-                tags.forEach(el => {
+                await tags.forEach(async el => {
                     let tag = await Tag.findOneAndUpdate({
                         name: el
                     }, {

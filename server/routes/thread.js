@@ -12,9 +12,9 @@ Router.get('/:id', ThreadController.readOne)
 Router.use(authentication)
 
 Router.post('/', ThreadController.create)
-Router.patch('/upvote', ThreadController.upvote)
-Router.patch('/downvote', ThreadController.downvote)
-Router.patch('/unvote', ThreadController.unvote)
+Router.patch('/upvote/:id', ThreadController.upvote)
+Router.patch('/downvote/:id', ThreadController.downvote)
+Router.patch('/unvote/:id', ThreadController.unvote)
 
 Router.delete('/:id', thread, ThreadController.delete)
 Router.delete('/:id/:replyId', reply, ReplyController.delete)

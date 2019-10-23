@@ -13,12 +13,17 @@ class UserController {
     }
     static login(req, res, next) {
         const { identity, password } = req.body
-        const expire = req.query.expire
+        const expire = req.query.expire || 60 * 60 * 24
         User.findOne({ $or: [{ email: identity }, { username: identity }] })
             .then((user) => {
                 if (user && compare(password, user.password)) {
                     const token = createToken({ id: user._id }, expire)
-                    res.status(200).json({ token: "Bearer " + token, username: user.username, email: user.email, gravatar: user.gravatar })
+                    res.status(200).json({
+                        token: "Bearer " + token,
+                        username: user.username,
+                        email: user.email,
+                        gravatar: user.gravatar
+                    })
                 } else {
                     next({ status: 400, message: "Invalid Email / Username / Password" })
                 }

@@ -6,10 +6,11 @@ import store from './store'
 import vuetify from './plugins/vuetify';
 import AWN from 'vue-awesome-notifications'
 import 'vue-awesome-notifications/dist/styles/style.css'
+import Moment from 'vue-moment'
 Vue.config.productionTip = false
 
 
-Vue.use(require('vue-moment'));
+Vue.use(Moment);
 
 Vue.use(AWN, {
     durations: {
@@ -23,13 +24,20 @@ Vue.use(AWN, {
 
 Vue.mixin({
     methods: {
-        next: function ({ response: { data: { status, message } } }) {
+        next: function ({ response }) {
+            const { data: { message } } = response
             if (Array.isArray(message)) message = message.join('<br />')
             this.$awn.alert(message, {
                 labels: {
-                    alert: 'Error ' + status
+                    alert: response.statusText
                 }
             })
+        },
+        loadStart: function () {
+            this.$store.commit('LOAD_START')
+        },
+        loadEnd: function () {
+            this.$store.commit('LOAD_END')
         }
     }
 })

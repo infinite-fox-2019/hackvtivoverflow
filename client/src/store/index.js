@@ -9,8 +9,15 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
     state: {
+        loading: false
     },
     mutations: {
+        LOAD_START(state) {
+            state.loading = true
+        },
+        LOAD_END(state) {
+            state.loading = false
+        }
     },
     actions: {
     },

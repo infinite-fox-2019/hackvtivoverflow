@@ -1,9 +1,6 @@
 <template>
     <v-app>
-        <v-app-bar app>
-            <v-img src="@/assets/underflow.png" contain max-width="200"></v-img>
-            <v-spacer></v-spacer>
-        </v-app-bar>
+        <NavBar />
 
         <v-content>
             <router-view />
@@ -12,9 +9,10 @@
 </template>
 
 <script>
+import NavBar from "@/components/NavBar/MainNavBar";
 export default {
     name: "App",
-    components: {},
+    components: { NavBar },
     data: () => ({
         //
     }),
