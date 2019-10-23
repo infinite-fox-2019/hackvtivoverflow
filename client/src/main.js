@@ -12,31 +12,31 @@ Vue.config.productionTip = false
 Vue.use(require('vue-moment'));
 
 Vue.use(AWN, {
-  durations: {
-    global: 2500
-  },
-  minDurations: {
-    async: 0,
-    "async-block": 0
-  }
+    durations: {
+        global: 2500
+    },
+    minDurations: {
+        async: 0,
+        "async-block": 0
+    }
 })
 
 Vue.mixin({
-  methods: {
-    next: function ({ response: { data: { status, message } } }) {
-      if (Array.isArray(message)) message = message.join('<br />')
-      this.$awn.alert(message, {
-        labels: {
-          alert: 'Error ' + status
+    methods: {
+        next: function ({ response: { data: { status, message } } }) {
+            if (Array.isArray(message)) message = message.join('<br />')
+            this.$awn.alert(message, {
+                labels: {
+                    alert: 'Error ' + status
+                }
+            })
         }
-      })
     }
-  }
 })
 
 new Vue({
-  router,
-  store,
-  vuetify,
-  render: h => h(App)
+    router,
+    store,
+    vuetify,
+    render: h => h(App)
 }).$mount('#app')
