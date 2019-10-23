@@ -6,7 +6,7 @@
        
     <b-collapse id="nav-collapse" is-nav>
       <b-navbar-nav>
-        <b-nav-item href="#" disabled>{{ username }}</b-nav-item>
+        <b-nav-item href="#" disabled>{{ name }}</b-nav-item>
       </b-navbar-nav>
     </b-collapse>
       <!-- Right aligned nav items -->
@@ -41,6 +41,7 @@ import { mapState, mapActions } from 'vuex';
 export default {
   data () {
     return {
+      name: ''
     }
   },
   name: 'home',
@@ -52,13 +53,13 @@ export default {
       }
   },
   computed: {
-      ...mapState(['islogin']),
+      ...mapState(['islogin', 'user']),
       status () {
           return this.islogin
       },
-      username () {
-          return this.$store.state.user.username
+      name () {
+        return this.user.username
       }
-  }
+  },
 }
 </script>

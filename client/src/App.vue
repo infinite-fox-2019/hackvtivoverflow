@@ -40,5 +40,6 @@ export default {
 }
 .right{
   height:100%;
+  padding: 10px;
 }
 </style>

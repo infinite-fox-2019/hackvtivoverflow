@@ -5,18 +5,25 @@ import store from './store'
 import BootstrapVue from 'bootstrap-vue'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
-import Editor from '@tinymce/tinymce-vue';
+import Vue2Editor from "vue2-editor";
+import {
+  Quasar,
+  QVirtualScroll
+} from 'quasar'
 
+Vue.use(Quasar, {
+  components: {
+    QVirtualScroll
+  }
+})
 Vue.use(BootstrapVue)
 
+Vue.use(Vue2Editor);
 
 Vue.config.productionTip = false
 
 new Vue({
   router,
   store,
-  components: {
-    'tinymce-editor': Editor // <- Important part
-  },
   render: h => h(App)
 }).$mount('#app')

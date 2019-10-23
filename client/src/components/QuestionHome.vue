@@ -4,14 +4,19 @@
           fdsfdsa
         </div>
         <div class="qright col-11">
-          <h3><a href='#' > question title </a></h3>
+          <h3><a href='#' > {{ question.title }} </a></h3>
+          <p>{{ question.description }}</p>
         </div>
   </div>
 </template>
 
 <script>
 export default {
-
+  props: ['question'],
+  computed: {
+    data () {
+    }
+  }
 }
 </script>
 

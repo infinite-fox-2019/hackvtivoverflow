@@ -17,8 +17,29 @@
       <hr>
     </div>
     <div class="body">
+
+        <q-virtual-scroll
+          style="max-height: 300px;"
+          :items="heavyList"
+          separator
+        >
+          <template v-slot="{ item, index }">
+            <q-item
+              :key="index"
+              dense
+            >
+              <q-item-section>
+                <q-item-label>
+                  #{{ index }} - {{ item.label }}
+                </q-item-label>
+              </q-item-section>
+            </q-item>
+          </template>
+        </q-virtual-scroll>
+
+        
       <div v-for='(question,i) in questions' :key='i'>
-        <QuestionHome />
+        <QuestionHome :question='question'/>
     </div>
   </div>
     <div class="foot">

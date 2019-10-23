@@ -6,6 +6,7 @@ const QSchema = new Schema ({
     description: { type: String, required: true },
     upvotes: Number,
     downvotes: Number,
+    tags: [],
     UserId: { type: Schema.Types.ObjectId, ref: 'users' }
 })
 
