@@ -46,10 +46,12 @@ const router = new Router({
 router.beforeEach((to, from, next) => {
   if (localStorage.getItem('token') && (to.name === 'login' || to.name === 'register' || to.name === 'home')) {
     next('/question')
-  } else if (to.name === 'detailquestion' || to.name === 'login' || to.name === 'register' || to.name === 'home') {
+  } else if (to.name === 'login' || to.name === 'register' || to.name === 'home') {
     next()
   } else if (localStorage.getItem('token')) {
     next()
+  } else if (!localStorage.getItem('token')) {
+    next('/login')
   } else {
     next('/')
   }

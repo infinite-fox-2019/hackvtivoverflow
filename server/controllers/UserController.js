@@ -42,7 +42,7 @@ class UserController {
                     email: result.email,
                     role: result.role
                 })
-                res.status(200).json(token)
+                res.status(200).json({token, _id:result._id})
             } else {
                 let err = new Error("Wrong Password")
                 err.name = "PasswordError"

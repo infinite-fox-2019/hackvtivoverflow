@@ -9,7 +9,9 @@ class QuestionController {
             title,
             description,
             tags,
-            UserId
+            UserId,
+            upVotes: [],
+            downVotes: []
         })
         .then ( (result) => {
             res.status(201).json(result)
@@ -18,10 +20,31 @@ class QuestionController {
     }
 
     static findAllQuestion (req, res, next) {
+        let arrTemp
         Question.find()
+        .populate('UserId')
         .then (result => {
+            // async function tes () {
+            //     for (let i = 0; i < result.length; i++) {
+            //         console.log('masuk', result[i]._id)
+            //         Answer.find({
+            //             QuestionId: result[i]._id
+            //         })
+            //         .then (data => {
+            //             console.log(data)
+            //             result[i].hasil = data
+            //         })
+            //     }
+            // }
+            // arrTemp = result
+            // console.log('sebelum return', arrTemp)
+            // return tes()
             res.status(200).json(result)
         })
+        // .then (data => {
+        //     // console.log(data.data)
+        //     res.status(200).json(arrTemp)
+        // })
         .catch (err => {
             next(err)
         })
@@ -40,17 +63,16 @@ class QuestionController {
     }
 
     static updateQuestion (req, res, next) {
-        let { title, description, id } = req.body
+        let { title, description} = req.body
+        let { id } = req.params
         Question.findOneAndUpdate({
             _id : id
         }, {
             title,
             description
         })
-        .then ( () => {
-            res.status(200).json({
-                msg: "Berhasil diupdate"
-            })
+        .then ( (result) => {
+            res.status(200).json(result)
         })
         .catch (err => {
             next(err)
@@ -58,14 +80,12 @@ class QuestionController {
     }
 
     static deleteQuestion (req, res, next) {
-        let { id } = req.body
+        let { id } = req.params
         Question.findOneAndDelete({
             _id: id
         })
-        .then (() => {
-            res.status(200).json({
-                msg: "Berhasil dihapus"
-            })
+        .then ((result) => {
+            res.status(200).json(result)
         })
         .catch (err => {
             next(err)
@@ -74,33 +94,50 @@ class QuestionController {
 
     static upVotes (req, res, next) {
         let { UserId, _id } = req.body
-        Question.findOne(_id)
-            .then (result => {
-                let temp = false
-                for (let i = 0; i < result.upVotes.length; i++) {
-                    if (UserId == result.upVotes[i]._id) {
-                        temp = true
-                    }
+        Question.findOne({_id})
+        .then (result => {
+            let temp
+            for (let i = 0; i < result.downVotes.length; i++) {
+                if (UserId == result.downVotes[i]._id) {
+                    result.downVotes.splice(i, 1)
                 }
-                if (!temp) {
-                    result.upVotes.push({
-                        _id: UserId
-                    })
-                    res.status(200).json(result)
-                } else {
-                    let err = new Error ('tidak bisa memilih')
-                    err.name = 'UnAuthorized'
-                    next(err)
+            }
+            for (let i = 0; i < result.upVotes.length; i++) {
+                if (UserId == result.upVotes[i]._id) {
+                    temp = true
                 }
-            })
-            .catch (err => {
+            }
+            if (!temp) {
+                result.upVotes.push({
+                    _id: UserId
+                })
+                return {upVotes: result.upVotes, downVotes: result.downVotes}
+            } else {
+                let err = new Error ('tidak bisa memilih')
+                err.name = 'UnAuthorized'
                 next(err)
+            }
+        })
+        .then (data => {
+            Question.findByIdAndUpdate({
+                _id: _id
+            }, {
+                upVotes: data.upVotes,
+                downVotes: data.downVotes
             })
+            .then (() => {
+                res.status(200).json({upVotes: data.upVotes, downVotes: data.downVotes})
+            })
+        })
+        .catch (err => {
+            next(err)
+        })
     }
 
     static downVotes (req, res, next) {
         let { UserId, _id } = req.body
-        Question.findOne(_id)
+        console.log(req.body)
+        Question.findOne({_id})
             .then (result => {
                 let temp
                 for (let i = 0; i < result.upVotes.length; i++) {
@@ -117,12 +154,23 @@ class QuestionController {
                     result.downVotes.push({
                         _id: UserId
                     })
-                    res.status(200).json(result)
+                    return {upVotes: result.upVotes, downVotes: result.downVotes}
                 } else {
                     let err = new Error ('tidak bisa memilih')
                     err.name = 'UnAuthorized'
                     next(err)
                 }
+            })
+            .then (data => {
+                Question.findByIdAndUpdate({
+                    _id: _id
+                }, {
+                    upVotes: data.upVotes,
+                    downVotes: data.downVotes
+                })
+                .then (() => {
+                    res.status(200).json({upVotes: data.upVotes, downVotes: data.downVotes})
+                })
             })
             .catch (err => {
                 next(err)
@@ -136,19 +184,24 @@ class QuestionController {
         Question.findOne({
             _id: id
         })
+        .populate('UserId')
         .then (result => {
+            console.log(result)
             temp = result
             return Answer.find({
                 QuestionId: id
-            })
+            }).populate('UserId')
         })
         .then (result => {
+            console.log(temp.UserId.name)
             res.status(200).json({
-                QuestionId: temp._id,
+                _id: temp._id,
+                UserId: temp.UserId,
                 title: temp.title,
                 description: temp.description,
-                votes: temp.votes,
-                hasil: result
+                hasil: result,
+                upVotes: temp.upVotes,
+                downVotes: temp.downVotes
             })
         })
         .catch (err => {

@@ -23,8 +23,6 @@ export default {
 
 <style>
 #list-container {
-    display: flex;
-    flex-direction: row;
     max-width: 720px;
 }
 </style>

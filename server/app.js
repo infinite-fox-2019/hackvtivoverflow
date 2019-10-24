@@ -16,7 +16,7 @@ const mongooseConfig = {
     useFindAndModify: false
 }
 // \process.env.MONGOOSE_URL ||
-let mongoosedb =  "mongodb://localhost/hacktivoverflow"
+let mongoosedb =  process.env.MONGOOSE_URL 
 mongoose.connect(mongoosedb , mongooseConfig)
     .then((result) => {
         console.log("database connected")    

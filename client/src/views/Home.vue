@@ -1,29 +1,25 @@
 <template>
   <div class="">
     <nav-bar-start></nav-bar-start>
-    <div id="mySidenav" class="sidenav">
+    <div class="row">
+      <div id="mySidenav" class="sidenav">
       <a href="#">About</a>
       <a href="#">Services</a>
       <a href="#">Clients</a>
       <a href="#">Contact</a>
     </div>
+    <div class="container">
     <List v-for="(item, index) in listQuestion" :key="index" class="card" id="questionList">
       <template v-slot:totalVotes>
-        <div class="col">
-          <h4>0</h4>
+        <div class="col sm-1 ml-1">
+          <h4>{{ item.upVotes.length - item.downVotes.length }}</h4>
           <h6>Votes</h6>
         </div>
       </template>
       <template v-slot:totalAnswers>
-        <div class="col">
+        <div class="col sm-1 ml-1">
           <h4>0</h4>
           <h6>Answers</h6>
-        </div>
-      </template>
-      <template v-slot:totalViews>
-        <div class="col">
-          <h4>0</h4>
-          <h6>Views</h6>
         </div>
       </template>
       <template v-slot:questionList>
@@ -33,6 +29,8 @@
         </div>
       </template>
     </List>
+    </div>
+    </div>
   </div>
 </template>
 
@@ -57,7 +55,7 @@ export default {
     questionDetail (id) {
       this.$store.dispatch('questionDetail', id)
     },
-     getDescription (index) {
+    getDescription (index) {
       let arr = this.listQuestion[index]
       if (arr.description.length >= 50) {
         return arr.description.slice(0, 50) + '...'
@@ -84,12 +82,11 @@ export default {
 }
 #questionList {
   padding: 10px;
-  margin: 10px;
 }
 /* The side navigation menu */
 .sidenav {
   height: 100%; /* 100% Full-height */
-  width: 250px; /* 0 width - change this with JavaScript */
+  width: 150px; /* 0 width - change this with JavaScript */
   position: fixed; /* Stay in place */
   z-index: 1; /* Stay on top */
   top: 10; /* Stay at the top */

@@ -8,7 +8,6 @@ class AnswerController {
             title,
             description,
             UserId,
-            votes: 0,
             QuestionId
         })
         .then ( (result) => {
@@ -31,17 +30,16 @@ class AnswerController {
     }
 
     static updateAnswer (req, res, next) {
-        let { title, description, id } = req.body
+        let { title, description } = req.body
+        let { id } = req.params
         Answer.findOneAndUpdate({
             _id : id
         }, {
             title,
             description
         })
-        .then ( () => {
-            res.status(200).json({
-                msg: "Berhasil diupdate"
-            })
+        .then ( (result) => {
+            res.status(200).json(result)
         })
         .catch (err => {
             next(err)
@@ -49,14 +47,12 @@ class AnswerController {
     }
 
     static deleteAnswer (req, res, next) {
-        let { id } = req.body
+        let { id } = req.params
         Answer.findOneAndDelete({
             _id: id
         })
-        .then (() => {
-            res.status(200).json({
-                msg: "Berhasil dihapus"
-            })
+        .then ((result) => {
+            res.status(200).json(result)
         })
         .catch (err => {
             next(err)
@@ -65,9 +61,14 @@ class AnswerController {
 
     static upVotes (req, res, next) {
         let { UserId, _id } = req.body
-        Answer.findOne(_id)
+        Answer.findOne({_id})
             .then (result => {
                 let temp = false
+                for (let i = 0; i < result.downVotes.length; i++) {
+                    if (UserId == result.downVotes[i]._id) {
+                        result.downVotes.splice(i, 1)
+                    }
+                }
                 for (let i = 0; i < result.upVotes.length; i++) {
                     if (UserId == result.upVotes[i]._id) {
                         temp = true
@@ -77,12 +78,23 @@ class AnswerController {
                     result.upVotes.push({
                         _id: UserId
                     })
-                    res.status(200).json(result)
+                    return {upVotes: result.upVotes, downVotes: result.downVotes}
                 } else {
                     let err = new Error ('tidak bisa memilih')
                     err.name = 'UnAuthorized'
                     next(err)
                 }
+            })
+            .then (data => {
+                Answer.findOneAndUpdate({
+                    _id: _id
+                }, {
+                    upVotes: data.upVotes,
+                    downVotes: data.downVotes
+                })
+                .then (() => {
+                    res.status(200).json({upVotes: data.upVotes, downVotes: data.downVotes})
+                })
             })
             .catch (err => {
                 next(err)
@@ -91,7 +103,8 @@ class AnswerController {
 
     static downVotes (req, res, next) {
         let { UserId, _id } = req.body
-        Answer.findOne(_id)
+        console.log(req.body)
+        Answer.findOne({_id})
             .then (result => {
                 let temp
                 for (let i = 0; i < result.upVotes.length; i++) {
@@ -108,12 +121,23 @@ class AnswerController {
                     result.downVotes.push({
                         _id: UserId
                     })
-                    res.status(200).json(result)
+                    return {upVotes: result.upVotes, downVotes: result.downVotes}
                 } else {
                     let err = new Error ('tidak bisa memilih')
                     err.name = 'UnAuthorized'
                     next(err)
                 }
+            })
+            .then (data => {
+                Answer.findOneAndUpdate({
+                    _id: _id
+                }, {
+                    upVotes: data.upVotes,
+                    downVotes: data.downVotes
+                })
+                .then (() => {
+                    res.status(200).json({upVotes: data.upVotes, downVotes: data.downVotes})
+                })
             })
             .catch (err => {
                 next(err)
