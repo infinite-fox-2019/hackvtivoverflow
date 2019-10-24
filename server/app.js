@@ -17,7 +17,7 @@ const mongooseConfig = {
 }
 // \process.env.MONGOOSE_URL ||
 let mongoosedb =  process.env.MONGOOSE_URL 
-mongoose.connect(mongoosedb , mongooseConfig)
+mongoose.connect("mongodb+srv://mongoose:mongoose@hackitv8-z8u8c.gcp.mongodb.net/hacktivoverflow?retryWrites=true&w=majority", mongooseConfig)
     .then((result) => {
         console.log("database connected")    
     })
