@@ -1,36 +1,36 @@
 const mongoose = require('mongoose')
-const { hashPassword } = require('../helpers/bcryptjs')
 const Schema = mongoose.Schema
+const { hashPassword } = require('../helpers/bcrypt')
 
-const userSchema = new Schema({
-  name: {
-    type: String,
-    required: [true, `Name must be filled`],
-    unique: true
-  },
-  email: {
-    type: String,
-    required: [true, `Email must be filled`],
-    validate: [
-      {
-        validator: function (value) {
-          return /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(value);
-        },
-        message: 'Invalid email format'
-      }
-    ],
-    unique: [true, "Email is already taken"]
-  },
-  password: {
-    type: String,
-    required: [true, `Password must be filled`]
-  }
-}, {timestamps: true})
 
-userSchema.pre('save', function (next) {
-  this.password = hashPassword(this.password)
-  next()
+const UserSchema = new Schema({
+    username: {
+        type: String,
+        required: [true, 'Username is required!']
+    },
+    email: {
+        type: String,
+        required: [true, 'Email is required!'],
+        match: [/^(([^<>()\[\]\.,;:\s@"]+(\.[^<>()\[\]\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/, "Invalid email format."],
+        validate: {
+            validator(email){
+                return new Promise((resolve, reject) => {
+                    User.findOne({ email }).then(result => result ? resolve(false) : resolve(true))
+                });
+            },
+            message: "Email is already taken"
+        }
+    },
+    password: {
+        type: String,
+        required: [true, 'password is required!']
+    }
 })
 
-const User = mongoose.model('User', userSchema)
+UserSchema.pre('save', function(next){
+    this.password = hashPassword(this.password)
+    next()
+})
+
+const User = mongoose.model('User', UserSchema)
 module.exports = User
