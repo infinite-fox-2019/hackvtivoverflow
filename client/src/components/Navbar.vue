@@ -1,7 +1,7 @@
 <template>
   <b-navbar class="navbar has-background-light">
     <template slot="brand">
-      <b-navbar-item tag="router-link" :to="{ path: '/' }" class="brand">
+      <b-navbar-item tag="router-link" :to="{ path: '/home' }" class="brand">
         <div>
         <img
           src="../assets/logo.png"

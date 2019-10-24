@@ -13,6 +13,8 @@ export default new Vuex.Store({
     errMessages: '',
     questions: [],
     question: {
+      title: '',
+      description: '',
       upvotes: [],
       downvotes: [],
       user: {
@@ -20,7 +22,8 @@ export default new Vuex.Store({
       },
       answers: []
     },
-    profileQuestions: []
+    profileQuestions: [],
+    profileAnswers: []
   },
   mutations: {
     SET_LOGGED_USER (state, payload) {
@@ -37,6 +40,9 @@ export default new Vuex.Store({
     },
     SET_PROFILE_QUESTIONS (state, payload) {
       state.profileQuestions = payload
+    },
+    SET_PROFILE_ANSWERS (state, payload) {
+      state.profileAnswers = payload
     }
   },
   actions: {
@@ -50,7 +56,7 @@ export default new Vuex.Store({
           localStorage.setItem('email', data.email)
           localStorage.setItem('access_token', data.access_token)
           commit('SET_IS_LOGIN', true)
-          router.push('/')
+          router.push('/home')
         })
         .catch(alert)
     },
@@ -64,7 +70,7 @@ export default new Vuex.Store({
           localStorage.setItem('email', data.email)
           localStorage.setItem('access_token', data.access_token)
           commit('SET_IS_LOGIN', true)
-          router.push('/')
+          router.push('/home')
         })
         .catch(alert)
     },
@@ -72,6 +78,7 @@ export default new Vuex.Store({
       commit('SET_IS_LOGIN', false)
       commit('SET_LOGGED_USER', {})
       localStorage.clear()
+      router.push('/')
     },
     fetchQuestions ({ commit }) {
       axios.get('/questions', {
@@ -96,6 +103,19 @@ export default new Vuex.Store({
         })
         .catch(alert)
     },
+    updateQuestion ({ dispatch }, payload) {
+      console.log('masuk update')
+      axios.patch(`/questions/${payload.id}`, payload, {
+        headers: {
+          access_token: localStorage.getItem('access_token')
+        }
+      })
+        .then(({ data }) => {
+          dispatch('fetchQuestions')
+          dispatch('fetchProfileQuestions')
+        })
+        .catch(alert)
+    },
     addAnswer ({ dispatch }, payload) {
       axios.post('/answers', payload, {
         headers: {
@@ -108,13 +128,22 @@ export default new Vuex.Store({
         })
         .catch(alert)
     },
-    fetchQuestion ({ commit }, payload) {
-      console.log('fetch lagi')
-      axios.get(`questions/${payload}`, {
+    updateAnswer ({ dispatch }, payload) {
+      console.log('masuk update')
+      axios.patch(`/answers/${payload.id}`, payload, {
         headers: {
           access_token: localStorage.getItem('access_token')
         }
       })
+        .then(({ data }) => {
+          dispatch('fetchQuestions')
+          dispatch('fetchProfileAnswers')
+        })
+        .catch(alert)
+    },
+    fetchQuestion ({ commit }, payload) {
+      console.log('fetch lagi')
+      axios.get(`questions/${payload}`)
         .then(({ data }) => {
           console.log(data.answers)
           commit('SET_QUESTION', data)
@@ -143,6 +172,19 @@ export default new Vuex.Store({
         .then(({ data }) => {
           console.log(data)
           commit('SET_PROFILE_QUESTIONS', data)
+        })
+        .catch(alert)
+    },
+    fetchProfileAnswers ({ commit }) {
+      console.log(`/answers?userId=${localStorage.getItem('id')}`)
+      axios.get(`/answers?userId=${localStorage.getItem('id')}`, {
+        headers: {
+          access_token: localStorage.getItem('access_token')
+        }
+      })
+        .then(({ data }) => {
+          console.log(data)
+          commit('SET_PROFILE_ANSWERS', data)
         })
         .catch(alert)
     }

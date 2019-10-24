@@ -1,6 +1,7 @@
 const { decodeToken } = require('../helpers/jwt')
 const User = require('../models/User')
 const Question = require('../models/Question')
+const Answer = require('../models/Answer')
 
 authentication = (req, res, next) => {
   // console.log(req.headers.access_token)
@@ -26,12 +27,13 @@ authorizationQuestion = (req, res, next) => {
   console.log('authorization q')
   Question.findById(req.params.id)
   .then(question => {
+    console.log(req.params.id)
     if(!question) {
-      throw {status: 404, message: 'Question data not found'}
+      throw {status: 404, msg: 'Question data not found'}
     } else {
       console.log(question.user, req.loggedUser._id)
       if(String(question.user) !== String(req.loggedUser._id)) {
-        throw {status: 401, message: 'You are unauthorized to access this data'}
+        throw {status: 401, msg: 'You are unauthorized to access this data'}
       } else {
         next()
       }
@@ -45,11 +47,11 @@ authorizationAnswer = (req, res, next) => {
   Answer.findById(req.params.id)
   .then(answer => {
     if(!answer) {
-      throw {status: 404, message: 'Answer data not found'}
+      throw {status: 404, msg: 'Answer data not found'}
     } else {
       console.log(answer.user, req.loggedUser._id)
       if(String(answer.user) !== String(req.loggedUser._id)) {
-        throw {status: 401, message: 'You are unauthorized to access this data'}
+        throw {status: 401, msg: 'You are unauthorized to access this data'}
       } else {
         next()
       }

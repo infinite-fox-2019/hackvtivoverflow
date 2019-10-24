@@ -1,22 +1,33 @@
 <template>
-  <div class="columns">
-    <div class="column">
-      <ProfileQuestions></ProfileQuestions>
+  <div>
+    <div class="columns">
+      <div class="column">
+        <ProfileQuestions></ProfileQuestions>
+      </div>
+      <div class="column">
+        <ProfileAnswers></ProfileAnswers>
+      </div>
     </div>
-    <div class="column"></div>
+    <router-view></router-view>
   </div>
 </template>
 
 <script>
 import ProfileQuestions from '../components/ProfileQuestions'
+import ProfileAnswers from '../components/ProfileAnswers'
 
 export default {
   name: 'Profile',
   components: {
-    ProfileQuestions
+    ProfileQuestions,
+    ProfileAnswers
   }
 }
 </script>
 
 <style scoped>
+.columns {
+  margin: auto;
+  width: 900px;
+}
 </style>

@@ -22,6 +22,30 @@ module.exports = {
     })
     .catch(next)
   },
+  findAll: (req, res, next) => {
+    let objFind = {}
+    if(req.query.userId) {
+      objFind = {
+        user: req.query.userId
+      }
+    }
+    Answer.find(objFind).populate('user').sort([['created_at', -1]])
+    .then(answers => {
+      res.status(200).json(answers)
+    })
+    .catch(next)
+  },
+  findById: (req, res, next) => {
+    const { id } = req.params
+    Answer.findById(id).populate('user')
+    .then(answer => {
+      if(!answer) {
+        throw {status: 400, msg: 'Answer data not found'}
+      }
+      res.status(200).json(answer)
+    })
+    .catch(next)
+  },
   update: (req, res, next) => {
     const { title, description } = req.body
     Answer.findByIdAndUpdate(req.params.id, { title, description }, { omitUndefined: true })
