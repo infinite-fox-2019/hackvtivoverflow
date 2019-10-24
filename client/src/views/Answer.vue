@@ -1,6 +1,6 @@
 <template>
     <div class="container my-5">
-        
+
         <h1 class="text-center">{{ question.title }}</h1>
         <div class="answer-ask d-flex">
             <p v-html="question.description"></p>
@@ -20,13 +20,13 @@
                 @focus="onEditorFocus($event)"
                 @ready="onEditorReady($event)">
             </quill-editor>
-            <button v-if="!isEdit" @click.prevent="createAnswer" class="btn btn-primary mt-3">Post Your Answer</button>
-            <div v-else>
+            <div v-if="isEdit">
                 <button  @click.prevent="updateAnswer" class="btn btn-success mt-3 mx-1">Update Answer</button>
                 <button  @click.prevent="cancelUpdate" class="btn btn-danger mt-3 mx-1">Cancel</button>
             </div>
+            <button v-else @click.prevent="createAnswer" class="btn btn-primary mt-3">Post Your Answer</button>
         </div>
-        
+
         <div v-if="answers.length">
             <!-- TEMPLATE -->
             <div v-for="answer in answers"  :key="answer._id" class="answers d-flex align-items-center">
@@ -39,7 +39,7 @@
 
                 <div class="answer-content">
                     <div class="des">
-                        <h3 class="text-center" v-html="answer.title"></h3>
+                        <h3 class="text-center" v-html="answer .title"></h3>
                         <p v-html="answer.description"></p>
                     </div>
                     <div  class="author">
@@ -70,7 +70,6 @@ export default {
         description: '',
         id: ''
       },
-      isEdit: false
     }
   },
   methods: {
@@ -86,13 +85,13 @@ export default {
       this.$store.dispatch('downVoteAnswer', { answerId, questionId })
     },
     getNumVoteQuestion (question) {
-      return question.upvotes.length -  question.downvotes.length
+      return question.upvotes.length - question.downvotes.length
     },
     upVoteQuestion (questionId) {
-      this.$store.dispatch('upVoteQuestion',  questionId )
+      this.$store.dispatch('upVoteQuestion', questionId)
     },
     downVoteQuestion (questionId) {
-      this.$store.dispatch('downVoteQuestion',  questionId )
+      this.$store.dispatch('downVoteQuestion', questionId)
     },
     createAnswer () {
       let title = this.answer.title
@@ -108,14 +107,16 @@ export default {
     },
     findOneAnswer (answerId) {
       let questionId = this.$route.params.id
+      this.$store.dispatch('edit')
       this.$store.dispatch('findOneAnswer', { answerId, questionId })
     },
     cancelUpdate () {
+      this.$store.dispatch('cancelUpdate')
+      // this.$store.dispatch('edit')
       this.answer.title = ''
       this.answer.description = ''
       this.answer.id = ''
-      this.isEdit = false
-      this.$store.dispatch('cancelUpdate')
+      
     },
     updateAnswer () {
       let answerId = this.answer.id
@@ -125,7 +126,7 @@ export default {
       this.$store.dispatch('updateAnswer', { title, description, answerId, questionId })
       this.answer.title = ''
       this.answer.description = ''
-      this.isEdit = false
+      this.$store.dispatch('edit')
     },
     onEditorBlur (quill) {
       console.log('editor blur!', quill)
@@ -152,7 +153,7 @@ export default {
     }
   },
   computed:
-    mapState(['answers', 'oneAnswer', 'question', 'userId']),
+    mapState(['answers', 'oneAnswer', 'question', 'userId', 'isEdit']),
   created () {
     this.$store.dispatch('getAnswers', this.$route.params.id)
     this.$store.dispatch('getOneQuestion', this.$route.params.id)
@@ -165,7 +166,6 @@ export default {
       this.answer.title = this.oneAnswer.title
       this.answer.description = this.oneAnswer.description
       this.answer.id = this.oneAnswer._id
-      this.isEdit = true
     }
   }
 }

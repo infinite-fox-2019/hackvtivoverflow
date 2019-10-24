@@ -27,7 +27,7 @@ export default {
     toAskQuestions () {
       this.$router.push('/ask')
     },
-    getQuestions(){
+    getQuestions () {
       this.$store.dispatch('getQuestion', ' ')
     }
   },

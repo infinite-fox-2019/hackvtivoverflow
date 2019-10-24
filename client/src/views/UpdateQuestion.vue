@@ -52,7 +52,7 @@ export default {
     makeTag () {
       let tagArr = this.inputTag.split(' ')
       tagArr.forEach(tag => {
-        if (tag[0] == '#') {
+        if (tag[0] === '#') {
           this.question.tags.push(tag.substring(1))
         } else if (tag) {
           this.question.tags.push(tag)
@@ -91,8 +91,7 @@ export default {
     ...mapState(['question'])
   },
   created () {
-    let id =
-      this.$store.dispatch('getOneQuestion', this.$route.params.id)
+    this.$store.dispatch('getOneQuestion', this.$route.params.id)
   },
   mounted () {
     console.log('this is current quill instance object', this.editor)

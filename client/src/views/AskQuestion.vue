@@ -54,7 +54,7 @@ export default {
     makeTag () {
       let tagArr = this.inputTag.split(' ')
       tagArr.forEach(tag => {
-        if (tag[0] == '#') {
+        if (tag[0] === '#') {
           this.question.tags.push(tag.substring(1))
         } else if (tag) {
           this.question.tags.push(tag)

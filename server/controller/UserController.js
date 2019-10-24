@@ -44,6 +44,11 @@ const { compare } = require('../helpers/bcrypt')
                 })
                 .catch(next)
         }
+
+        static getUserId(req, res, next){
+            let userId = req.decode.id
+            res.status(200).json(userId)
+        }
 }
 
 module.exports = UserController

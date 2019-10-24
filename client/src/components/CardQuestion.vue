@@ -54,7 +54,7 @@ export default {
     toEdit (questionId) {
       this.$router.push(`/update/${questionId}`)
     },
-    getQuestionByTag(tag){
+    getQuestionByTag (tag) {
       this.$store.dispatch('getQuestionByTag', tag)
     }
   }

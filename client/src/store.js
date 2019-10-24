@@ -14,13 +14,20 @@ export default new Vuex.Store({
     userQuestion: [],
     answers: [],
     oneAnswer: {},
-    userId: ''
+    userId: '',
+    isEdit: false
   },
   mutations: {
+    SET_IS_EDIT(state){
+      state.isEdit = !state.isEdit
+    },
     SET_LOCAL_STORAGE (state, data) {
       localStorage.setItem('token', data.token)
       state.userId = data.id
       state.isLogin = true
+    },
+    SET_USER_ID(state, data){
+      state.userId = data
     },
     LOGOUT (state) {
       localStorage.clear()
@@ -418,8 +425,12 @@ export default new Vuex.Store({
           })
         })
     },
-    cancelUpdate () {
+    edit(context){
+      context.commit('SET_IS_EDIT')
+    },
+    cancelUpdate (context) {
       context.commit('REMOVE_ONE_ANSWARE')
+      context.commit('SET_IS_EDIT')
     },
     upVoteAnswer (context, { answerId, questionId }) {
       axios({
@@ -505,6 +516,28 @@ export default new Vuex.Store({
           })
         })
     },
+    getUserId(context){
+      axios({
+        method: 'get',
+        url:'/users/userid',
+        headers: {
+          token: localStorage.getItem('token')
+        }
+      })
+      .then(({ data })=>{
+        context.commit('SET_USER_ID', data)
+      })
+      .catch(err => {
+        Swal.fire({
+          title: `${err.response.data.errors[0]}`,
+          animation: false,
+          customClass: {
+            popup: 'animated tada'
+          }
+        })
+      })
+    }
+    
 
   }
 })

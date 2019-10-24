@@ -22,6 +22,7 @@ export default {
   mounted () {
     let token = localStorage.getItem('token')
     if (token) {
+      this.$store.dispatch('getUserId')
       this.$store.dispatch('logged')
     }
   }
