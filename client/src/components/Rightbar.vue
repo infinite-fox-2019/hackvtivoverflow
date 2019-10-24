@@ -36,89 +36,89 @@
 </template>
 
 <script>
-import axios from "../config/axios";
+import axios from '../config/axios'
 export default {
-  name: "rightbar",
-  data() {
+  name: 'rightbar',
+  data () {
     return {
       edit: false,
       tagsf: [],
       newtag: []
-    };
+    }
   },
   computed: {
-    user() {
-      return this.$store.state.user;
+    user () {
+      return this.$store.state.user
     },
-    tags() {
-      return this.user.watchTag;
+    tags () {
+      return this.user.watchTag
     },
-    existingTags() {
-      let formattag = [];
-      let tagnya = this.$store.state.allTag;
+    existingTags () {
+      let formattag = []
+      let tagnya = this.$store.state.allTag
       tagnya.forEach(el => {
         let obj = {
           key: el.name,
           value: el.display
-        };
-        formattag.push(obj);
-      });
-      return formattag;
+        }
+        formattag.push(obj)
+      })
+      return formattag
     }
   },
   methods: {
-    toEdit() {
-      this.tagsfnya();
-      this.edit = true;
+    toEdit () {
+      this.tagsfnya()
+      this.edit = true
     },
-    tagsfnya() {
-      let arr = [];
+    tagsfnya () {
+      let arr = []
       this.tags.forEach(el => {
         let obj = {
           key: el,
           value: el
-        };
-        arr.push(obj);
-      });
-      this.tagsf = arr;
+        }
+        arr.push(obj)
+      })
+      this.tagsf = arr
     },
-    updatewt() {
-      this.edit = false;
+    updatewt () {
+      this.edit = false
       axios({
-        method: "patch",
-        url: "/users/watchtag",
+        method: 'patch',
+        url: '/users/watchtag',
         headers: {
-          token: localStorage.getItem("token")
+          token: localStorage.getItem('token')
         },
         data: {
           watchTag: this.newtag
         }
       })
         .then(({ data }) => {
-          this.$store.dispatch("getMyAcc");
+          this.$store.dispatch('getMyAcc')
         })
         .catch(err => {
-          console.log(err);
-        });
+          console.log(err)
+        })
     },
-    toPage(tag) {
-      this.$store.dispatch("getQuesTag", tag)
-      this.$router.push(`/questions/tag/${tag}`);
+    toPage (tag) {
+      this.$store.dispatch('getQuesTag', tag)
+      this.$router.push(`/questions/tag/${tag}`)
     }
   },
   watch: {
-    tagsf() {
-      let arr = [];
+    tagsf () {
+      let arr = []
       this.tagsf.forEach(el => {
-        arr.push(el.key);
-      });
-      this.newtag = arr;
+        arr.push(el.key)
+      })
+      this.newtag = arr
     }
   },
-  created() {
-    this.$store.dispatch("getAllTag");
+  created () {
+    this.$store.dispatch('getAllTag')
   }
-};
+}
 </script>
 
 <style scoped>

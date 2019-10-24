@@ -2,7 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import axios from './config/axios'
 import router from './router'
-
+import Swal from 'sweetalert2'
 Vue.use(Vuex)
 
 export default new Vuex.Store({
@@ -14,9 +14,13 @@ export default new Vuex.Store({
     showLogin: false,
     questions: [],
     questiondet: {},
-    oneQuestionDetail: {}
+    oneQuestionDetail: {},
+    editThis: 0
   },
   mutations: {
+    SET_EDIT (state, payload) {
+      state.editThis = payload
+    },
     SET_TAGNAME (state, payload) {
       state.tagname = payload
     },
@@ -27,7 +31,9 @@ export default new Vuex.Store({
       state.isLogin = payload
       if (!payload) {
         localStorage.clear()
-      }else{
+        state.user = {}
+        state.tagname = {}
+      } else {
         router.push('/questions')
       }
     },
@@ -132,10 +138,45 @@ export default new Vuex.Store({
         url: '/questions/' + payload
       })
         .then(({ data }) => {
+          console.log(data)
           let { title, description, createdAt, user, likes, dislikes } = data.question
           let answers = data.answer
           let payload = { title, description, createdAt, user, answers, likes, dislikes }
           commit('SET_ONEDETAIL', payload)
+        })
+        .catch(err => {
+          console.log(err)
+        })
+    },
+    getOwned ({ commit }, payload) {
+      axios({
+        method: 'get',
+        url: '/questions/owned',
+        headers: {
+          token: localStorage.getItem('token')
+        }
+      })
+        .then(({ data }) => {
+          commit('SET_QUES', data.questions)
+        })
+        .catch(err => {
+          console.log(err)
+        })
+    },
+    deleteQues ({ dispatch }, payload) {
+      axios({
+        method: 'delete',
+        url: '/questions/' + payload,
+        headers: {
+          token: localStorage.getItem('token')
+        }
+      })
+        .then(() => {
+          dispatch('getOwned')
+          Swal.fire({
+            type: 'success',
+            title: 'Deleted Question!'
+          })
         })
         .catch(err => {
           console.log(err)

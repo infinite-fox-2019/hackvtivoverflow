@@ -30,8 +30,8 @@
       </form>
     </div>
     <div class="box">
-      <h2>Answers : </h2>
-      <hr>
+      <h2>Answers :</h2>
+      <hr />
       <div class="boxkan" v-for="answer in question.answers" :key="answer._id">
         <div class="mx-4">
           <div class="header">
@@ -39,7 +39,7 @@
               <div @click="upVoteAn(answer._id)">
                 <i class="fas fa-caret-up fa-4x"></i>
               </div>
-              <span>{{totalVote}}</span>
+              <span>{{answer.likes.length - answer.dislikes.length}}</span>
               <div @click="downVoteAn(answer._id)">
                 <i class="fas fa-caret-down fa-4x"></i>
               </div>
@@ -48,129 +48,179 @@
               <div v-html="answer.answer" class="mx-4"></div>
               <div class="d-flex justify-content-end">
                 <div class="d-flex flex-column" style="text-align:right">
-
-                <p>{{answer.createdAt}}</p>
-              <p>{{answer.user.name}}</p>
+                  <p>{{answer.createdAt}}</p>
+                  <p>{{answer.user.name}}</p>
                 </div>
               </div>
             </div>
           </div>
         </div>
-        <hr>
+        <hr />
       </div>
-    
     </div>
   </div>
 </template>
 
 <script>
-import Swal from "sweetalert2";
+import Swal from 'sweetalert2'
 // import OneAnswer from '../components/OneAnswer.vue'
-import axios from "../config/axios";
+import axios from '../config/axios'
 export default {
-  data() {
+  data () {
     return {
-      newAnswer: ""
-    };
+      newAnswer: ''
+    }
   },
   components: {
     // OneAnswer
   },
   computed: {
-    question() {
-      return this.$store.state.oneQuestionDetail;
+    question () {
+      return this.$store.state.oneQuestionDetail
     },
-    totalVote() {
-      return 0;
+    totalVote () {
+      return this.question.likes.length - this.question.dislikes.length
     },
-    isLogin() {
-      return this.$store.state.isLogin;
+    isLogin () {
+      return this.$store.state.isLogin
     }
   },
   methods: {
-    createAnswer() {
+    createAnswer () {
       if (!this.isLogin) {
-        this.$store.commit("SHOWLOGIN_TRUE");
+        this.$store.commit('SHOWLOGIN_TRUE')
       } else {
         axios({
-          method: "post",
+          method: 'post',
           url: `/answers/${this.$route.params.id}`,
           headers: {
-            token: localStorage.getItem("token")
+            token: localStorage.getItem('token')
           },
           data: {
             answer: this.newAnswer
           }
         })
           .then(data => {
-            this.$store.dispatch("getOneQues", this.$route.params.id);
-            this.newAnswer = "";
+            this.$store.dispatch('getOneQues', this.$route.params.id)
+            this.newAnswer = ''
           })
           .catch(err => {
-            let errors = err.response.data.errMsg.join("<br>");
+            let errors = err.response.data.errMsg.join('<br>')
             Swal.fire({
-              type: "error",
-              title: "Error!",
+              type: 'error',
+              title: 'Error!',
               html: errors
-            });
-            console.log(err.response.data.msg);
-          });
+            })
+            console.log(err.response.data.msg)
+          })
       }
     },
-    upVote() {
+    upVote () {
+      console.log('up')
       axios({
-        method: "patch",
-        url: "/questions/up/" + this.$route.params.id,
+        method: 'patch',
+        url: '/questions/up/' + this.$route.params.id,
         headers: {
-          token: localStorage.getItem("token")
+          token: localStorage.getItem('token')
         }
       })
         .then(({ data }) => {
-          this.$store.dispatch("getOneQues", this.$route.params.id);
+          this.$store.dispatch('getOneQues', this.$route.params.id)
         })
         .catch(err => {
-          let errors = err.response.data.message;
+          let errors = err.response.data.message
           if (err.response.status === 401) {
-            this.$store.commit("CHANGE_SHOWLOGIN", true);
+            this.$store.commit('CHANGE_SHOWLOGIN', true)
           } else {
             Swal.fire({
-              type: "error",
-              title: "Error!",
+              type: 'error',
+              title: 'Error!',
               text: errors
-            });
+            })
           }
-        });
+        })
     },
-    downVote() {
+    downVote () {
+      console.log('down')
       axios({
-        method: "patch",
-        url: "/questions/down/" + this.$route.params.id,
+        method: 'patch',
+        url: '/questions/down/' + this.$route.params.id,
         headers: {
-          token: localStorage.getItem("token")
+          token: localStorage.getItem('token')
         }
       })
         .then(({ data }) => {
-          console.log(data);
-          this.$store.dispatch("getOneQues", this.$route.params.id);
+          console.log(data)
+          this.$store.dispatch('getOneQues', this.$route.params.id)
         })
         .catch(err => {
-          let errors = err.response.data.message;
+          let errors = err.response.data.message
           if (err.response.status === 401) {
-            this.$store.commit("CHANGE_SHOWLOGIN", true);
+            this.$store.commit('CHANGE_SHOWLOGIN', true)
           } else {
             Swal.fire({
-              type: "error",
-              title: "Error!",
+              type: 'error',
+              title: 'Error!',
               text: errors
-            });
+            })
           }
-        });
+        })
+    },
+    downVoteAn (id) {
+      console.log(id, '<<<<< down');
+      axios({
+        method: 'patch',
+        url: `/answers/down/${id}`,
+        headers: {
+          token: localStorage.getItem('token')
+        }
+      })
+        .then(() => {
+          this.$store.dispatch('getOneQues', this.$route.params.id)
+        })
+        .catch(err => {
+          let errors = err.response.data.message
+          if (err.response.status === 401) {
+            this.$store.commit('CHANGE_SHOWLOGIN', true)
+          } else {
+            Swal.fire({
+              type: 'error',
+              title: 'Error!',
+              text: errors
+            })
+          }
+        })
+    },
+    upVoteAn (id) {
+      console.log(id, '<<<<< up');
+      axios({
+        method: 'patch',
+        url: `/answers/up/${id}`,
+        headers: {
+          token: localStorage.getItem('token')
+        }
+      })
+        .then(() => {
+          this.$store.dispatch('getOneQues', this.$route.params.id)
+        })
+        .catch(err => {
+          let errors = err.response.data.message
+          if (err.response.status === 401) {
+            this.$store.commit('CHANGE_SHOWLOGIN', true)
+          } else {
+            Swal.fire({
+              type: 'error',
+              title: 'Error!',
+              text: errors
+            })
+          }
+        })
     }
   },
-  created() {
-    this.$store.dispatch("getOneQues", this.$route.params.id);
+  created () {
+    this.$store.dispatch('getOneQues', this.$route.params.id)
   }
-};
+}
 </script>
 
 <style scoped>

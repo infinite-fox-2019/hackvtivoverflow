@@ -7,6 +7,8 @@ import Register from './views/Register.vue'
 import ListQues from './views/ListQues.vue'
 import CreateQues from './views/CreateQues.vue'
 import OneDetail from './views/OneDetail.vue'
+import MyQuestions from './views/MyQuestions.vue'
+import EditQuestion from './views/EditQuestion.vue'
 import store from './store'
 Vue.use(Router)
 
@@ -45,6 +47,14 @@ export default new Router({
           path: '',
           name: 'all',
           component: ListQues
+        }, {
+          path: 'owned',
+          name: 'owned',
+          component: MyQuestions
+        }, {
+          path: 'edit',
+          name: 'edit',
+          component: EditQuestion
         },
         {
           path: 'create',

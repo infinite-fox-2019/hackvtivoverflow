@@ -5,6 +5,11 @@
         <h6>Register</h6>
       </router-link>
     </div>
+    <div v-else>
+      <router-link to="/questions/owned">
+        <h6>Your Questions</h6>
+      </router-link>
+    </div>
     <div class="toall" @click="toall">
       <router-link to="/questions">
         <h6>Questions</h6>
@@ -44,6 +49,7 @@ export default {
   width: 17vw;
   min-height: 100vh;
   background:whitesmoke;
+  padding-top: 20px
 }
 .a {
   padding: 10px;

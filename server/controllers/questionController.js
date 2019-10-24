@@ -41,7 +41,6 @@ class QuestionController {
     )
       .then(() => {
         let id = req.params.id
-        let tags = tags
         Tag.updateMany({ questions: { $all: [id] } }, { $pull: { questions: id } })
           .then(() => {
             Tag.updateMany({ name: { $in: tags } }, { $push: { questions: id } })
@@ -52,7 +51,6 @@ class QuestionController {
               })
 
             console.log('preUpdateOne')
-            next()
           })
       })
       .catch(next);

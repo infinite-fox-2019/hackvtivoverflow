@@ -65,14 +65,14 @@ class AnswerController {
         if (result) {
           if (result.user == loggedInUser) {
             res.status(400).json({
-              message: `you cannot like your own question!`
+              message: `you cannot like your own answer!`
             });
           } else {
             if (result.likes.includes(loggedInUser)) {
               return Answer.netralize({ _id: req.params.id, user: req.decoded._id })
                 .then(data => {
                   res.status(200).json({
-                    message: `You already like this question, now it's update too netralize..`
+                    message: `You already like this answer, now it's update too netralize..`
                   })
                 })
             } else {
@@ -86,7 +86,7 @@ class AnswerController {
                 }
               )
                 .then(result1 => {
-                  res.status(201).json({
+                  res.status(200).json({
                     message: `Like++`
                   });
                 })
@@ -115,14 +115,14 @@ class AnswerController {
         if (result) {
           if (result.user == loggedInUser) {
             res.status(400).json({
-              message: `you cannot dislike your own question!`
+              message: `you cannot dislike your own answer!`
             });
           } else {
             if (result.dislikes.includes(loggedInUser)) {
               Answer.netralize({ _id: req.params.id, user: req.decoded._id })
                 .then(data => {
                   res.status(400).json({
-                    message: `You already dislike this question, now it's update too netralize..`
+                    message: `You already dislike this answer, now it's update too netralize..`
                   })
                 })
             } else {

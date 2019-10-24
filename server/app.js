@@ -34,7 +34,7 @@ mongoose.connect(dbatlas, {
 app.use('/', index)
 app.use(errHandler)
 
-// cron()
+cron()
 
 app.listen(PORT, function(){
   console.log(`Hello from port ${PORT}`);
