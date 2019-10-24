@@ -32,14 +32,14 @@ export default {
     },
     login () {
       this.$store.dispatch('login', { email: this.email, password: this.password })
-        .then(result=>{
+        .then(result => {
           this.$notify({
             type: 'success',
             title: 'Success!',
             text: result
           })
         })
-        .catch(err=>{
+        .catch(err => {
           this.$notify({
             type: 'error',
             title: 'Something wrong!',

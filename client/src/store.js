@@ -42,36 +42,36 @@ export default new Vuex.Store({
   actions: {
     register (context, payload) {
       const { name, email, password } = payload
-      return new Promise ((resolve, reject) => {
+      return new Promise((resolve, reject) => {
         axios({
           method: 'POST',
           url: '/users/register',
           data: { name, email, password }
         })
-        .then(({ data }) => {
-          router.push('/login')
-          resolve(data.message)  
-        })
-        .catch(({ response }) => {
-          reject(response.data)
-        })
+          .then(({ data }) => {
+            router.push('/login')
+            resolve(data.message)
+          })
+          .catch(({ response }) => {
+            reject(response.data)
+          })
       })
     },
     login ({ commit }, payload) {
-      return new Promise ((resolve, reject) => {
+      return new Promise((resolve, reject) => {
         const { email, password } = payload
         axios({
           method: 'POST',
           url: '/users/login',
           data: { email, password }
         })
-        .then(({ data }) => {
-          commit('LOGIN', data.token)
-          resolve('Welcome back')
-        })
-        .catch(({ response }) => {
-          reject(response.data)
-        })
+          .then(({ data }) => {
+            commit('LOGIN', data.token)
+            resolve('Welcome back')
+          })
+          .catch(({ response }) => {
+            reject(response.data)
+          })
       })
     },
     fetchQuestions ({ commit }) {
@@ -116,20 +116,20 @@ export default new Vuex.Store({
         })
     },
     askQuestion ({ commit }, payload) {
-      return new Promise ((resolve, reject) => {
+      return new Promise((resolve, reject) => {
         axios({
           method: 'POST',
           url: '/questions',
           data: payload,
           headers: { token: localStorage.getItem('token') }
         })
-        .then(({ data }) => {
-          resolve()
-          router.push('/')
-        })
-        .catch(({ response }) => {
-          reject(response.data)
-        })
+          .then(({ data }) => {
+            resolve()
+            router.push('/')
+          })
+          .catch(({ response }) => {
+            reject(response.data)
+          })
       })
     },
     updateQuestion ({ commit }, payload) {
@@ -178,8 +178,7 @@ export default new Vuex.Store({
         })
     },
     addAnswer (context, payload) {
-      return new Promise ((resolve, reject) => {
-
+      return new Promise((resolve, reject) => {
         const { description, questionId } = payload
         axios({
           method: 'POST',
@@ -187,17 +186,17 @@ export default new Vuex.Store({
           data: { description, questionId },
           headers: { token: localStorage.getItem('token') }
         })
-        .then(({ data }) => {
-          resolve('Success add answer')
-          context.dispatch('fetchAnswers', { questionId })
-        })
-        .catch(({ response })=>{
-          reject(response.data)
-        })
+          .then(({ data }) => {
+            resolve('Success add answer')
+            context.dispatch('fetchAnswers', { questionId })
+          })
+          .catch(({ response }) => {
+            reject(response.data)
+          })
       })
     },
     updateAnswer (context, payload) {
-      return new Promise ((resolve, reject) => {
+      return new Promise((resolve, reject) => {
         const { description, id } = payload
         axios({
           method: 'PATCH',
@@ -205,13 +204,13 @@ export default new Vuex.Store({
           data: { description },
           headers: { token: localStorage.getItem('token') }
         })
-        .then(({ data }) => {
-          resolve(data.message)
-          router.push('/')
-        })
-        .catch(({ response}) => {
-          reject(response.data)
-        })
+          .then(({ data }) => {
+            resolve(data.message)
+            router.push('/')
+          })
+          .catch(({ response }) => {
+            reject(response.data)
+          })
       })
     },
     verifyToken ({ commit }) {
@@ -296,18 +295,18 @@ export default new Vuex.Store({
     },
     deleteQuestion (context, payload) {
       const { questionId } = payload
-      return new Promise ((resolve, reject) => {
+      return new Promise((resolve, reject) => {
         axios({
           method: 'DELETE',
           url: `/questions/${questionId}`,
           headers: { token: localStorage.getItem('token') }
         })
-        .then(({ data }) => {
-          resolve(data.message)
-        })
-        .catch(({ response }) => {
-          reject(response.data)
-        })
+          .then(({ data }) => {
+            resolve(data.message)
+          })
+          .catch(({ response }) => {
+            reject(response.data)
+          })
       })
     }
   }

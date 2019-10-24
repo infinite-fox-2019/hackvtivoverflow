@@ -13,7 +13,7 @@
     </div>
     <div class=" w-2/5 flex-column items-start ml-10">
       <div class=" flex justify-start">
-        <h3 class="cursor-pointer hover:text-green-700 text-lg font-bold" @click.prevent="goToDetail(question._id)">{{question.title}}</h3>
+        <h3 class="cursor-pointer hover:text-green-700 text-md font-bold" @click.prevent="goToDetail(question._id)">{{question.title}}</h3>
       </div>
       <div class="flex flex-wrap" >
         <a class="px-1 bg-green-300 mx-1 rounded text-sm cursor-pointer my-1" v-for="(tag, index) in question.tags" :key="index" @click.prevent="searchByTag(tag)">{{ tag }}</a>

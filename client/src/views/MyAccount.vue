@@ -1,6 +1,6 @@
 <template>
 <div class="container" style="margin: 0 auto;">
-  <div class="main-page w-1/5 sm:w-1/3 md:w-3/4 p-4" style="margin: 0 auto;">
+  <div class="main-page w-2/3 sm:w-2/3 md:w-3/4 p-4" style="margin: 0 auto;">
   <div class="flex justify-between items-center shadow-lg p-6 m-4 bg-white" v-for="question in questions" :key="question._id">
     <div class="flex justify-between w-1/6">
       <div class="flex-column">
@@ -14,7 +14,7 @@
     </div>
     <div class=" w-3/6 flex-column items-start ml-10">
       <div class=" flex justify-start">
-        <h3 class="cursor-pointer hover:text-green-700 text-lg font-bold" @click.prevent="goToDetail(question._id)">{{question.title}}</h3>
+        <h3 class="cursor-pointer hover:text-green-700 text-md font-bold" @click.prevent="goToDetail(question._id)">{{question.title}}</h3>
       </div>
       <div class="flex flex-wrap" >
         <a class="px-1 bg-green-300 mx-1 rounded text-sm cursor-pointer my-1" v-for="(tag, index) in question.tags" :key="index" @click.prevent="searchByTag(tag)">{{ tag }}</a>
