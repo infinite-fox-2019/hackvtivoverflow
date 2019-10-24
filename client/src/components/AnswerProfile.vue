@@ -19,7 +19,6 @@
   <div class="foott">
     <div class="row">
       <div class="col-6">
-        <div class="pad-top"><a href="#" class="button">Edit</a></div>
       </div>
     </div>
   </div>

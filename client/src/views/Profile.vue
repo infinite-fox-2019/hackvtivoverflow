@@ -117,7 +117,10 @@ export default {
           }
         })
         .catch(err => {
-          this.$awn.warning(err.response.data.msg)
+          this.$awn.warning(err.response.data.msg +' we will send u to Login page in 2 second')
+          setTimeout(() => {
+            this.$router.push('/login')
+          }, 2000);
         })
     },
     fetchAnswer () {
@@ -182,7 +185,13 @@ export default {
             this.fetchQuestion()
           })
           .catch(err => {
-            this.$awn.warning(err.response.data.msg)
+            if(err.response.data.msg == 'objectId') {
+              this.$awn.warning('cant update from empty database, 2 second u will redirect to form ask question')
+              setTimeout(() => {
+                this.$router.push('/ask')
+              }, 2000);
+            }
+            console.log(err)
           })
           .finally(_ => {
             this.$nextTick(() => {

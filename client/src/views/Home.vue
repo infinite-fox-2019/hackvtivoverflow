@@ -24,8 +24,7 @@
         <QuestionHome :question='question' @fetchAgain='okeFetch'/>
     </div>
   </div>
-    <div class="foot">
-      fasfasfs
+    <div class="foot bg-light">
     </div>
 </div>
 </template>
@@ -92,7 +91,6 @@ p {
 }
 .foot{
   height: 5vw;
-  background-color: salmon;
 }
 
 </style>

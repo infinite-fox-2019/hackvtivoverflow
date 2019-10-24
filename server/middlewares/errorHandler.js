@@ -1,5 +1,5 @@
 module.exports = (err,req,res,next) => {
-    console.log(err)
+    console.log(err.kind)
     if(err.name == 'ValidationError'){
         res.status(403).json({ msg: 'Validation Error Please check your input' })
     }else if(err.code == 11000){
@@ -18,6 +18,8 @@ module.exports = (err,req,res,next) => {
       res.status(404).json({ msg: 'Question not Found!'})
     }else if(err.msg == '0A') {
       res.status(404).json({ msg: 'Answer not Found!'})
+    }else if(err.kind == 'ObjectId'){
+      res.status(403).json({ msg: 'objectId'})
     }
     else {
         res.status(500).json(err)
