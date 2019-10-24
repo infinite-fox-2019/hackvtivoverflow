@@ -72,19 +72,6 @@ API DOCUMENTATION | Aldinofrizal
 
 ### QUESTION ENDPOINT
 
-```javascript
-router.patch('/upvote/:id', authentication, Controller.upvote)
-router.patch('/downvote/:id', authentication , Controller.downvote)
-router.post('/' , authentication , Controller.create)
-router.patch('/:id', authentication , Controller.update)
-router.delete('/:id', authentication, Controller.delete)
-router.get('/' , Controller.find)
-router.get('/user' , authentication , Controller.findUser)
-router.get('/tag' , Controller.tag)
-```
-
-
-
 1. ### GET /question/
 
    find all question data, did not require anything
@@ -438,3 +425,225 @@ router.get('/tag' , Controller.tag)
    ```
 
    
+
+
+
+### ANSWER ENDPOINT
+
+
+
+1. #### GET /answer
+
+   show all logged user (token) answer
+
+   require headers : token
+
+   **response success** 200
+
+   ```JSON
+   [
+     {
+       "_id": "5db155bb05feae4f29a8926c",
+       "answer": "<p style=\"margin-bottom: ... t-family: inherit; vertical-align: baseline; color: rgb(48, 51, 54);\">);</span></code></pre></div></div>",
+       "user": {
+         "_id": "5db1555f05feae4f29a89269",
+         "username": "botol",
+         "email": "botol@gmail.com",
+         "password": "$2b$10$AvfO6842jpMydJO.SzW1Le1dtsJPQh7UqcqTC8cmgYoccsLSErz..",
+         "__v": 0
+       },
+       "question": {
+         "tags": [
+           "javascript ",
+           "closures "
+         ],
+         "answer": [
+           "5db155bb05feae4f29a8926c",
+           "5db1564c05feae4f29a89277",
+           "5db165aa036ea00ccb74ca28"
+         ],
+         "_id": "5db1549505feae4f29a89267",
+         "title": "How do javascript closure work",
+         "question": "<p style=\"marg....  help.</p>",
+         "user": "5db1543a05feae4f29a89266",
+         "votes": [
+           {
+             "_id": "5db155ac05feae4f29a8926b",
+             "user": "5db1555f05feae4f29a89269",
+             "value": 1
+           }
+         ],
+         "createdAt": "2019-10-24T07:36:53.431Z",
+         "updatedAt": "2019-10-24T08:49:46.299Z",
+         "__v": 0
+       },
+       "votes": [
+         {
+           "_id": "5db155bd05feae4f29a8926d",
+           "user": "5db1555f05feae4f29a89269",
+           "value": 1
+         }
+       ],
+       "createdAt": "2019-10-24T07:41:47.153Z",
+       "updatedAt": "2019-10-24T08:49:30.472Z",
+       "__v": 0
+     },
+     {... },
+   ]
+   ```
+
+   response error
+
+   ```JSON
+   {
+     "message": "authentication error"
+   }
+   ```
+
+   2. #### POST /answer
+
+      require body : answer as a string
+
+      require params: question id,
+
+      require headers : user token
+
+      **response success** 201
+
+      ```JSON
+      {
+        "answer": {
+          "_id": "5dada8bedb75b10e34d823be",
+          "answer": "isi answer test",
+          "user": "5dad8d852ccce63cdad9f159",
+          "question": "5dad77e0e187d2324fd490bf",
+          "votes": [],
+          "createdAt": "2019-10-21T12:46:54.761Z",
+          "updatedAt": "2019-10-21T12:46:54.761Z",
+          "__v": 0
+        },
+        "updated": {
+          "n": 1,
+          "nModified": 1,
+          "ok": 1
+        }
+      }
+      ```
+
+      **response fail** 404 or 403
+
+      ```JSON
+      {
+        "message": "data not found"
+      },
+      {
+        "message": "authentication error"
+      }
+      ```
+
+      3. #### PATCH /answer/:id
+
+         require params : answer id,
+
+         require headers : user token
+
+         
+
+         **response success** 200
+
+         ```JSON
+         {
+           "message": "update answer success",
+           "updated": {
+             "n": 0,
+             "nModified": 0,
+             "opTime": {
+               "ts": "6751315867755085825",
+               "t": 3
+             },
+             "electionId": "7fffffff0000000000000003",
+             "ok": 1,
+             "operationTime": "6751315867755085825",
+             "$clusterTime": {
+               "clusterTime": "6751315867755085825",
+               "signature": {
+                 "hash": "FGw6psPuVsdXfdxzNiw6P4HOXAE=",
+                 "keyId": "6737062748200370177"
+               }
+             }
+           }
+         }
+         ```
+
+         **response fail** 404 or 403
+
+         ```json
+         {
+           "message": "data not found"
+         },
+         {
+           "message": "authentication error"
+         }
+         ```
+
+      4. #### PATCH /answer/upvote/:id
+
+         require params : answer id,
+
+         require headers : user token
+
+         **response success** 200
+
+         ```JSON
+         {
+           "message": "upvote success",
+           "updated": {
+             "n": 1,
+             "nModified": 1,
+             "ok": 1
+           }
+         }
+         ```
+
+         **response error** 404 or 403
+
+         ```json
+         {
+           "message": "data not found"
+         },
+         {
+           "message": "authentication error"
+         }
+         ```
+
+         5. #### PATCH /answer/downvote/:id
+
+            require params : answer id,
+
+            require headers : user token
+
+            **response success** 200
+
+            ```JSON
+            {
+              "message": "downvote success",
+              "updated": {
+                "n": 1,
+                "nModified": 1,
+                "ok": 1
+              }
+            }
+            ```
+
+            **response error** 404 or 403
+
+            ```json
+            {
+              "message": "data not found"
+            },
+            {
+              "message": "authentication error"
+            }
+            ```
+
+            

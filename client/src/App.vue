@@ -28,7 +28,7 @@ export default {
     return {
       seamless: false,
       quote: "",
-      socket: io.connect("http://localhost:3000")
+      socket: io.connect("http://18.136.123.15")
     };
   },
   created() {
