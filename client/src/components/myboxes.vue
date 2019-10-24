@@ -23,16 +23,19 @@
         <div class="up">
           <div class="juduls">
             <h4 @click="moveDetail(q._id)">{{q.title}}</h4>
-            <div class="hoho">
-              <button class="hoha" @click="deleteQuestion(q._id)">
-                <i class="fas fa-trash-alt"></i>
-              </button>
-              <edit :qId="q._id"></edit>
-            </div>
           </div>
           <div class="isinya">
             <p class="para">{{q.pertanyaan}}</p>
           </div>
+        </div>
+        <div class="author">
+          <p class="u">by: {{q.UserId.name}}</p>
+        </div>
+        <div class="hoho">
+          <button class="hoha" @click="deleteQuestion(q._id)">
+            <i class="fas fa-trash-alt"></i> DELETE
+          </button>
+          <edit :qId="q._id"></edit>
         </div>
         <div class="turun">
           <div class="oye" v-if="q.tags.length !== 0">
@@ -41,10 +44,6 @@
             </div>
           </div>
           <div v-else>no tags</div>
-
-          <div class="author">
-            <p class="u">by: {{q.UserId.name}}</p>
-          </div>
         </div>
       </div>
     </div>
@@ -54,7 +53,7 @@
 <script>
 import { mapState } from "vuex";
 import edit from "../components/edit";
-import axios from "axios";
+import axios from "../config/axios";
 import Swal from "sweetalert2";
 export default {
   components: {
@@ -85,7 +84,7 @@ export default {
             });
             axios({
               method: "DELETE",
-              url: `http://18.191.103.187/question/${id}`,
+              url: `/question/${id}`,
               headers: {
                 token
               }
@@ -106,7 +105,7 @@ export default {
 
 <style >
 .boxku {
-  height: 150px;
+  height: auto;
   display: flex;
   flex-direction: row;
   -webkit-box-shadow: -1px 2px 5px 0px rgba(0, 0, 0, 0.75);
@@ -168,7 +167,7 @@ p {
   text-align: justify;
 }
 .tagg {
-   width: 200px;
+  width: 200px;
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
@@ -186,5 +185,9 @@ p {
   display: flex;
   flex-direction: row;
   justify-content: space-evenly;
+}
+
+edit {
+  margin-top: 0;
 }
 </style>

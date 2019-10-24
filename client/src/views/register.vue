@@ -7,7 +7,7 @@
           <v-col cols="12" sm="8" md="4">
             <v-card class="elevation-12">
               <v-toolbar color="primary" dark flat>
-                <v-toolbar-title>Register form</v-toolbar-title>
+                <v-toolbar-title>Register Form</v-toolbar-title>
                 <v-spacer></v-spacer>
                 <v-tooltip bottom></v-tooltip>
                 <v-tooltip right></v-tooltip>
@@ -15,14 +15,14 @@
               <v-form @submit.prevent="register">
                 <v-card-text>
                   <v-text-field
-                    label="name"
+                    label="Name"
                     name="name"
                     prepend-icon="person"
                     type="text"
                     v-model="name"
                   ></v-text-field>
                   <v-text-field
-                    label="email"
+                    label="Email"
                     name="email"
                     prepend-icon="email"
                     type="text"
@@ -37,9 +37,8 @@
                     v-model="password"
                   ></v-text-field>
                 </v-card-text>
-                <v-card-actions>
-                  <v-spacer></v-spacer>
-                  <v-btn color="primary" type="submit">Register</v-btn>
+                <v-card-actions class="justify-center">
+                  <v-btn color="primary" type="submit" class="mb-10">Register</v-btn>
                 </v-card-actions>
               </v-form>
             </v-card>
@@ -109,4 +108,9 @@ export default {
 </script>
 
 <style>
+#inspire {
+  background-image: url("https://i.pinimg.com/originals/77/84/ba/7784baa4303bd0103e243fa9428b81bb.jpg");
+  background-repeat: no-repeat;
+  background-size: 100%;
+}
 </style>

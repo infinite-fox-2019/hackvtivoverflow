@@ -15,14 +15,14 @@
         <div class="up">
           <div class="juduls">
             <h4>{{q.title}}</h4>
-            <div class="hoho">
-              <editAnswer :qId="q._id"></editAnswer>
-            </div>
           </div>
           <div class="isinya">
             <p class="para">{{q.jawaban}}</p>
           </div>
         </div>
+      </div>
+      <div class="hoho">
+        <editAnswer :qId="q._id"></editAnswer>
       </div>
     </div>
   </div>
@@ -38,8 +38,7 @@ export default {
     editAnswer
   },
   computed: mapState(["myA"]),
-  methods: {
-  }
+  methods: {}
 };
 </script>
 
@@ -48,7 +47,7 @@ export default {
   height: 150px;
   display: flex;
   flex-direction: row;
-    -webkit-box-shadow: -1px 2px 5px 0px rgba(0, 0, 0, 0.75);
+  -webkit-box-shadow: -1px 2px 5px 0px rgba(0, 0, 0, 0.75);
   -moz-box-shadow: -1px 2px 5px 0px rgba(0, 0, 0, 0.75);
   box-shadow: -1px 2px 5px 0px rgba(0, 0, 0, 0.75);
 }
@@ -123,7 +122,7 @@ p {
   flex-direction: row;
   justify-content: space-evenly;
 }
-.hoha{
+.hoha {
   width: 50px;
 }
 </style>

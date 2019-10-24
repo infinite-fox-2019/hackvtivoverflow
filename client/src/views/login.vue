@@ -7,7 +7,7 @@
           <v-col cols="12" sm="8" md="4">
             <v-card class="elevation-12">
               <v-toolbar color="primary" dark flat>
-                <v-toolbar-title>Login form</v-toolbar-title>
+                <v-toolbar-title>Login Form</v-toolbar-title>
                 <v-spacer></v-spacer>
                 <v-tooltip bottom>
                   <span>Source</span>
@@ -33,9 +33,8 @@
                     v-model="password"
                   ></v-text-field>
                 </v-card-text>
-                <v-card-actions>
-                  <v-spacer></v-spacer>
-                  <v-btn type="submit" color="primary">Login</v-btn>
+                <v-card-actions id="loginButton" class="justify-center">
+                  <v-btn type="submit" color="primary" class="mb-10">Login</v-btn>
                 </v-card-actions>
               </v-form>
             </v-card>
@@ -105,6 +104,8 @@ export default {
 
 <style>
 #inspire {
-  background-image: url("https://images.unsplash.com/photo-1487700160041-babef9c3cb55?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1352&q=80");
+  background-image: url("https://i.pinimg.com/originals/77/84/ba/7784baa4303bd0103e243fa9428b81bb.jpg");
+  background-repeat: no-repeat;
+  background-size: 100%;
 }
 </style>

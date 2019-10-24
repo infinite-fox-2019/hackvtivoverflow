@@ -2,8 +2,16 @@
   <v-row justify="center">
     <v-dialog v-model="dialog" persistent max-width="600px">
       <template v-slot:activator="{ on }">
-        <v-btn color="primary" dark v-on="on" text :max-width="10" @click="getOne(qId)">
-          <i class="far fa-edit"></i>
+        <v-btn
+          id="editButton"
+          color="primary"
+          dark
+          v-on="on"
+          text
+          :max-width="10"
+          @click="getOne(qId)"
+        >
+          <i class="far fa-edit"></i> edit
         </v-btn>
       </template>
       <v-card>
@@ -46,9 +54,9 @@
 </template>
 
 <script>
-import axios from "axios";
+import axios from "../config/axios";
 import { mapState } from "vuex";
-import Swal from "sweetalert2"
+import Swal from "sweetalert2";
 export default {
   props: ["qId"],
   data: () => ({
@@ -62,13 +70,13 @@ export default {
     editQuestion(id) {
       let token = localStorage.getItem("access_token");
       Swal.fire({
-        title: "Updating your Question...",
+        title: "Updating your question...",
         allowOutsideClick: () => !Swal.isLoading()
       });
       Swal.showLoading();
       axios({
         method: "PATCH",
-        url: `http://18.191.103.187/question/update/${id}`,
+        url: `/question/update/${id}`,
         headers: {
           token
         },
@@ -79,12 +87,12 @@ export default {
         }
       })
         .then(({ data }) => {
-          Swal.close()
-          Swal.fire("Success!","Your Question is updated!", "success");
+          Swal.close();
+          Swal.fire("Success!", "Your Question is updated!", "success");
           this.$store.dispatch("getMyQuestions");
         })
         .catch(err => {
-         Swal.fire("Error!",err.message, "error");
+          Swal.fire("Error!", err.message, "error");
         });
     },
     getOne(id) {
@@ -104,3 +112,6 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+</style>

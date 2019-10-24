@@ -29,37 +29,27 @@ export default new Router({
     children: [{
       path: 'all',
       name: 'all',
-      component: () => import(/* webpackChunkName: "allQuestions" */
-        './views/allQuestions.vue',
-      ),
+      component: () => import(/* webpackChunkName: "allQuestions" */ './views/allQuestions.vue'),
     },
     {
       path: 'myquestions',
       name: 'myquestions',
-      component: () => import(/* webpackChunkName: "myQuestions" */
-        './views/myQuestions.vue',
-      ),
+      component: () => import(/* webpackChunkName: "myQuestions" */ './views/myQuestions.vue'),
     },
     {
       path: 'byTags',
       name: 'byTags',
-      component: () => import(/* webpackChunkName: "byTags" */
-        './views/byTags.vue',
-      ),
+      component: () => import(/* webpackChunkName: "byTags" */ './views/byTags.vue'),
     },
     {
       path: 'myAnswers',
       name: 'myAnswers',
-      component: () => import(/* webpackChunkName: "myAnswers" */
-        './views/myAnswers.vue',
-      ),
+      component: () => import(/* webpackChunkName: "myAnswers" */ './views/myAnswers.vue'),
     },
     {
       path: ':id',
       name: 'allDetails',
-      component: () => import(/* webpackChunkName: "allDetails" */
-        './views/allDetails.vue',
-      ),
+      component: () => import(/* webpackChunkName: "allDetails" */ './views/allDetails.vue'),
     },
     ],
   },

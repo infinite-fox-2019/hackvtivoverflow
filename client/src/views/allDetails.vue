@@ -44,7 +44,7 @@
             id
             cols="15"
             rows="1"
-            placeholder="title"
+            placeholder="Answer Title"
             style="border: 1px solid black;"
             v-model="title"
           ></textarea>
@@ -52,10 +52,10 @@
             v-model="jawaban"
             solo
             name="input-7-4"
-            label="Insert Answer"
+            label="Please insert answer here ..."
             :full-width="true"
           ></v-textarea>
-          <v-btn color="primary" text :max-width="10" type="submit">reply</v-btn>
+          <v-btn color="primary" text :max-width="10" type="submit">SUBMIT</v-btn>
         </form>
       </v-col>
     </div>
@@ -116,7 +116,7 @@ export default {
       })
         .then(({ data }) => {
           Swal.close();
-          Swal.fire("Success!", "Your Reply is Created!", "success");
+          Swal.fire("Success!", "Your reply is created!", "success");
           this.$store.dispatch("getOneQuestion", id);
           this.jawaban = "";
           this.title = "";

@@ -2,7 +2,10 @@
   <v-row justify="center">
     <v-dialog v-model="dialog" persistent max-width="600px">
       <template v-slot:activator="{ on }">
-        <v-btn color="primary" dark v-on="on" text>Create Question</v-btn>
+        <v-btn color="primary" dark v-on="on" text>
+          <i class="fas fa-plus"></i>
+          <span>Create Question</span>
+        </v-btn>
       </template>
       <v-card>
         <form @submit.prevent="addQuestion">
@@ -44,7 +47,7 @@
 </template>
 
 <script>
-import axios from "axios";
+import axios from "../config/axios";
 import Swal from "sweetalert2";
 export default {
   data: () => ({
@@ -63,7 +66,7 @@ export default {
       Swal.showLoading();
       axios({
         method: "POST",
-        url: "http://18.191.103.187/question/create",
+        url: "/question/create",
         headers: {
           token
         },
@@ -78,9 +81,9 @@ export default {
           Swal.fire("Success!", "Your Question is Created!", "success");
           this.$store.dispatch("getQuestions");
           this.$store.dispatch("getMyQuestions");
-          this.title = ''
-          this.pertanyaan= ''
-          this.select= []
+          this.title = "";
+          this.pertanyaan = "";
+          this.select = [];
         })
         .catch(err => {
           Swal.fire("Error!", err.message, "error");

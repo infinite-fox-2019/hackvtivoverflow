@@ -1,8 +1,8 @@
 <template>
-  <v-row justify="center">
+  <v-row class="justify-center">
     <v-dialog v-model="dialog" persistent max-width="600px">
       <template v-slot:activator="{ on }">
-        <button v-on="on" @click="myTags">Edit</button>
+        <v-btn class="primary" v-on="on" @click="myTags">Edit</v-btn>
       </template>
       <v-card>
         <form @submit.prevent="editTags">
@@ -38,7 +38,7 @@
 </template>
 
 <script>
-import axios from "axios";
+import axios from "../config/axios";
 import { mapState } from "vuex";
 import Swal from "sweetalert2";
 export default {
@@ -59,7 +59,7 @@ export default {
       Swal.showLoading();
       axios({
         method: "PATCH",
-        url: "http://18.191.103.187/user/addTags",
+        url: "/user/addTags",
         headers: {
           token
         },
@@ -68,12 +68,12 @@ export default {
         }
       })
         .then(({ data }) => {
-          Swal.close()
-          Swal.fire("Success!","Your Tags is updated!", "success");
+          Swal.close();
+          Swal.fire("Success!", "Your Tags is updated!", "success");
           this.$store.dispatch("getMyTags");
         })
         .catch(err => {
-          Swal.fire("Error!",err.message, "error");
+          Swal.fire("Error!", err.message, "error");
         });
     },
     myTags() {
@@ -81,7 +81,7 @@ export default {
 
       axios({
         method: "GET",
-        url: "http://18.191.103.187/user/myTags",
+        url: "/user/myTags",
         headers: {
           token
         }

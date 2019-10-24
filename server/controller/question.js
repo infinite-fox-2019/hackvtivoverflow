@@ -26,7 +26,7 @@ class questionController {
         runValidators: true
       })
         .then(data => {
-          res.status(200).json({
+          res.status(201).json({
             data
           })
         })

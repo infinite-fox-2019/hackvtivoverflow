@@ -3,13 +3,13 @@
     <v-dialog v-model="dialog" persistent max-width="600px">
       <template v-slot:activator="{ on }">
         <v-btn color="primary" dark v-on="on" text :max-width="10" @click="getOne(qId)">
-          <i class="far fa-edit"></i>
+          <i class="far fa-edit"></i> EDIT
         </v-btn>
       </template>
       <v-card>
         <form @submit.prevent="editAnswer(qId)">
           <v-card-title>
-            <span class="headline">Edit Question</span>
+            <span class="headline">Edit Answer</span>
           </v-card-title>
           <v-card-text>
             <v-container>
@@ -35,9 +35,9 @@
 </template>
 
 <script>
-import axios from "axios";
+import axios from "../config/axios";
 import { mapState } from "vuex";
-import Swal from "sweetalert2"
+import Swal from "sweetalert2";
 export default {
   props: ["qId"],
   data: () => ({
@@ -56,7 +56,7 @@ export default {
       Swal.showLoading();
       axios({
         method: "PATCH",
-        url: `http://18.191.103.187/answer/update/${id}`,
+        url: `/answer/update/${id}`,
         headers: {
           token
         },
@@ -66,12 +66,12 @@ export default {
         }
       })
         .then(({ data }) => {
-            Swal.close()
-            Swal.fire("Success!","Your Answer is Updated!", "success");
+          Swal.close();
+          Swal.fire("Success!", "Your Answer is Updated!", "success");
           this.$store.dispatch("getMyAnswers");
         })
         .catch(err => {
-         Swal.fire("Error!",err.message, "error");
+          Swal.fire("Error!", err.message, "error");
         });
     },
     getOne(id) {

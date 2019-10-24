@@ -8,19 +8,22 @@
         <div class="side">
           <div class="quest">
             <router-link to="/overflow/myQuestions">
-              <button @click="takeMine">My Questions</button>
+              <button @click="takeMine">
+                <i class="fas fa-question"></i> My Questions
+              </button>
             </router-link>
+            <br />
             <router-link to="/overflow/myAnswers">
-              <button @click="takeMine">My Answers</button>
+              <button @click="takeMine">
+                <i class="fas fa-pencil-alt"></i> My Answers
+              </button>
             </router-link>
-          </div>
-          <div>PUBLIC</div>
-          <div class="list">
-            <button>
-              <router-link to="/overflow/all">
-                <i class="fas fa-globe-europe"></i> Hacktiv Overflow
-              </router-link>
-            </button>
+            <br />
+            <router-link to="/overflow/all">
+              <button>
+                <i class="fas fa-globe-europe"></i> Show All Questions
+              </button>
+            </router-link>
           </div>
         </div>
       </div>
@@ -29,7 +32,7 @@
       </div>
       <div class="right">
         <div class="tagging">
-          Watched Tags
+          <h1>Watched Tags</h1>
           <editTags></editTags>
           <div class="semuatag">
             <tags :tak="t" v-for="(t,i) in myT" :key="i"></tags>
@@ -110,9 +113,6 @@ export default {
 }
 .quest {
   margin-bottom: 7%;
-}
-.list {
-  margin-left: 10%;
 }
 
 .tagging {
