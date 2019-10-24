@@ -15,7 +15,7 @@ app.use(morgan('dev'))
 app.use(express.urlencoded({ extended: false }))
 app.use(express.json())
 
-mongoose.connect(process.env.DATABASE_URL, { useNewUrlParser: true })
+mongoose.connect(process.env.DATABASE_URL, { useNewUrlParser: true, useFindAndModify: false, useCreateIndex: true, useUnifiedTopology: true })
   .then(data => {
     console.log('Connected to MongoDB database')
   }).catch(err => {
