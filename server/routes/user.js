@@ -1,13 +1,12 @@
-'use strict'
+const express = require('express')
+const router = express.Router()
+const userController = require('../controller/user')
+const authentication = require('../middlewares/authentication')
 
-const router = require('express').Router()
-const { UserController } = require('../controllers')
-const { authentication } = require('../middlewares/authentication')
-
-router.post('/register', UserController.register)
-router.post('/login', UserController.login)
+router.post('/signin', userController.signIn)
+router.post('/register', userController.register)
 router.use(authentication)
-router.patch('/add-tags', UserController.addTags)
-router.get('/my-tags', UserController.getMyTags)
+router.patch('/addTags', userController.addTags)
+router.get('/myTags', userController.getMyTags)
 
 module.exports = router

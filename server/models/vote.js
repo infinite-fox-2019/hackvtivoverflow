@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
-const voteSchema = new Schema({
+const votesSchema = new Schema({
   topvotes: [],
   name: String
 }, {
@@ -9,6 +9,6 @@ const voteSchema = new Schema({
   versionKey: false
 })
 
-const Vote = mongoose.model('Vote', voteSchema)
+const votes = mongoose.model('votes', votesSchema)
 
-module.exports = Vote
+module.exports = votes

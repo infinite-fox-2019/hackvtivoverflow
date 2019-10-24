@@ -1,46 +1,36 @@
 {
-  "name": "hacktivoverflow",
+  "name": "server",
   "version": "1.0.0",
-  "description": "HacktivOverflow - Question and Answer",
+  "description": "",
   "main": "app.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "NODE_ENV=development nodemon app.js"
+  "bin": {
+    "server": "httpserver.js"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/andreassosilo/hacktivoverflow.git"
-  },
-  "keywords": [
-    "hacktivoverflow",
-    "stackoverflow",
-    "question",
-    "answer"
-  ],
-  "author": "Andreas Sosilo",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/andreassosilo/hacktivoverflow/issues"
-  },
-  "homepage": "https://github.com/andreassosilo/hacktivoverflow#readme",
   "dependencies": {
-    "axios": "^0.19.0",
-    "bcryptjs": "^2.4.3",
+    "bcrypt": "^3.0.6",
     "cors": "^2.8.5",
-    "cron": "^1.7.2",
+    "cron": "^1.7.1",
+    "dotenv": "^8.1.0",
     "express": "^4.17.1",
     "jsonwebtoken": "^8.5.1",
-    "kue": "^0.11.6",
-    "mongoose": "^5.7.1",
-    "morgan": "^1.9.1"
+    "mongoose": "^5.6.11",
+    "morgan": "^1.9.1",
+    "multer": "^1.4.2",
+    "sweetalert2": "^8.16.3"
   },
   "devDependencies": {
-    "dotenv": "^8.1.0",
-    "eslint": "^6.4.0",
+    "eslint": "^6.5.1",
     "eslint-config-standard": "^14.1.0",
     "eslint-plugin-import": "^2.18.2",
     "eslint-plugin-node": "^10.0.0",
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-standard": "^4.0.1"
-  }
+  },
+  "scripts": {
+    "dev": "NODE_ENV=development nodemon ./bin/httpserver.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "Andreas Sosilo",
+  "license": "ISC"
 }

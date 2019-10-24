@@ -1,24 +1,23 @@
 <template>
-  <div id="app">
-    <Navbar />
-    <Jumbotron />
-    <router-view />
-  </div>
+  <v-app >
+    <router-view/>
+  </v-app>
 </template>
 
 <script>
-import Navbar from "@/components/Navbar";
-import Jumbotron from "@/components/Jumbotron";
+import footMe from './components/footMe';
 
 export default {
-  data: function() {
-    return {
-      isAdmin: false
-    };
-  },
+  name: 'App',
   components: {
-    Navbar,
-    Jumbotron
+  },
+  data: () => ({
+ 
+  }),
+  created(){
+    if(!localStorage.getItem('access_token')){
+      this.$router.push('/home').catch(()=>{})
+    }
   }
 };
 </script>

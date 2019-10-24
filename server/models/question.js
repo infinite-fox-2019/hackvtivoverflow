@@ -1,5 +1,3 @@
-'use strict'
-
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
@@ -8,20 +6,22 @@ const questionSchema = new Schema({
     type: String,
     required: true
   },
-  description: {
+  pertanyaan: {
     type: String,
     required: true
   },
-  upvotes: [{ type: Schema.Types.ObjectId, ref: 'User' }],
-  downvotes: [{ type: Schema.Types.ObjectId, ref: 'User' }],
-  UserId: { type: Schema.Types.ObjectId, ref: 'User' },
-  answers: [{ type: Schema.Types.ObjectId, ref: 'Answer' }],
-  tags: [String]
+  upvote: [{ type: Schema.Types.ObjectId, ref: 'users' }],
+  downvote: [{ type: Schema.Types.ObjectId, ref: 'users' }],
+  UserId: {
+    type: Schema.Types.ObjectId, ref: 'users'
+  },
+  answer: [{ type: Schema.Types.ObjectId, ref: 'answers' }],
+  tags: []
 }, {
   timestamps: true,
   versionKey: false
 })
 
-const Question = mongoose.model('Question', questionSchema)
+const questions = mongoose.model('questions', questionSchema)
 
-module.exports = Question
+module.exports = questions

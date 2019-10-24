@@ -1,5 +1,3 @@
-'use strict'
-
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
@@ -8,18 +6,21 @@ const answerSchema = new Schema({
     type: String,
     required: true
   },
-  description: {
+  jawaban: {
     type: String,
     required: true
   },
-  UserId: { type: Schema.Types.ObjectId, ref: 'User' },
-  upvotes: [{ type: Schema.Types.ObjectId, ref: 'User' }],
-  downvotes: [{ type: Schema.Types.ObjectId, ref: 'User' }]
+  UserId: {
+    type: Schema.Types.ObjectId,
+    ref: 'users'
+  },
+  upvote: [{ type: Schema.Types.ObjectId, ref: 'users' }],
+  downvote: [{ type: Schema.Types.ObjectId, ref: 'users' }]
 }, {
   timestamps: true,
   versionKey: false
 })
 
-const Answer = mongoose.model('Answer', answerSchema)
+const answers = mongoose.model('answers', answerSchema)
 
-module.exports = Answer
+module.exports = answers

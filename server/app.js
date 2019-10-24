@@ -1,42 +1,29 @@
-'use strict'
-
-if (process.env.NODE_ENV === 'development') {
+if (process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'test') {
   require('dotenv').config()
 }
 
-// Modules
 const express = require('express')
-const router = require('./routes')
-const errorHandler = require('./middlewares/errorHandler')
 const cors = require('cors')
-const morgan = require('morgan')
-const mongooseConnection = require('./config/mongoose')
-const cron = require('./cron')
-
 const app = express()
-const PORT = process.env.PORT || 3000
+const mongoose = require('mongoose')
+const morgan = require('morgan')
+const routes = require('./routes/index')
+const errorHandler = require('./helpers/errorhandler')
 
-// Connection to MongoDB via mongoose
-mongooseConnection()
-
-// Initial middlewares
-app.use(express.json())
-app.use(express.urlencoded({ extended: false }))
-
-// Load cors
 app.use(cors())
-
-// Load morgan for development
 app.use(morgan('dev'))
+app.use(express.urlencoded({ extended: false }))
+app.use(express.json())
 
-// Load router module on the app.js
-app.use('/', router)
+mongoose.connect(process.env.DATABASE_URL, { useNewUrlParser: true })
+  .then(data => {
+    console.log('Connected to MongoDB database')
+  }).catch(err => {
+    console.log('Could not connected to MongoDB database', err)
+  })
 
-// Error handler
+app.use('/', routes)
+
 app.use(errorHandler)
 
-// Call CRON
-cron()
-
-// Start the server
-app.listen(PORT, () => console.log(`App listening on port ${PORT}`))
+module.exports = app

@@ -1,19 +1,13 @@
-'use strict'
+const answer = require('./answer')
+const question = require('../routes/question')
+const vote = require('../routes/vote')
+const user = require('../routes/user')
+const express = require('express')
+const router = express.Router()
 
-const router = require('express').Router()
-// const userRouter = require('./user')
-// const questionRouter = require('./question')
-// const answerRouter = require('./answer')
-// const voteRouter = require('./vote')
-
-router.get('/', (req, res) => {
-  res.status(200).json({ page: 'Home', message: 'Connected to HacktivOverflow Apps!' })
-})
-
-// Routing
-// router.use('/users', userRouter)
-// router.use('/questions', questionRouter)
-// router.use('/answers', answerRouter)
-// router.use('/votes', voteRouter)
+router.use('/answer', answer)
+router.use('/question', question)
+router.use('/vote', vote)
+router.use('/user', user)
 
 module.exports = router

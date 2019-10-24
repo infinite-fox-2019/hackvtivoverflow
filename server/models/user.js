@@ -1,24 +1,19 @@
-'use strict'
-
 const mongoose = require('mongoose')
-const { hashPassword } = require('../helpers/bcryptjs')
 const Schema = mongoose.Schema
 
 const userSchema = new Schema({
   name: {
     type: String,
-    required: [true, 'Name is required']
+    required: true
   },
   email: {
     type: String,
-    required: [true, 'Email is required'],
-    unique: [true, 'Email is already used & registered'],
-    match: [/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/, 'Invalid email format!']
+    required: true,
+    unique: true
   },
   password: {
     type: String,
-    required: [true, 'Password is required'],
-    minlength: [8, 'Please insert minimum 8 character for the password']
+    required: true
   },
   myTags: []
 }, {
@@ -26,12 +21,6 @@ const userSchema = new Schema({
   versionKey: false
 })
 
-userSchema.pre('save', function (next) {
-  this.email = this.email.toLowerCase()
-  this.password = hashPassword(this.password)
-  next()
-})
+const users = mongoose.model('users', userSchema)
 
-const User = mongoose.model('User', userSchema)
-
-module.exports = User
+module.exports = users
