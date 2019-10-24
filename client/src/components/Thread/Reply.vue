@@ -38,7 +38,7 @@
                                 class="overline mb-4"
                             >Created {{reply.createdAt | moment("from")}} | Last Edit {{reply.updatedAt | moment("from")}}</div>
                             <v-list-item-subtitle>{{reply.owner.username}} replied</v-list-item-subtitle>
-                            <v-list-item-subtitle>{{reply.content}}</v-list-item-subtitle>
+                            <v-list-item-subtitle v-html="reply.content"></v-list-item-subtitle>
                         </v-list-item-content>
 
                         <v-list-item-avatar class="d-none d-sm-flex" tile size="80" color="grey">

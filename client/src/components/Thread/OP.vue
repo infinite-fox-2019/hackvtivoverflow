@@ -39,7 +39,7 @@
                             >Created {{OP.createdAt | moment("from")}} | Last Edit {{OP.updatedAt | moment("from")}}</div>
                             <v-list-item-subtitle>{{OP.owner.username}} asked</v-list-item-subtitle>
                             <v-list-item-title class="headline mb-1">{{OP.title}}</v-list-item-title>
-                            <v-list-item-subtitle>{{OP.content}}</v-list-item-subtitle>
+                            <v-list-item-subtitle v-html="OP.content"></v-list-item-subtitle>
                         </v-list-item-content>
 
                         <v-list-item-avatar class="d-none d-sm-flex" tile size="80" color="grey">

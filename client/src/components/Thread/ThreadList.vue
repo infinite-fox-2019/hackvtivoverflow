@@ -9,7 +9,7 @@
         <v-row>
             <v-col cols="8" lg="10">
                 <v-card-title>{{thread.title}}</v-card-title>
-                <v-card-text>{{thread.content}}</v-card-text>
+                <v-card-text v-html="thread.content"></v-card-text>
             </v-col>
             <v-col cols="4" lg="2" class="d-flex flex-column align-center">
                 <v-card-title>Votes</v-card-title>
@@ -29,7 +29,7 @@
                 <v-card-text>Views: {{thread.views}}</v-card-text>
             </v-col>
             <v-col cols="12">
-                <div v-for="tag in thread.tags" :key="tag._id">{{tag}}</div>
+                <v-chip class="mx-3" v-for="tag in thread.tags" :key="tag._id">{{tag.name}}</v-chip>
             </v-col>
         </v-row>
     </v-card>
