@@ -3,7 +3,8 @@ const AnswerController = require('../controllers/answerController');
 const {authenticate, aAuthorize} = require('../middlewares/auth');
 
 route.use(authenticate)
-route.get('/:questionId', AnswerController.find)
+route.get('/question/:questionId', AnswerController.find)
+route.get('/:id', aAuthorize ,AnswerController.findById)
 route.post('/', AnswerController.create)
 route.patch('/upvote', AnswerController.upvote)
 route.patch('/downvote', AnswerController.downvote)

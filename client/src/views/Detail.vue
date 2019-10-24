@@ -10,7 +10,7 @@
       <div class="p-4 w-full text-2xl">
         <h1><b>{{ question.title }}</b></h1>
       </div >
-        <small class="px-4 italic">asked: {{ new Date(question.createdAt).toDateString() }}</small>
+        <small class="px-4 italic">asked: {{ new Date(question.createdAt).toDateString() }} by : {{ question.userId.name }}</small>
         <hr>
       <div class="p-4 w-full" style="text-align:left;">
         <p v-html="question.description"></p>
@@ -30,9 +30,9 @@
     </div>
     <div class="flex justify-start flex-wrap w-full p-6">
      <div class="w-full" style="text-align:left;" v-html="answer.description"></div>
-     <p class="italic text-sm">posted: {{ new Date(answer.createdAt).toDateString() }}</p>
+     <p class="italic text-xs w-full" style="text-align:left;">posted: {{ new Date(answer.createdAt).toDateString() }} by {{ answer.userId.name }}</p>
+     <a href="#" class="italic text-blue-400 hover:text-blue-800" @click.prevent="editAnswer(answer._id)">edit</a>    </div>
     </div>
-  </div>
   <div class="m-4">
     <div>Post your answer here</div>
     <quill-editor v-model="description"
@@ -64,6 +64,9 @@ export default {
     ...mapState(['question', 'answers'])
   },
   methods: {
+    editAnswer (answerId) {
+      this.$store.dispatch('getAnswer', { id: answerId })
+    },
     qUpVote () {
       this.$store.dispatch('qUpVote', { questionId: this.$route.params.id })
     },

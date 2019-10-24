@@ -7,8 +7,7 @@ let server = 'http://localhost:3000'
 // let server = ''
 
 let instance = axios.create({
-  baseURL: server,
-  headers: { token: localStorage.getItem('token') }
+  baseURL: server
 })
 
 export default instance

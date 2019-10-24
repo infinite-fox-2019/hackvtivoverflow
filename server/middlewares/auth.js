@@ -7,6 +7,7 @@ module.exports = {
     try {
       const decode = verifyToken(req.headers.token)
       req.loggedUser = decode
+      console.log(req.loggedUser, "<<<")
       next()   
     }
     catch(err) {

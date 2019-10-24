@@ -3,7 +3,6 @@
     <List/>
   </div>
 </template>
-
 <script>
 import List from '../components/List'
 export default {
@@ -13,3 +12,8 @@ export default {
   }
 }
 </script>
+<style >
+  .home {
+    margin-left: 25%;
+  }
+</style>

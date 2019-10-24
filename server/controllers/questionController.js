@@ -13,9 +13,8 @@ class QuestionController {
   }
   static find (req, res, next) {
     let { keyword } = req.query;
-    let objParams;
+    let objParams
     if (keyword) {
-
         objParams = { $or: [
                 { title: { $regex: `${keyword}`, $options: 'i' } },
                 { description: { $regex: `${keyword}`, $options: 'i' } },
@@ -23,16 +22,24 @@ class QuestionController {
             ]
         }
     }
-    Question.find(objParams)
+    
+    Question.find(objParams).populate('userId').sort({createdAt: -1})
       .then(questions=>{
         res.status(200).json(questions)
       })
       .catch(next)
   }
-  static findByUser (req, res, next) {
+  static findMine (req, res, next ) {
+    const userId  = req.loggedUser.id
+    Question.find({userId}).populate('userId').sort({createdAt: -1})
+      .then(questions=>{
+        res.status(200).json(questions)
+      })
+      .catch(next)
+  }
+  static findById (req, res, next) {
     const {id} = req.params
-    console.log(id, '=======================================');
-    Question.findOne({_id: id})
+    Question.findOne({_id: id}).populate('userId')
       .then(question=>{
         res.status(200).json(question)
       })
@@ -40,10 +47,11 @@ class QuestionController {
   }
   static update(req, res, next) {
     const { id } = req.params
-    const {description, tags} = req.body
+    const {description, tags, title} = req.body
     let objParams = {}
     if(description) objParams.description = description
     if(tags) objParams.tags = tags
+    if(title) objParams.title = title
     Question.findByIdAndUpdate(id, objParams)
       .then(question=>{
         res.status(200).json({message: 'Successfully updated question', question})

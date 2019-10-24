@@ -4,7 +4,7 @@
         <label for="title">Title</label>
         <input type="text" name="title" class="shadow rounded focus:border-inline border-gray-300 mx-2 my-4 w-1/3 px-6 py-2" v-model="title">
       </div>
-      <quill-editor v-model="content"
+      <quill-editor v-model="description"
         ref="myQuillEditor"
         @blur="onEditorBlur($event)"
         @focus="onEditorFocus($event)"
@@ -39,10 +39,11 @@
 </template>
 
 <script>
+import axios from '../apis/axios'
 export default {
   data () {
     return {
-      content: '',
+      description: '',
       title: '',
       tags: [],
       tag: ''
@@ -53,7 +54,7 @@ export default {
       const description = this.content
       const title = this.title
       const tags = this.tags
-      this.$store.dispatch('askQuestion', { title, description, tags })
+      this.$store.dispatch('updateQuestion', { id: this.$route.params.id, title, description, tags })
     },
     addTag () {
       let tags = this.tag.split(' ').map(el => {
@@ -89,6 +90,18 @@ export default {
   },
   mounted () {
     console.log('this is current quill instance object', this.editor)
+  },
+  created () {
+    axios({
+      method: 'GET',
+      url: `questions/${this.$route.params.id}`
+    })
+      .then(({ data }) => {
+        this.description = data.description
+        this.title = data.title
+        this.tags = data.tags
+      })
+      .catch(alert)
   }
 }
 </script>

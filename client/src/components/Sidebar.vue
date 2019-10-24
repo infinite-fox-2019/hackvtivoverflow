@@ -3,11 +3,8 @@
     <div @click.prevent="goHome" class="w-full side-menu">
       <a >Home</a>
     </div>
-    <div @click.prevent="goTag" class="w-full side-menu ">
-      <a>Tags</a>
-    </div>
     <div @click.prevent="goUser" class="w-full side-menu">
-      <a >Users</a>
+      <a >My Question</a>
     </div>
   </div>
 </template>
@@ -34,7 +31,7 @@ export default {
 
 .sidebar {
   height: 100%; /* Full-height: remove this if you want "auto" height */
-  width: 160px; /* Set the width of the sidebar */
+  width: 20%; /* Set the width of the sidebar */
   position: fixed; /* Fixed Sidebar (stay in place on scroll) */
   z-index: 0;
   top: 0;

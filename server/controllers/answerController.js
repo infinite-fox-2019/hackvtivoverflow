@@ -16,21 +16,26 @@ class AnswerController {
       })
       .catch(next)
   }
+  static findById (req, res, next) {
+    const {id} = req.params
+    Answer.findById(id)
+      .then(answer=>{
+        res.status(200).json(answer)
+      })
+      .catch(next)
+  }
   static find (req, res, next) {
     const {questionId} = req.params
-    Answer.find({questionId: ObjectId(questionId)})
+    Answer.find({questionId: ObjectId(questionId)}).populate('userId')
       .then(answers=>{
         res.status(200).json(answers)
       })
       .catch(next)
   }
   static update(req, res, next) {
-    const {description, votes} = req.body
+    const {description} = req.body
     const { id } = req.params
-    let objParams = {}
-    if(description) objParams.description = description
-    if(votes) objParams.votes = votes
-
+    let objParams = {description}
     Answer.findByIdAndUpdate(id, objParams)
       .then(answer =>{
         res.status(200).json({message: 'Success Updated answer', answer: answer})

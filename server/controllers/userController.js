@@ -7,7 +7,7 @@ class UserController {
     const {name, email, password} = req.body
     User.create({name, email, password})
       .then(user=>{
-        res.status(201).json(user)
+        res.status(201).json({message: 'Successfully registered. Please login.', user})
       })
       .catch(next)
   }

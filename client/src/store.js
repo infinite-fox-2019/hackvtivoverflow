@@ -37,6 +37,19 @@ export default new Vuex.Store({
     }
   },
   actions: {
+    register (context, payload) {
+      const { name, email, password } = payload
+      axios({
+        method: 'POST',
+        url: '/users/register',
+        data: { name, email, password }
+      })
+        .then(({ data }) => {
+          alert(data.message)
+          router.push('/login')
+        })
+        .catch(alert)
+    },
     login ({ commit }, payload) {
       const { email, password } = payload
       axios({
@@ -53,7 +66,8 @@ export default new Vuex.Store({
       let keyword = this.state.keyword
       axios({
         method: 'GET',
-        url: `/questions?keyword=${keyword}`
+        url: `/questions?keyword=${keyword}`,
+        headers: { token: localStorage.getItem('token') }
       })
         .then(({ data }) => {
           commit('GET_QUESTIONS', data)
@@ -64,10 +78,22 @@ export default new Vuex.Store({
       const { id } = payload
       axios({
         method: 'GET',
-        url: `/questions/${id}`
+        url: `/questions/${id}`,
+        headers: { token: localStorage.getItem('token') }
       })
         .then(({ data }) => {
           commit('GET_A_QUESTION', data)
+        })
+        .catch(alert)
+    },
+    getMyQuestions (context) {
+      axios({
+        method: 'GET',
+        url: `/questions/my`,
+        headers: { token: localStorage.getItem('token') }
+      })
+        .then(({ data }) => {
+          context.commit('GET_QUESTIONS', data)
         })
         .catch(alert)
     },
@@ -75,10 +101,24 @@ export default new Vuex.Store({
       axios({
         method: 'POST',
         url: '/questions',
-        data: payload
+        data: payload,
+        headers: { token: localStorage.getItem('token') }
       })
         .then(({ data }) => {
           router.push('/')
+        })
+        .catch(alert)
+    },
+    updateQuestion ({ commit }, payload) {
+      const { id, title, description, tags } = payload
+      axios({
+        method: 'PATCH',
+        url: `/questions/${id}`,
+        data: { title, description, tags },
+        headers: { token: localStorage.getItem('token') }
+      })
+        .then(({ data }) => {
+          alert(data.message)
         })
         .catch(alert)
     },
@@ -86,10 +126,23 @@ export default new Vuex.Store({
       const { questionId } = payload
       axios({
         method: 'GET',
-        url: `/answers/${questionId}`
+        url: `/answers/question/${questionId}`,
+        headers: { token: localStorage.getItem('token') }
       })
         .then(({ data }) => {
           commit('GET_ANSWERS', data)
+        })
+        .catch(alert)
+    },
+    getAnswer (context, payload) {
+      const { id } = payload
+      axios({
+        method: 'GET',
+        url: `/answers/${id}`,
+        headers: { token: localStorage.getItem('token') }
+      })
+        .then(({ data }) => {
+          router.push(`/answer/${id}`)
         })
         .catch(alert)
     },
@@ -98,7 +151,8 @@ export default new Vuex.Store({
       axios({
         method: 'POST',
         url: '/answers',
-        data: { description, questionId }
+        data: { description, questionId },
+        headers: { token: localStorage.getItem('token') }
       })
         .then(({ data }) => {
           alert('post answer success')
@@ -106,10 +160,25 @@ export default new Vuex.Store({
         })
         .catch(alert)
     },
+    updateAnswer (context, payload) {
+      const { description, id } = payload
+      axios({
+        method: 'PATCH',
+        url: `/answers/${id}`,
+        data: { description },
+        headers: { token: localStorage.getItem('token') }
+      })
+        .then(({ data }) => {
+          alert(data.message)
+          router.push('/')
+        })
+        .catch(alert)
+    },
     verifyToken ({ commit }) {
       axios({
         method: 'GET',
-        url: '/users/verify'
+        url: '/users/verify',
+        headers: { token: localStorage.getItem('token') }
       })
         .then(({ data }) => {
           commit('LOGIN', localStorage.getItem('token'))
@@ -121,12 +190,13 @@ export default new Vuex.Store({
       axios({
         method: 'PATCH',
         url: 'questions/upvote',
-        data: { questionId }
+        data: { questionId },
+        headers: { token: localStorage.getItem('token') }
       })
         .then(({ data }) => {
           alert(data.message)
           context.dispatch('fetchAnswers', { questionId })
-          context.dispatch('getQuestionById', {id: questionId})
+          context.dispatch('getQuestionById', { id: questionId })
         })
         .catch(alert)
     },
@@ -135,12 +205,13 @@ export default new Vuex.Store({
       axios({
         method: 'PATCH',
         url: 'questions/downvote',
-        data: { questionId }
+        data: { questionId },
+        headers: { token: localStorage.getItem('token') }
       })
         .then(({ data }) => {
           alert(data.message)
           context.dispatch('fetchAnswers', { questionId })
-          context.dispatch('getQuestionById', {id: questionId})
+          context.dispatch('getQuestionById', { id: questionId })
         })
         .catch(alert)
     },
@@ -149,7 +220,8 @@ export default new Vuex.Store({
       axios({
         method: 'PATCH',
         url: 'answers/upvote',
-        data: { answerId }
+        data: { answerId },
+        headers: { token: localStorage.getItem('token') }
       })
         .then(({ data }) => {
           alert(data.message)
@@ -162,11 +234,24 @@ export default new Vuex.Store({
       axios({
         method: 'PATCH',
         url: 'answers/downvote',
-        data: { answerId }
+        data: { answerId },
+        headers: { token: localStorage.getItem('token') }
       })
         .then(({ data }) => {
           alert(data.message)
           context.dispatch('fetchAnswers', { questionId })
+        })
+        .catch(alert)
+    },
+    deleteQuestion (context, payload) {
+      const { questionId } = payload
+      axios({
+        method: 'DELETE',
+        url: `/questions/${questionId}`,
+        headers: { token: localStorage.getItem('token') }
+      })
+        .then(({ data }) => {
+          alert(data.message)
         })
         .catch(alert)
     }
