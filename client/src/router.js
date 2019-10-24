@@ -6,6 +6,7 @@ import AllQuestion from './views/AllQuestion.vue'
 import Ask from './views/Ask.vue'
 import MyQuestion from './views/MyQuestion.vue'
 import MyQuestionDetail from './views/MyQuestionDetail.vue'
+import Update from './views/Update.vue'
 Vue.use(Router)
 
 export default new Router({
@@ -49,7 +50,11 @@ export default new Router({
       path: '/myquestion',
       name: 'my1question',
       component: MyQuestion
+    },
+    {
+      path: '/update/:id',
+      name: 'update',
+      component: Update
     }
-    
   ]
 })

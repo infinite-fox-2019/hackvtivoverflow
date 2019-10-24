@@ -33,7 +33,7 @@
 
 <script>
 // import axios from 'axios'
-import {mapState} from 'vuex'
+import { mapState } from 'vuex'
 export default {
   name: 'MyQuestion',
   data () {
@@ -42,16 +42,16 @@ export default {
     }
   },
   methods: {
-      myDetail(id) {
-          this.$store.dispatch('getMyDetail',id)
-          this.$router.push(`/myquestion/${id}`)
-      }
+    myDetail (id) {
+      this.$store.dispatch('getMyDetail', id)
+      this.$router.push(`/myquestion/${id}`)
+    }
   },
   created () {
     this.$store.dispatch('personalQuestion')
   },
   computed: {
-      ...mapState(['myQuestion'])
+    ...mapState(['myQuestion'])
   }
 }
 </script>

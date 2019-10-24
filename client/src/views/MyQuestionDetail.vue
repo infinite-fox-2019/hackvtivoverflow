@@ -11,7 +11,7 @@
                         <a href="" style="color:gray;"><i class="fas fa-caret-down"></i></a>
                     </div>
                </div>
-                
+
                 <div class="ques-content">
                     <div>
                         <h3>{{ detailQuestion.title }}</h3>
@@ -24,7 +24,7 @@
                     <button @click.prevent="deleteQue()">
                         ❌
                     </button>
-                    <button>
+                    <button @click.prevent="updateQue()">
                         📝
                     </button>
                 </div>
@@ -34,21 +34,24 @@
 </template>
 
 <script>
-import {mapState} from 'vuex'
+import { mapState } from 'vuex'
 export default {
-    name:'MyQuestionDetail',
-    methods:{
-        deleteQue() {
-            this.$store.dispatch('deleteQuestion',this.$route.params.id)
-            this.$router.push('/myquestion')
-        }
+  name: 'MyQuestionDetail',
+  methods: {
+    deleteQue () {
+      this.$store.dispatch('deleteQuestion', this.$route.params.id)
+      this.$router.push('/myquestion')
     },
-    computed: {
-        ...mapState(['detailQuestion'])
-    },
-    created() {
-        this.$store.dispatch('getMyDetail',this.$route.params.id)
+    updateQue () {
+        this.$store.dispatch('findOne',this.$route.params.id)
     }
+  },
+  computed: {
+    ...mapState(['detailQuestion'])
+  },
+  created () {
+    this.$store.dispatch('getMyDetail', this.$route.params.id)
+  }
 }
 </script>
 

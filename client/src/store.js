@@ -10,13 +10,13 @@ export default new Vuex.Store({
     isLogin: false,
     img: '',
     myQuestion: [],
-    detailQuestion : {
+    detailQuestion: {
       _id: '',
       title: '',
       description: '',
       upvotes: '',
       downvotes: '',
-      userId: '',
+      userId: ''
     }
   },
   mutations: {
@@ -30,7 +30,7 @@ export default new Vuex.Store({
     MY_QUESTION (state, payload) {
       state.myQuestion = payload
     },
-    DETAIL_QUESTION (state,payload) {
+    DETAIL_QUESTION (state, payload) {
       state.detailQuestion._id = payload._id
       state.detailQuestion.title = payload.title
       state.detailQuestion.description = payload.description
@@ -45,36 +45,80 @@ export default new Vuex.Store({
       state.detailQuestion.upvotes = ''
       state.detailQuestion.downvotes = ''
       state.detailQuestion.userId = ''
+    },
+    UPDATE_QUESTION (state, payload) {
+      state.detailQuestion._id = payload._id
+      state.detailQuestion.title = payload.title
+      state.detailQuestion.description = payload.description
+      state.detailQuestion.upvotes = payload.upvotes
+      state.detailQuestion.downvotes = payload.downvotes
+      state.detailQuestion.userId = payload.userId
     }
   },
   actions: {
-    deleteQuestion ({commit},payload) {
-      axios({
-        method: 'delete',
-        url: `http://localhost:3000/question/${payload}`,
-        headers: {token: localStorage.getItem('token')}
-      })
-      .then(_=>{
-        Swal.fire('success','question deleted','success')
-        commit('REMOVE_DATA')
-      })
-      .catch(err=>{
-        Swal.fire('error',err,'error')
-      })
-    },
-    getMyDetail ({commit},payload) {
+    findOne({commit},payload) {
+      console.log('masuk findone');
+      
       axios({
         method: 'get',
-        url: `http://localhost:3000/question/${payload}`,
-        headers: {token:localStorage.getItem('token')}
+        url : `http://localhost:3000/question/${payload}`,
+        headers: {token: localStorage.getItem('token')}
       })
       .then(({data})=>{
-        commit('DETAIL_QUESTION',data)
+        console.log(data,'dari findone');
+        
+        commit('UPDATE_QUESTION',data)
+        router.push(`/update/${data._id}`)
       })
       .catch(err=>{
         console.log(err);
         
       })
+    },
+    updateQue ({commit},payload) {
+      console.log('masuk store');
+      
+      axios({
+        method: 'put',
+        url: `http://localhost:3000/question/${payload._id}`,
+        headers: {token: localStorage.getItem('token')},
+        data: {title: payload.title, description: payload.description}
+      })
+      .then(({data})=>{
+        console.log(data);
+        
+        Swal.fire('success','updated success','success')
+      })
+      .catch(err=>{
+        Swal.fire('error',err,'error')
+      })
+    },
+    deleteQuestion ({ commit }, payload) {
+      axios({
+        method: 'delete',
+        url: `http://localhost:3000/question/${payload}`,
+        headers: { token: localStorage.getItem('token') }
+      })
+        .then(_ => {
+          Swal.fire('success', 'question deleted', 'success')
+          commit('REMOVE_DATA')
+        })
+        .catch(err => {
+          Swal.fire('error', err, 'error')
+        })
+    },
+    getMyDetail ({ commit }, payload) {
+      axios({
+        method: 'get',
+        url: `http://localhost:3000/question/${payload}`,
+        headers: { token: localStorage.getItem('token') }
+      })
+        .then(({ data }) => {
+          commit('DETAIL_QUESTION', data)
+        })
+        .catch(err => {
+          console.log(err)
+        })
     },
     login ({ commit }, payload) {
       axios({
