@@ -13,7 +13,7 @@
             </v-col>
             <v-col cols="4" lg="2" class="d-flex flex-column align-center">
                 <v-card-title>Votes</v-card-title>
-                <v-card-text class="text-center">{{voteScore}}</v-card-text>
+                <v-card-text class="text-center display-1">{{voteScore}}</v-card-text>
             </v-col>
             <v-col cols="4" class="d-flex flex-column align-center">
                 <v-card-text class="text-center">{{thread.owner.username}}</v-card-text>
@@ -24,6 +24,9 @@
             <v-col cols="8" class="d-flex flex-column align-end">
                 <v-card-text class="text-end">Created: {{thread.createdAt | moment("from")}}</v-card-text>
                 <v-card-text class="text-end">Updated: {{thread.updatedAt | moment("from")}}</v-card-text>
+            </v-col>
+            <v-col cols="12">
+                <v-card-text>Views: {{thread.views}}</v-card-text>
             </v-col>
             <v-col cols="12">
                 <div v-for="tag in thread.tags" :key="tag._id">{{tag}}</div>

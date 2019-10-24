@@ -22,7 +22,8 @@ class UserController {
                         token: "Bearer " + token,
                         username: user.username,
                         email: user.email,
-                        gravatar: user.gravatar
+                        gravatar: user.gravatar,
+                        _id: user._id
                     })
                 } else {
                     next({ status: 400, message: "Invalid Email / Username / Password" })

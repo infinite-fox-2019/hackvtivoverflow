@@ -36,15 +36,20 @@ Vue.use(AWN, {
 
 Vue.mixin({
     methods: {
-        next: function ({ response }) {
-            console.log(response)
-            const { data: { message } } = response
-            if (Array.isArray(message)) message = message.join('<br />')
-            this.$awn.alert(message, {
-                labels: {
-                    alert: response.statusText
-                }
-            })
+        next: function (error) {
+            try {
+                const { response } = error
+                const { data: { message } } = response
+                if (Array.isArray(message)) message = message.join('<br />')
+                this.$awn.alert(message, {
+                    labels: {
+                        alert: response.statusText
+                    }
+                })
+            } catch {
+                this.$awn.alert(error)
+                console.log(error)
+            }
         },
         loadStart: function () {
             this.$store.commit('LOAD_START')

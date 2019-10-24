@@ -16,6 +16,8 @@ Router.patch('/upvote/:id', ThreadController.upvote)
 Router.patch('/downvote/:id', ThreadController.downvote)
 Router.patch('/unvote/:id', ThreadController.unvote)
 
+Router.post('/:id/reply', ReplyController.create)
+
 Router.delete('/:id', thread, ThreadController.delete)
 Router.delete('/:id/:replyId', reply, ReplyController.delete)
 Router.put('/:id', thread, ThreadController.update)

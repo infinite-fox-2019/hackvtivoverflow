@@ -4,7 +4,7 @@ export default {
     namespaced: true,
     state: {
         threads: [],
-        thread: {}
+        thread: undefined
     },
     mutations: {
         SET_THREADS(state, payload) {
@@ -49,7 +49,13 @@ export default {
             return data
         },
         async upvote({ commit }, id) {
-            await axios.post('/')
+            await axios.patch('/threads/upvote/' + id)
+        },
+        async downvote({ commit }, id) {
+            await axios.patch('/threads/downvote/' + id)
+        },
+        async unvote({ commit }, id) {
+            await axios.patch('/threads/unvote/' + id)
         }
     },
     modules: {

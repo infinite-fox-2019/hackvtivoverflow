@@ -58,9 +58,13 @@ const routes = [
     },
     {
         path: '/thread/:id',
-        component: SingleThread,
+        component: () => import(/* webpackChunkName: "Thread" */ '../views/RouteThread.vue'),
         children:
             [
+                {
+                    path: '',
+                    component: SingleThread,
+                },
                 {
                     path: 'reply',
                     name: "reply-thread",

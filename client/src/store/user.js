@@ -7,13 +7,17 @@ export default {
         token: "",
         username: "",
         email: "",
-        gravatar: "https://www.gravatar.com/avatar/null"
+        gravatar: "https://www.gravatar.com/avatar/null",
+        id: null,
+        myThreads: [],
+        myReplies: []
     },
     mutations: {
         SETLOGIN(state, data) {
             state.token = data.token
             state.username = data.username
             state.email = data.email
+            state.id = data._id
             state.gravatar = data.gravatar || "https://www.gravatar.com/avatar/null"
             state.login = true
         },
@@ -22,6 +26,7 @@ export default {
             state.username = localStorage.getItem('username')
             state.email = localStorage.getItem('email')
             state.gravatar = localStorage.getItem('gravatar') || "https://www.gravatar.com/avatar/null"
+            state.id = localStorage.getItem('id')
             state.login = true
         },
         DESTROY_CREDENTIALS(state) {
@@ -30,6 +35,7 @@ export default {
             state.username = ""
             state.email = ""
             state.gravatar = "https://www.gravatar.com/avatar/null"
+            state.id = null
             localStorage.removeItem('token')
             localStorage.removeItem('username')
             localStorage.removeItem('email')
@@ -46,6 +52,7 @@ export default {
             localStorage.setItem('username', data.username)
             localStorage.setItem('email', data.email)
             localStorage.setItem('gravatar', data.gravatar)
+            localStorage.setItem('id', data._id)
             axios.defaults.headers.authorization = state.token
             axiosF.defaults.headers.authorization = state.token
         },

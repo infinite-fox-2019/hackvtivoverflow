@@ -1,14 +1,31 @@
 const Thread = require('../models/thread')
 const Reply = require('../models/reply')
+const { Types } = require('mongoose')
 
 class ReplyController {
     static async create(req, res, next) {
-        const { title, content } = req.body
+        const { content } = req.body
+        console.log(req.params)
+        let where = {}
         try {
-            const reply = await Reply.create({ title, content, owner: req.decode.id })
-            await Thread.findByIdAndUpdate(req.params.id, { $push: { replies: reply._id } })
+            let id = Types.ObjectId(req.params.id)
+            where.id = id
+        } catch (err) {
+            where.slug = req.params.id
+        }
+        console.log(where)
+        let reply
+        try {
+            reply = await Reply.create({ content, owner: req.decode.id })
+            let thread = await Thread.findOneAndUpdate(where, { $push: { replies: reply._id } }, { new: true })
+            if (!thread) {
+                let err = new Error('Thread Not Found')
+                err.status = 404
+                throw err
+            }
             res.status(201).json(reply)
         } catch (err) {
+            if (reply) Reply.deleteOne({ _id: reply._id })
             next(err)
         }
     }
@@ -33,9 +50,9 @@ class ReplyController {
     }
 
     static async update(req, res, next) {
-        const { title, content } = req.body
+        const { content } = req.body
         try {
-            let reply = await Reply.findByIdAndUpdate(req.params.replyId, { $set: { title, content } }, { new: true })
+            let reply = await Reply.findByIdAndUpdate(req.params.replyId, { $set: { content } }, { new: true })
             res.status(200).json(reply)
         } catch (err) {
             next(err)

@@ -26,7 +26,7 @@ class ThreadController {
                     })
                     arr.push(tag._id)
                 })
-                return thread.updateOne({ $set: { tags: arr } })
+                return thread.updateOne({ $$push: { tags: arr } })
             })
             .then(() => res.status(200).json({ message: "Thread created", id: threadId, slug }))
             .catch(next)
@@ -58,7 +58,15 @@ class ThreadController {
     static readOne(req, res, next) {
         const options = queryOptions(req.query)
         const id = req.params.id
-        Thread.findOne({ $or: [{ _id: id }, { slug: id }] })
+        let where = {}
+        try {
+            let castedId = Types.ObjectId(id)
+            where._id = castedId
+        } catch (error) {
+            where.slug = id
+        }
+        let data
+        Thread.findOne(where)
             .populate('owner', '-password')
             .populate('tags')
             .populate({
@@ -71,12 +79,13 @@ class ThreadController {
             })
             .then((thread) => {
                 if (thread) {
-                    thread.views++
-                    return thread.save()
+                    data = thread
+                    let views = thread.views + 1
+                    return thread.updateOne({ $set: { views } }, { timestamps: false })
                 }
                 else next({ status: 400, message: "Thread not Found" })
             })
-            .then((thread) => res.status(200).json(thread))
+            .then(() => res.status(200).json(data))
             .catch(next)
         /* Thread.aggregate([
             { $match: { _id: Types.ObjectId(id) } },
@@ -148,19 +157,26 @@ class ThreadController {
     }
 
     static upvote(req, res, next) {
-        Thread.findByIdAndUpdate(req.params.id, { $addToSet: { upvotes: req.decode.id }, $pull: { downvotes: req.decode.id } })
-            .then(() => res.status(200).json({ message: "Thread upvoted" }))
+        Thread.findByIdAndUpdate(req.params.id, {
+            $addToSet: { upvotes: req.decode.id },
+            $pull: { downvotes: req.decode.id }
+        }, { new: true })
+            // .then(() => res.status(200).json({ message: "Thread upvoted" }))
+            .then((thread) => res.status(200).json({ thread }))
             .catch(next)
     }
     static downvote(req, res, next) {
-        Thread.findByIdAndUpdate(req.params.id, { $addToSet: { downvote: req.decode.id }, $pull: { upvote: req.decode.id } })
-            .then(() => res.status(200).json({ message: "Thread downvoted" }))
+        console.log(req.decode.id)
+        Thread.findByIdAndUpdate(req.params.id, { $addToSet: { downvotes: req.decode.id }, $pull: { upvotes: req.decode.id } }, { new: true })
+            .then((thread) => {
+                res.status(200).json({ message: "Thread downvoted" })
+            })
             .catch(next)
     }
 
     static unvote(req, res, next) {
         Thread.findByIdAndUpdate(req.params.id, {
-            $pull: { upvote: req.decode.id, downvote: req.decode.id }
+            $pull: { upvotes: req.decode.id, downvotes: req.decode.id }
         })
             .then(() => res.status(200).json({ message: "Unvoted thread" }))
             .catch(next)
