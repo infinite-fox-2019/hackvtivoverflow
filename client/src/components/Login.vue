@@ -1,6 +1,6 @@
 <template>
   <div>
-    <b-button @click="show=true" variant="outline-light" size="sm" class="mt-2">Log In</b-button>
+    <b-button @click="openLogin" variant="outline-light" size="sm" class="mt-2">Log In</b-button>
 
     <b-modal
       v-model="show"
@@ -51,18 +51,69 @@
 </template>
 
 <script>
+import axios from '../config/axios'
+import Swal from 'sweetalert2'
 export default {
   data () {
     return {
-      show: false,
       email: '',
-      password: ''
+      password: '',
+      show: false
+    }
+  },
+  computed: {
+    storeshow () {
+      return this.$store.state.showLogin
+      // return true
+    }
+  },
+  watch: {
+    storeshow () {
+      if (this.storeshow) {
+        this.openLogin()
+      }
+    },
+    show () {
+      if (!this.show) {
+        this.$store.commit('CHANGE_SHOWLOGIN', false)
+      }
     }
   },
   methods: {
-    tryLogin () {
-      console.log('yuhiii')
+    tryClose () {
       this.show = false
+    },
+    tryLogin () {
+      axios({
+        method: 'post',
+        url: '/users/login',
+        data: {
+          email: this.email,
+          password: this.password
+        }
+      })
+        .then(({ data }) => {
+          localStorage.setItem('token', data.token)
+          localStorage.setItem('email', data.email)
+          localStorage.setItem('_id', data._id)
+          this.$store.commit('SET_ISLOGIN', true)
+        })
+        .catch(err => {
+          let errors = err.response.data.message || err.response.data.errMsg
+          Swal.fire({
+            type: 'error',
+            title: 'Error!',
+            text: errors
+          })
+        })
+        .finally(() => {
+          this.email = ''
+          this.password = ''
+        })
+      this.show = false
+    },
+    openLogin () {
+      this.show = true
     }
   }
 }

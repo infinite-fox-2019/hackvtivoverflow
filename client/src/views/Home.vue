@@ -2,7 +2,7 @@
   <div class="home">
     <div class="box">
       <br>
-      <img src="../assets/logo.svg" alt="">
+      <img src="../assets/logo.svg" @click="login" alt="">
       <br>
       <router-link to="/register"><h4>Create Account</h4></router-link>
       <router-link to="/questions"><h6>Looking for Anwer?</h6></router-link>
@@ -16,6 +16,11 @@
 export default {
   name: 'home',
   components: {
+  },
+  methods: {
+    login () {
+      this.$store.commit('CHANGE_SHOWLOGIN', true)
+    }
   }
 }
 </script>

@@ -15,7 +15,6 @@ export default {
   },
   created () {
     if (localStorage.getItem('token') && localStorage.getItem('_id') && localStorage.getItem('email')) {
-      console.log('here')
       this.$store.commit('SET_ISLOGIN', true)
       this.$store.dispatch('getMyAcc')
     }

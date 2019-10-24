@@ -4,7 +4,7 @@ const Tag = require('../models/tag')
 
 class QuestionController {
   static create(req, res, next) {
-    const { title, description ,tags} = req.body;
+    const { title, description, tags } = req.body;
     let loggedInUser = req.decoded._id;
     Question.create({
       title: title,
@@ -13,6 +13,15 @@ class QuestionController {
       tags: tags
     })
       .then(data_question => {
+        let id = data_question._id.toString()
+        Tag.updateMany({ questions: { $all: [id] } }, { $pull: { questions: id } })
+          .then(() => {
+            Tag.updateMany({ name: { $in: this.tags } }, { $push: { questions: id } })
+              .then(() => {
+                console.log('presave done')
+                next()
+              })
+          })
         res.status(201).json({
           message: `Question Successfully Created!`,
           data: data_question
@@ -22,7 +31,8 @@ class QuestionController {
   };
 
   static updatePut(req, res, next) {
-    const { title, description , tags} = req.body;
+    const { title, description, tags } = req.body;
+
     Question.updateOne(
       {
         _id: req.params.id
@@ -30,9 +40,20 @@ class QuestionController {
       { title, description, tags }
     )
       .then(() => {
-        res.status(200).json({
-          message: "Success update your question"
-        });
+        let id = req.params.id
+        let tags = tags
+        Tag.updateMany({ questions: { $all: [id] } }, { $pull: { questions: id } })
+          .then(() => {
+            Tag.updateMany({ name: { $in: tags } }, { $push: { questions: id } })
+              .then(() => {
+                res.status(200).json({
+                  message: "Success update your question"
+                });
+              })
+
+            console.log('preUpdateOne')
+            next()
+          })
       })
       .catch(next);
   };
@@ -42,13 +63,13 @@ class QuestionController {
       _id: req.params.id
     })
       .then(() => {
-        Tag.updateMany({questions : {$all: [req.params.id]}}, {$pull: {questions: req.params.id}})
-        .then(data =>{
-          // console.log(data);
-          res.status(200).json({
-            message: "Success delete question"
+        Tag.updateMany({ questions: { $all: [req.params.id] } }, { $pull: { questions: req.params.id } })
+          .then(data => {
+            // console.log(data);
+            res.status(200).json({
+              message: "Success delete question"
+            })
           })
-        })
       })
       .catch(next);
     ;
@@ -66,21 +87,21 @@ class QuestionController {
               message: `you cannot like your own question!`
             });
           } else {
-              if (result.likes.includes(loggedInUser)) {
-                return Question.netralize({ _id: req.params.id, user: req.decoded._id })
-                .then(data =>{
+            if (result.likes.includes(loggedInUser)) {
+              return Question.netralize({ _id: req.params.id, user: req.decoded._id })
+                .then(data => {
                   res.status(200).json({
                     message: `You already like this answer, now it's update too netralize..`
                   })
                 })
-              } else {
+            } else {
               return Question.updateOne(
                 {
                   _id: req.params.id
                 },
                 {
                   $push: { likes: loggedInUser },
-                  $pull: { dislikes:  loggedInUser }
+                  $pull: { dislikes: loggedInUser }
                 }
               )
                 .then(result1 => {
@@ -112,7 +133,7 @@ class QuestionController {
       .populate({ path: 'user', select: 'email name' })
       .then(data_question => {
         Answer.find({ questionId: req.params.id })
-        .populate({path: 'user', select: '_id name email'})
+          .populate({ path: 'user', select: '_id name email' })
           .sort({ createdAt: -1 })
           .then(answer => {
             res.status(200).json({
@@ -144,30 +165,30 @@ class QuestionController {
           } else {
             if (result.dislikes.includes(loggedInUser)) {
               Question.netralize({ _id: req.params.id, user: req.decoded._id })
-              .then(data =>{
-                res.status(400).json({
-                  message: `You already dislike this answer, now it's update too netralize..`
+                .then(data => {
+                  res.status(400).json({
+                    message: `You already dislike this answer, now it's update too netralize..`
+                  })
                 })
-              })
             } else {
-             Question.updateOne(
-              {
-                _id: req.params.id
-              },
-              {
-                $push: { dislikes: loggedInUser },
-                $pull: { likes: loggedInUser }
-              }
-            )
-              .then(result1 => {
-                res.status(200).json({message: 'Dislike++'})
-              })
-              .catch(err => {
-                res.status(400).json({
-                  message: "You can't like your own answer"
+              Question.updateOne(
+                {
+                  _id: req.params.id
+                },
+                {
+                  $push: { dislikes: loggedInUser },
+                  $pull: { likes: loggedInUser }
+                }
+              )
+                .then(result1 => {
+                  res.status(200).json({ message: 'Dislike++' })
+                })
+                .catch(err => {
+                  res.status(400).json({
+                    message: "You can't like your own answer"
+                  });
                 });
-              });
-          }
+            }
           }
         } else {
           next({
@@ -207,16 +228,16 @@ class QuestionController {
       .catch(next);
   }
 
-  static filterTag(req, res, next){
+  static filterTag(req, res, next) {
     let tagArr = [req.params.tag]
-    Question.find({ tags : {$all : tagArr}})
-    .sort({createdAt : -1})
-    .then(data =>{
-      res.status(200).json({
-        questions : data
+    Question.find({ tags: { $all: tagArr } })
+      .sort({ createdAt: -1 })
+      .then(data => {
+        res.status(200).json({
+          questions: data
+        })
       })
-    })
-    .catch(next)
+      .catch(next)
   }
 
 }

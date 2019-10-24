@@ -99,7 +99,6 @@ export default {
           localStorage.setItem('token', data.token)
           this.$store.commit('SET_ISLOGIN', true)
           this.$router.push('/questions')
-          console.log(data)
         })
         .catch(err => {
           let errors = err.response.data.errMsg.join('<br>')
@@ -139,6 +138,9 @@ export default {
   background: rgba(0, 0, 0, 0.589);
   width: 50%;
   height: 650px;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
 }
 .bck {
   display: flex;
@@ -150,5 +152,8 @@ export default {
 }
 h1{
   color: white;
+}
+form{
+  margin: 0 auto
 }
 </style>

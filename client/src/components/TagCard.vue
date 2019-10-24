@@ -2,12 +2,12 @@
   <div class="back1">
     <div class="title">
       <p># {{tag.display}}</p>
-      <p>{{totalQues}}</p>
+      <p>{{totalQues}} Qs</p>
     </div>
     <hr />
     <div class="content">{{tag.description}}</div>
     <div class="footer">
-      <b-button class="only" size="sm" variant="outline-dark" v-if="allowOpen">
+      <b-button class="only" size="sm" variant="outline-dark" v-if="allowOpen" @click="toTag">
         <p>See More</p>
       </b-button>
           <b-button class="only" size="sm" variant="outline-dark" disabled v-else>
@@ -26,7 +26,7 @@ export default {
   props: ['tag'],
   computed: {
     totalQues () {
-      return this.tag.questions.length + ' Qs'
+      return this.tag.questions.length
     },
     totalWatch () {
       return this.tag.users.length
@@ -37,6 +37,11 @@ export default {
       } else {
         return false
       }
+    }
+  },
+  methods: {
+    toTag () {
+      this.$router.push(`/questions/tag/${this.tag.name}`)
     }
   }
 }

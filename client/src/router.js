@@ -6,7 +6,8 @@ import ListTag from './views/ListTag.vue'
 import Register from './views/Register.vue'
 import ListQues from './views/ListQues.vue'
 import CreateQues from './views/CreateQues.vue'
-
+import OneDetail from './views/OneDetail.vue'
+import store from './store'
 Vue.use(Router)
 
 export default new Router({
@@ -16,7 +17,16 @@ export default new Router({
     {
       path: '/',
       name: 'home',
-      component: Home
+      component: Home,
+      beforeEnter: function (to, from, next) {
+        if (localStorage.getItem('token')) {
+          next({
+            path: '/questions'
+          })
+        } else {
+          next()
+        }
+      }
     },
     {
       path: '/about',
@@ -39,23 +49,29 @@ export default new Router({
         {
           path: 'create',
           name: 'create',
-          component: CreateQues
+          component: CreateQues,
+          beforeEnter: function (to, from, next) {
+            if (store.state.isLogin) {
+              next()
+            } else {
+              store.commit('SHOWLOGIN_TRUE')
+            }
+          }
         },
         {
-          path: 'tag',
+          path: 'tags',
           name: 'listtag',
-          component: ListTag,
-          children: [
-            {
-              path: ':tag',
-              name: 'tagname',
-              component: ListQues
-            }
-          ]
+          component: ListTag
+        },
+        {
+          path: 'tag/:tag',
+          name: 'tagname',
+          component: ListQues
         },
         {
           path: ':id',
-          name: 'detail'
+          name: 'detail',
+          component: OneDetail
         }
       ]
     },

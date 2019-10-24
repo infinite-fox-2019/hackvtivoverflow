@@ -57,19 +57,19 @@ questionSchema.pre('save', function(next){
   })
 })
 
-questionSchema.pre('updateOne', function(next){
-  let _id = this.getQuery()._id
-  let id = _id.toString()
-  let tags = this.getUpdate().tags
-  Tag.updateMany({questions : {$all: [_id]}}, {$pull: {questions: id}})
-  .then(()=>{
-    Tag.updateMany({name : {$in: tags}}, {$push : {questions : id}})
-    .then(()=>{
-      console.log('preUpdateOne')
-      next()
-    })
-  })
-})
+// questionSchema.pre('updateOne', function(next){
+//   let _id = this.getQuery()._id
+//   let id = _id.toString()
+//   let tags = this.getUpdate().tags
+//   Tag.updateMany({questions : {$all: [_id]}}, {$pull: {questions: id}})
+//   .then(()=>{
+//     Tag.updateMany({name : {$in: tags}}, {$push : {questions : id}})
+//     .then(()=>{
+//       console.log('preUpdateOne')
+//       next()
+//     })
+//   })
+// })
 
 const Question = mongoose.model("Question", questionSchema);
 
