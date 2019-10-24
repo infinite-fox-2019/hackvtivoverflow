@@ -43,7 +43,7 @@ export default {
       this.$store.commit("LOADER", true);
       axios({
         method: `post`,
-        url: `http://localhost:3000/user/login`,
+        url: `http://52.14.60.30/user/login`,
         data: {
           email: this.email,
           password: this.password

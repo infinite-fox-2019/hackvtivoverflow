@@ -10,7 +10,7 @@ Vue.use(Notifications)
 export default new Vuex.Store({
   state: {
     showCustomizeLoader: false,
-    baseUrl: `http://localhost:3000`,
+    baseUrl: `http://52.14.60.30`,
     tags: [],
     asks: [],
     ask: null,
