@@ -11,7 +11,7 @@ const mongoose = require('mongoose')
 const routes = require('./routes')
 const errorHandler = require('./middlewares/errorHandler')
 
-const db = (!NODE_ENV) || (NODE_ENV === 'production') ? process.env.MONGO_DB : 'mongodb://localhost/Underflow-' + NODE_ENV
+const db = ((!NODE_ENV) || (NODE_ENV === 'production')) ? process.env.MONGO_DB : 'mongodb://localhost/Underflow-' + NODE_ENV
 
 
 app.use(express.urlencoded({ extended: false }))
