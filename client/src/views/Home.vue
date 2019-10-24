@@ -5,7 +5,7 @@
       <b-row>
         <b-col class="">
           <b-jumbotron header="Question List" class="p-5 bg-light border mb-0" lead="">
-            <b-button class="mt-3" variant="primary" href="#">Add Question</b-button>
+            <router-link to="/addquestion"><b-button class="mt-3" variant="primary">Add Question</b-button></router-link>
           </b-jumbotron>
         </b-col>
       </b-row>

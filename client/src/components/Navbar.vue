@@ -5,8 +5,8 @@
       <b-collapse id="nav-collapse" is-nav>
         <!-- Right aligned nav items -->
         <b-navbar-nav class="ml-auto">
-          <b-button size="sm" class="my-2 my-sm-0 mr-2">Login</b-button>
-          <b-button size="sm" class="my-2 my-sm-0 mr-2">Question?</b-button>
+          <router-link to="/login"><b-button size="sm" class="my-2 my-sm-0 mr-2">Login</b-button></router-link>
+          <router-link to="/addquestion"><b-button size="sm" class="my-2 my-sm-0 mr-2">Question?</b-button></router-link>
           <b-button size="sm" class="my-2 my-sm-0 mr-2">Logout</b-button>
         </b-navbar-nav>
       </b-collapse>

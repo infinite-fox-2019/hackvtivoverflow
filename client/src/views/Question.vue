@@ -1,7 +1,7 @@
 <template>
   <b-container class="w-75">
-    <h2 class="my-4">WPF Semi-dynamic grid</h2>
-    <b-row class="">
+    <b-row class="border-left">
+    <h2 class="my-4 ml-3">WPF Semi-dynamic grid</h2>
       <b-media>
         <template v-slot:aside>
           <b-container>
@@ -100,10 +100,12 @@
       </b-media>
     </b-row>
 
-    <div>
-      <h4 class="my-4">Your Answer</h4>
-      <ckeditor :editor="editor" v-model="editorData" :config="editorConfig"></ckeditor>
-    </div>
+    <b-row class=" border-left border-top">
+      <b-col class="my-4">
+        <h4 class="mb-4">Your Answer</h4>
+        <ckeditor :editor="editor" v-model="editorData" :config="editorConfig"></ckeditor>
+      </b-col>
+    </b-row>
 
   </b-container>
 </template>
@@ -125,6 +127,6 @@ export default {
 }
 </script>
 
-<style>
+<style scope>
 .ck-content { height:200px;}
 </style>
