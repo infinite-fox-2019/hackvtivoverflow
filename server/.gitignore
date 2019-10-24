@@ -1,0 +1,8 @@
+node_modules
+.vscode
+.DS_STORE
+keyfile.json
+dist
+/dist
+.env
+.env.local
