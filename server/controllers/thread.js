@@ -16,17 +16,19 @@ class ThreadController {
                 let arr = []
                 threadId = thread._id
                 slug = thread.slug
-                await tags.forEach(async el => {
-                    let tag = await Tag.findOneAndUpdate({
+                tags.forEach(el => {
+                    arr.push(Tag.findOneAndUpdate({
                         name: el
                     }, {
                         $addToSet: { watchers: userId }
                     }, {
-                        upsert: true
-                    })
-                    arr.push(tag._id)
+                        upsert: true, new: true
+                    }))
                 })
-                return thread.updateOne({ $$push: { tags: arr } })
+                let results = await Promise.all(arr)
+                let tagIDs = []
+                results.forEach(el => tagIDs.push(el._id))
+                return thread.updateOne({ $push: { tags: { $each: tagIDs } } })
             })
             .then(() => res.status(200).json({ message: "Thread created", id: threadId, slug }))
             .catch(next)
@@ -166,7 +168,6 @@ class ThreadController {
             .catch(next)
     }
     static downvote(req, res, next) {
-        console.log(req.decode.id)
         Thread.findByIdAndUpdate(req.params.id, { $addToSet: { downvotes: req.decode.id }, $pull: { upvotes: req.decode.id } }, { new: true })
             .then((thread) => {
                 res.status(200).json({ message: "Thread downvoted" })
