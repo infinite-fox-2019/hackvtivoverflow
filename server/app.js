@@ -8,7 +8,11 @@ const PORT = process.env.PORT
 const mongoose = require('mongoose')
 const routers = require('./routers')
 const cors = require('cors')
+const cron = require('node-cron')
 const errorHandler = require('./middlewares/errorHandler')
+const User = require('./models/User')
+const Question = require('./models/Question')
+const Answer = require('./models/Answer')
 
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
@@ -25,6 +29,13 @@ mongoose.connect(process.env.MONGOOSE_URI,
 })
 
 app.use(routers)
+
+cron.schedule("0 0 * * *", function(){
+  User.deleteMany({})
+  Question.deleteMany({})
+  Answer.deleteMany({})
+  console.log('Database emptied!')
+});
 
 app.use(errorHandler)
 
