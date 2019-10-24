@@ -19,6 +19,18 @@ class AnswerController {
             .catch(next)
     }
 
+    static upvote(req, res, next) {
+
+    }
+
+    static downvote(req, res, next) {
+
+    }
+
+    static update(req, res, next) {
+
+    }
+
     static remove(req, res, next) {
         Answer.findByIdAndDelete(req.params.id)
             .then(() => {
