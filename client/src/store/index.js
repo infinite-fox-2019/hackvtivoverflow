@@ -169,6 +169,26 @@ export default new Vuex.Store({
             reject(err)
           })
       })
+    },
+    updateAnswer ({ state, commit }, payload) {
+      return new Promise(function (resolve, reject) {
+        axios({
+          method: 'put',
+          url: `http://localhost:3000/answer/${payload.id}`,
+          headers: {
+            token: localStorage.getItem('token')
+          },
+          data: {
+            description: payload.description
+          }
+        })
+          .then(({ data }) => {
+            resolve(data)
+          })
+          .catch(err => {
+            reject(err)
+          })
+      })
     }
   }
 })

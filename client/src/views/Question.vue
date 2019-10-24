@@ -7,7 +7,7 @@
                 <h1>\/</h1>
             </div>
             <div class="questionAnswer">
-                <h3>Question by {{ this.$store.state.question.userId.username }} :</h3>
+                <h3>Question by {{  }} :</h3>
                 <h2>{{ this.$store.state.question.title }}</h2>
                 <div class="buttonflex">
                     <updateQuestion
@@ -28,7 +28,10 @@
                 <div class="questionAnswer">
                     <h4>{{ index+1 }}. Answer by {{ answer.userId.username }} :</h4>
                     <h6 v-html="answer.description"></h6>
-                    <button class="btn btn-success">update</button>
+                    <updateAnswer
+                        :description="answer.description"
+                        :id="answer._id"
+                    ></updateAnswer>
                 </div>
             </div>
         </div>
@@ -39,13 +42,18 @@
 <script>
 import addAnswer from '../components/addAnswer'
 import updateQuestion from '../components/updateQuestion'
+import updateAnswer from '../components/updateAnswer'
 
 export default {
   name: 'question',
   components: {
     addAnswer,
-    updateQuestion
+    updateQuestion,
+    updateAnswer
   }
+//   created () {
+//     this.$store.dispatch()
+//   }
 }
 </script>
 
