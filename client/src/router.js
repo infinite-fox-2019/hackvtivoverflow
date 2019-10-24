@@ -18,7 +18,7 @@ export default new Router({
       component: Home
     },
     {
-      path: '/question',
+      path: '/question/:id',
       name: 'question',
       component: Question
     },

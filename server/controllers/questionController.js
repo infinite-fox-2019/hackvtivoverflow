@@ -16,6 +16,7 @@ class QuestionController {
     Question.findOne({_id})
     .populate('AnswerId')
     .populate('UserId')
+    .populate({path:'AnswerId', populate:{path:'UserId'}})
       .then(data => {
         res.status(200).json(data)
       })
@@ -39,17 +40,19 @@ class QuestionController {
         if(data){
           for(let i = 0; i < data.upvotes.length; i++){
             if(data.upvotes[i] == UserId){
-              return res.status(400).json({msg:"You have upvotes this before"})
+              // return res.status(400).json({msg:"You have upvotes this before"})
+              return Question.updateOne({_id},{$pull:{upvotes:UserId}})
             }
           }
           for(let i = 0; i < data.downvotes.length; i++){
             if(data.downvotes[i] == UserId){
-              Promise.all([
+              return Promise.all([
                 Question.updateOne({_id},{$pull:{downvotes:UserId}}),
                 Question.updateOne({_id},{$push:{upvotes:UserId}})
               ])
             }
           }
+          return Question.updateOne({_id},{$push:{upvotes:UserId}})
         }
         else{
           return res.status(404).json({msg:"Question not found"})
@@ -69,17 +72,20 @@ class QuestionController {
         if(data){
           for(let i = 0; i < data.downvotes.length; i++){
             if(data.downvotes[i] == UserId){
-              return res.status(400).json({msg:"You have downvotes this before"})
+              return Question.updateOne({_id},{$pull:{downvotes:UserId}})
             }
           }
           for(let i = 0; i < data.upvotes.length; i++){
             if(data.upvotes[i] == UserId){
-              Promise.all([
+              console.log("masuk")
+              return Promise.all([
                 Question.updateOne({_id},{$pull:{upvotes:UserId}}),
                 Question.updateOne({_id},{$push:{downvotes:UserId}})
               ])
             }
           }
+          return Question.updateOne({_id},{$push:{downvotes:UserId}})
+
         }
         else{
           return res.status(404).json({msg:"Question not found"})

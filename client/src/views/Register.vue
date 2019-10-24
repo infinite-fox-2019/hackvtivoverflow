@@ -63,7 +63,7 @@ export default {
   methods: {
     onSubmit (evt) {
       evt.preventDefault()
-      this.$store.dispatch('A_REGISTER', {name:this.form.name,email:this.form.email,password:this.form.password})
+      this.$store.dispatch('A_REGISTER', { name: this.form.name, email: this.form.email, password: this.form.password })
     },
     onReset (evt) {
       evt.preventDefault()

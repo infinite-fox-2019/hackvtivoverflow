@@ -15,11 +15,10 @@ export default {
     Navbar,
     Footer
   },
-  created(){
-    if(localStorage.getItem('access_token')){
-      console.log('masuk')
+  created () {
+    if (localStorage.getItem('access_token')) {
       this.$store.commit('LOGIN_STATUS_CHANGE', true)
-      this.$router.push({path:'/'})
+      // this.$router.push({path:'/'})
     }
   }
 }

@@ -4,12 +4,12 @@ const {authorization,authentication} = require('../middleware/auth')
 
 router.use(authentication)
 router.post('/', AnswerController.createAnswer)
-router.patch('/downvotes/:id', AnswerController.updateDownvotes)
-router.patch('/upvotes/:id', AnswerController.updateUpvotes)
+router.patch('/downvotes/:_id', AnswerController.updateDownvotes)
+router.patch('/upvotes/:_id', AnswerController.updateUpvotes)
 
 //Authorization here
 
-router.delete('/:id', AnswerController.deleteAnswer)
-router.put('/:id', AnswerController.editAnswer)
+router.delete('/:_id', AnswerController.deleteAnswer)
+router.put('/:_id', AnswerController.editAnswer)
 
 module.exports = router

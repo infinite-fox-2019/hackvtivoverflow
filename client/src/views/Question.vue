@@ -1,109 +1,22 @@
 <template>
   <b-container class="w-75">
+    <!-- Question Section -->
     <b-row class="border-left">
-    <h2 class="my-4 ml-3">WPF Semi-dynamic grid</h2>
-      <b-media>
-        <template v-slot:aside>
-          <b-container>
-            <b-row>
-              <b-col>
-                <b-img width="40" src="https://image.flaticon.com/icons/svg/25/25223.svg" class="" alt="placeholder"></b-img>
-              </b-col>
-            </b-row>
-            <b-row>
-              <b-col>
-                <h4 class="mb-0 text-center">189</h4>
-              </b-col>
-            </b-row>
-            <b-row>
-              <b-col>
-                <b-img src="https://image.flaticon.com/icons/svg/25/25623.svg" width="40" class="" alt="placeholder"></b-img>
-              </b-col>
-            </b-row>
-          </b-container>
-        </template>
-        <p>
-          Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin.
-          Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc
-          ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.
-        </p>
-        <p>
-          Donec sed odio dui. Nullam quis risus eget urna mollis ornare vel eu leo. Cum sociis natoque
-          penatibus et magnis dis parturient montes, nascetur ridiculus mus.
-        </p>
-      </b-media>
+      <QuestionSection :data="questionData" @updateResponse="fetchQuestionDetail"/>
     </b-row>
 
-    <b-row class="border-left mt-3">
-      <h4 class="ml-3">Answer</h4>
-      <b-media class="border-top pt-3">
-        <p class="mb-2"><small class="text-primary">Kadek Dinarta Gita</small></p>
-        <template v-slot:aside>
-          <b-container>
-            <b-row>
-              <b-col>
-                <b-img width="40" src="https://image.flaticon.com/icons/svg/25/25223.svg" class="" alt="placeholder"></b-img>
-              </b-col>
-            </b-row>
-            <b-row>
-              <b-col>
-                <h4 class="mb-0 text-center">18</h4>
-              </b-col>
-            </b-row>
-            <b-row>
-              <b-col>
-                <b-img src="https://image.flaticon.com/icons/svg/25/25623.svg" width="40" class="" alt="placeholder"></b-img>
-              </b-col>
-            </b-row>
-          </b-container>
-        </template>
-        <p>
-          Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin.
-          Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc
-          ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.
-        </p>
-        <p>
-          Donec sed odio dui. Nullam quis risus eget urna mollis ornare vel eu leo. Cum sociis natoque
-          penatibus et magnis dis parturient montes, nascetur ridiculus mus.
-        </p>
-      </b-media>
-      <b-media class="border-top pt-3">
-        <p class="mb-2"><small class="text-primary">Dipadana Putu</small></p>
-        <template v-slot:aside>
-          <b-container>
-            <b-row>
-              <b-col>
-                <b-img width="40" src="https://image.flaticon.com/icons/svg/25/25223.svg" class="" alt="placeholder"></b-img>
-              </b-col>
-            </b-row>
-            <b-row>
-              <b-col>
-                <h4 class="mb-0 text-center">8</h4>
-              </b-col>
-            </b-row>
-            <b-row>
-              <b-col>
-                <b-img src="https://image.flaticon.com/icons/svg/25/25623.svg" width="40" class="" alt="placeholder"></b-img>
-              </b-col>
-            </b-row>
-          </b-container>
-        </template>
-        <p>
-          Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin.
-          Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc
-          ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.
-        </p>
-        <p>
-          Donec sed odio dui. Nullam quis risus eget urna mollis ornare vel eu leo. Cum sociis natoque
-          penatibus et magnis dis parturient montes, nascetur ridiculus mus.
-        </p>
-      </b-media>
-    </b-row>
+    <!-- Answer Section -->
+      <b-row class="border-left mt-3">
+        <h4 class="ml-3">Answer</h4>
+        <AnswerSection @updateResponse="fetchQuestionDetail" v-for="(dataAnswer,index) in questionData.AnswerId" :key="index" :data="dataAnswer"/>
+      </b-row>
 
+    <!-- Your Answer Section -->
     <b-row class=" border-left border-top">
       <b-col class="my-4">
         <h4 class="mb-4">Your Answer</h4>
         <ckeditor :editor="editor" v-model="editorData" :config="editorConfig"></ckeditor>
+        <b-button @click="addAnswer()" class="mr-2 mb-5 mt-3" size="" variant="success">Submit</b-button>
       </b-col>
     </b-row>
 
@@ -112,18 +25,63 @@
 
 <script>
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic'
+import QuestionSection from '@/components/QuestionSection.vue'
+import AnswerSection from '@/components/AnswerSection.vue'
+import axios from '../api/server'
 
 export default {
+  components: {
+    QuestionSection,
+    AnswerSection
+  },
   data () {
     return {
       editor: ClassicEditor,
-      editorData: '<p>Content of the editohohohohoholalallar.</p>',
+      editorData: '',
       editorConfig: {
-        // The configuration of the editor.
-      }
+        placeholder: 'Write your answer here...'
+      },
+      questionData: {}
     }
+  },
+  methods: {
+    addAnswer () {
+      axios({
+        method: 'post',
+        url: '/answers',
+        data: {
+          QuestionId: this.$route.params.id,
+          description: this.editorData
+        },
+        headers: {
+          Authorization: localStorage.getItem('access_token')
+        }
+      })
+        .then(({ data }) => {
+          console.log(data, '<<<<<<<<<<')
+          this.fetchQuestionDetail()
+          this.editorData = ''
+        })
+        .catch(err => { console.log(err.response) })
+    },
+    fetchQuestionDetail () {
+      axios({
+        method: 'get',
+        url: `/questions/${this.$route.params.id}`,
+        headers: {
+          Authorization: localStorage.getItem('access_token')
+        }
+      })
+        .then(({ data }) => {
+          console.log(data, '<<<<<<<<<<<<<<<')
+          this.questionData = data
+        })
+        .catch(err => { console.log(err.response) })
+    }
+  },
+  created () {
+    this.fetchQuestionDetail()
   }
-
 }
 </script>
 

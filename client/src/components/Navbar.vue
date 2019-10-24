@@ -15,14 +15,14 @@
 
 <script>
 export default {
-  name:'navbar',
-  methods:{
-    logout(){
+  name: 'navbar',
+  methods: {
+    logout () {
       localStorage.removeItem('access_token')
       localStorage.removeItem('name')
       this.$store.commit('LOGIN_STATUS_CHANGE', false)
       this.$store.commit('LOGIN_NAME_CHANGE', null)
-      this.$router.push({path:'/about'})
+      this.$router.push({ path: '/' })
     }
   }
 }
