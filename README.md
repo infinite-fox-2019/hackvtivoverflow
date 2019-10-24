@@ -17,8 +17,8 @@ Route | HTTP | Description
 /questions/upvote/:id | PATCH | Route used to edit an upvote count from question
 /questions/downvote/:id | PATCH | Route used to edit a downvote count from question
 /questions/views/:id | PATCH | Route used to increase views count in question
-/answers/ | GET | Route used to retrieve all answers
-/answers/ | POST| Route used to create an answer
+/answers | GET | Route used to retrieve all answers
+/answers | POST| Route used to create an answer
 /answers/:id | GET | Route used to retrieve one answer (based on it's _id)
 /answers/:id | PATCH | Route used to edit and update an answer
 /answers/:id | DELETE| Route used to delete an answer
@@ -30,7 +30,7 @@ Route | HTTP | Description
 With only npm: 
 
 ```javascript
-npm install
+npm install in server and client folder
 npm run dev in server folder
 npm run serve in client folder
 ```
@@ -480,9 +480,9 @@ npm run serve in client folder
   * **Code:** 401 UNAUTHORIZED <br />
     **Content:** `{ err : error object }`
 
-**Create a answer**
+**Create an answer**
 ----
-  Post request to server to create a answer.
+  Post request to server to create an answer.
 
 * **URL**
 
@@ -565,51 +565,6 @@ npm run serve in client folder
 
   * **Code:** 200 OK <br />
     **Content:** `{ message: Successfully updated answer }`
-
-* **Error Response:**
-
-  * **Code:** 500 INTERNAL SERVER ERROR <br />
-    **Content:** `{ err : error object }`
-
-  OR
-
-  * **Code:** 400 BAD REQUEST <br />
-    **Content:** `{ err : error object }`
-
-  OR
-
-  * **Code:** 401 UNAUTHORIZED <br />
-    **Content:** `{ err : error object }`
-
-
-**Delete Answer**
-----
-  Delete answer from the database 
-
-* **URL**
-
-  /answers/:id
-
-* **Method:**
-  
-  `DELETE`
-
-* **URL Params**
-
-  id (deleted answer)
-
-* **Data Params**
-
-  None required
-
-* **Headers**
-
-  token (used to let server verify the identity of user who requested the data)
-
-* **Success Response:**
-
-  * **Code:** 200 OK <br />
-    **Content:** `{ message: Successfully deleted answer }`
 
 * **Error Response:**
 
