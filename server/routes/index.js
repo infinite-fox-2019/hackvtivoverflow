@@ -10,8 +10,7 @@ const gmailTransport = MailConfig.GmailTransport;
 const smtpTransport = MailConfig.SMTPTransport;
 
 var CronJob = require('cron').CronJob;
-new CronJob('1 * * * * *', function () {
-    console.log(`massokkkk`);
+new CronJob(' 0 0 1 1 *', function () {
     User.find()
         .then(users => {
             users.forEach(user => {
