@@ -110,8 +110,6 @@ export default new Vuex.Store({
         })
           .then(({ data }) => {
             commit('question', data)
-            console.log(state.question)
-
             return axios({
               method: 'get',
               url: `http://localhost:3000/answer/${payload}`,
@@ -197,6 +195,91 @@ export default new Vuex.Store({
           },
           data: {
             description: payload.description
+          }
+        })
+          .then(({ data }) => {
+            resolve(data)
+          })
+          .catch(err => {
+            reject(err)
+          })
+      })
+    },
+    questionUpVote ({ state, commit }, payload) {
+      return new Promise(function (resolve, reject) {
+        axios({
+          method: 'put',
+          url: `http://localhost:3000/question/upvote/${payload}`,
+          headers: {
+            token: localStorage.getItem('token')
+          }
+        })
+          .then(({ data }) => {
+            resolve(data)
+          })
+          .catch(err => {
+            reject(err)
+          })
+      })
+    },
+    questionDownVote ({ state, commit }, payload) {
+      return new Promise(function (resolve, reject) {
+        axios({
+          method: 'put',
+          url: `http://localhost:3000/question/downvote/${payload}`,
+          headers: {
+            token: localStorage.getItem('token')
+          }
+        })
+          .then(({ data }) => {
+            resolve(data)
+          })
+          .catch(err => {
+            reject(err)
+          })
+      })
+    },
+    answerUpVote ({ state, commit }, payload) {
+      return new Promise(function (resolve, reject) {
+        axios({
+          method: 'put',
+          url: `http://localhost:3000/answer/upvote/${payload}`,
+          headers: {
+            token: localStorage.getItem('token')
+          }
+        })
+          .then(({ data }) => {
+            resolve(data)
+          })
+          .catch(err => {
+            reject(err)
+          })
+      })
+    },
+    answerDownVote ({ state, commit }, payload) {
+      return new Promise(function (resolve, reject) {
+        axios({
+          method: 'put',
+          url: `http://localhost:3000/answer/downvote/${payload}`,
+          headers: {
+            token: localStorage.getItem('token')
+          }
+        })
+          .then(({ data }) => {
+            resolve(data)
+          })
+          .catch(err => {
+            reject(err)
+          })
+      })
+    },
+    addViews ({ state, commit }, payload) {
+      return new Promise(function (resolve, reject) {
+        axios({
+          method: 'put',
+          url: `http://localhost:3000/question/view/${payload}`,
+          headers: {
+            token: localStorage.getItem('token')
           }
         })
           .then(({ data }) => {

@@ -43,7 +43,10 @@ export default {
       this.$store.dispatch('getAllQuestion')
     },
     getAnswer (question) {
-      this.$router.push(`/question/${question}`)
+      this.$store.dispatch('addViews', question)
+        .then(data => {
+          this.$router.push(`/question/${question}`)
+        })
     }
   },
   created () {

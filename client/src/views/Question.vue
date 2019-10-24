@@ -2,9 +2,15 @@
     <div class="container">
         <div class="flex">
             <div>
-                <h1>/\</h1>
-                <h1>0</h1>
-                <h1>\/</h1>
+                <div @click="questionUpVote">
+                    <h1>/\</h1>
+                </div>
+                <div>
+                    <h1>{{ this.$store.state.question.upvotes.length-this.$store.state.question.downvotes.length }}</h1>
+                </div>
+                <div @click="questionDownVote">
+                    <h1>\/</h1>
+                </div>
             </div>
             <div class="questionAnswer">
                 <h3>Question by {{ this.$store.state.question.userId.username }} :</h3>
@@ -21,9 +27,15 @@
         <div v-for="(answer, index) in this.$store.state.answers" :key="index">
             <div class="flex">
                 <div>
-                    <h1>/\</h1>
-                    <h1>0</h1>
-                    <h1>\/</h1>
+                    <div @click="answerUpVote(answer._id)">
+                        <h1>/\</h1>
+                    </div>
+                    <div>
+                        <h1>{{ answer.upvotes.length-answer.downvotes.length }}</h1>
+                    </div>
+                    <div @click="answerDownVote(answer._id)">
+                        <h1>\/</h1>
+                    </div>
                 </div>
                 <div class="questionAnswer">
                     <h4>{{ index+1 }}. Answer by {{ answer.userId.username }} :</h4>
@@ -69,7 +81,7 @@ export default {
               .then(data => {
                 Swal.fire(
                   'Deleted!',
-                  'Your file has been deleted.',
+                  'Your question has been deleted.',
                   'success'
                 )
                 this.$router.push('/')
@@ -83,20 +95,62 @@ export default {
               })
           }
         })
+    },
+    questionUpVote () {
+      this.$store.dispatch('questionUpVote', this.$route.params.id)
+        .then(data => {
+          return this.$store.dispatch('getAnswer', this.$route.params.id)
+        })
+        .catch(err => {
+          Swal.fire({
+            type: 'error',
+            title: 'Oops...',
+            text: JSON.parse(err.response.request.response).message[0]
+          })
+        })
+    },
+    questionDownVote () {
+      this.$store.dispatch('questionDownVote', this.$route.params.id)
+        .then(data => {
+          return this.$store.dispatch('getAnswer', this.$route.params.id)
+        })
+        .catch(err => {
+          Swal.fire({
+            type: 'error',
+            title: 'Oops...',
+            text: JSON.parse(err.response.request.response).message[0]
+          })
+        })
+    },
+    answerUpVote (id) {
+      this.$store.dispatch('answerUpVote', id)
+        .then(data => {
+          return this.$store.dispatch('getAnswer', this.$route.params.id)
+        })
+        .catch(err => {
+          Swal.fire({
+            type: 'error',
+            title: 'Oops...',
+            text: JSON.parse(err.response.request.response).message[0]
+          })
+        })
+    },
+    answerDownVote (id) {
+      this.$store.dispatch('answerDownVote', id)
+        .then(data => {
+          return this.$store.dispatch('getAnswer', this.$route.params.id)
+        })
+        .catch(err => {
+          Swal.fire({
+            type: 'error',
+            title: 'Oops...',
+            text: JSON.parse(err.response.request.response).message[0]
+          })
+        })
     }
   },
   created () {
     this.$store.dispatch('getAnswer', this.$route.params.id)
-      .then(data => {
-
-      })
-      .catch(err => {
-        Swal.fire({
-          type: 'error',
-          title: 'Oops...',
-          text: JSON.parse(err.response.request.response).message[0]
-        })
-      })
   }
 }
 </script>
