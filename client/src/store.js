@@ -87,7 +87,7 @@ export default new Vuex.Store({
         .then(({ data }) => {
           commit('GET_A_QUESTION', data)
         })
-        .catch(({response})=>{
+        .catch(({ response }) => {
           alert(response.data)
         })
     },
@@ -116,20 +116,19 @@ export default new Vuex.Store({
     },
     updateQuestion ({ commit }, payload) {
       const { id, title, description, tags } = payload
-      return new Promise ((resolve, reject) => {
-
+      return new Promise((resolve, reject) => {
         axios({
           method: 'PATCH',
           url: `/questions/${id}`,
           data: { title, description, tags },
           headers: { token: localStorage.getItem('token') }
         })
-        .then(({ data }) => {
-          resolve(data.message)
-        })
-        .catch(({ response })=>{
-          reject(response.data.message)
-        })
+          .then(({ data }) => {
+            resolve(data.message)
+          })
+          .catch(({ response }) => {
+            reject(response.data.message)
+          })
       })
     },
     fetchAnswers ({ commit }, payload) {

@@ -30,7 +30,7 @@ export default {
     axios({
       method: 'GET',
       url: `/answers/${this.$route.params.id}`,
-      headers: { token: localStorage.getItem('token')}
+      headers: { token: localStorage.getItem('token') }
     })
       .then(({ data }) => {
         this.description = data.description

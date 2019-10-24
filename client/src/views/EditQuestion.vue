@@ -63,7 +63,7 @@ export default {
             text: `${message}`
           })
         })
-        .catch(err=>{
+        .catch(err => {
           this.$notify({
             group: 'foo',
             type: 'error',
@@ -111,7 +111,7 @@ export default {
     axios({
       method: 'GET',
       url: `questions/${this.$route.params.id}`,
-      headers: { token: localStorage.getItem('token')}
+      headers: { token: localStorage.getItem('token') }
     })
       .then(({ data }) => {
         this.description = data.description

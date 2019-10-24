@@ -10,7 +10,7 @@ function questionDailyContent(data){
     if(description.length > 140) description = description.substring(0,10) + '...'
     
     let question =  `
-      <a href="http://localhost:8080/question/${data[i]._id}">
+      <a href="http://api.flowover.mardii.site/question/${data[i]._id}">
         <h2>${data[i].title}</h2>
         <p>${description}</p>
       </a>    
