@@ -9,8 +9,13 @@ class ThreadController {
         const { title, content, tags } = req.body
         if (!Array.isArray(tags)) return next({ status: 400, message: "Tags must be an array" })
         const userId = req.decode.id
+        let threadId
+        let slug
         Thread.create({ title, content, owner: userId })
             .then(async (thread) => {
+                let arr = []
+                threadId = thread._id
+                slug = thread.slug
                 await tags.forEach(async el => {
                     let tag = await Tag.findOneAndUpdate({
                         name: el
@@ -19,11 +24,11 @@ class ThreadController {
                     }, {
                         upsert: true
                     })
-                    thread.tags.push(tag._id)
+                    arr.push(tag._id)
                 })
-                return thread.save()
+                return thread.updateOne({ $set: { tags: arr } })
             })
-            .then((thread) => res.status(200).json(thread))
+            .then(() => res.status(200).json({ message: "Thread created", id: threadId, slug }))
             .catch(next)
     }
 

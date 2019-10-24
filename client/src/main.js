@@ -7,10 +7,22 @@ import vuetify from './plugins/vuetify';
 import AWN from 'vue-awesome-notifications'
 import 'vue-awesome-notifications/dist/styles/style.css'
 import Moment from 'vue-moment'
+import wysiwyg from 'vue-wysiwyg'
+import 'vue-wysiwyg/dist/vueWysiwyg.css'
+
 Vue.config.productionTip = false
 
 
 Vue.use(Moment);
+Vue.use(wysiwyg, {
+    hideModules: {
+        image: true,
+        table: true,
+        separator: true,
+        removeFormat: true,
+        maxHeight: "500px"
+    }
+});
 
 Vue.use(AWN, {
     durations: {
@@ -25,6 +37,7 @@ Vue.use(AWN, {
 Vue.mixin({
     methods: {
         next: function ({ response }) {
+            console.log(response)
             const { data: { message } } = response
             if (Array.isArray(message)) message = message.join('<br />')
             this.$awn.alert(message, {

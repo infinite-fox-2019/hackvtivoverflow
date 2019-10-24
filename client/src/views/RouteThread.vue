@@ -1,15 +1,9 @@
 <template>
-    <div>
-        <h1>12345</h1>
-        <router-view />
-    </div>
+    <router-view />
 </template>
 
 <script>
 export default {
-    name: "Thread"
+    name: "route-thread"
 };
 </script>
-
-<style>
-</style>

@@ -2,6 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 import Store from '../store'
+import SingleThread from '../views/Thread/SingleThread.vue'
 
 Vue.use(VueRouter)
 
@@ -43,7 +44,7 @@ const routes = [
                 {
                     path: 'create',
                     name: 'create-thread',
-                    component: import(/* webpackChunkName: "CreateThread" */'../views/Thread/CreateThread.vue'),
+                    component: () => import(/* webpackChunkName: "create-thread" */ '../views/Thread/CreateThread.vue'),
                     beforeEnter(to, from, next) {
                         if (!Store.state.user.login) {
                             next('/login')
@@ -52,28 +53,25 @@ const routes = [
                         }
                     }
                 },
+
+            ]
+    },
+    {
+        path: '/thread/:id',
+        component: SingleThread,
+        children:
+            [
                 {
-                    path: ':id',
-                    children:
-                        [
-                            {
-                                path: '',
-                                name: 'single-thread',
-                                component: import(/* webpackChunkName: 'SingleThread' */'../views/Thread/SingleThread.vue'),
-                            },
-                            {
-                                path: 'reply',
-                                name: "reply-thread",
-                                component: import(/* webpackChunkName: 'ReplyThread' */ '../views/Thread/ReplyThread.vue'),
-                                beforeEnter(to, from, next) {
-                                    if (!Store.state.user.login) {
-                                        next('/login')
-                                    } else {
-                                        next()
-                                    }
-                                }
-                            }
-                        ]
+                    path: 'reply',
+                    name: "reply-thread",
+                    component: () => import(/* webpackChunkName: 'ReplyThread' */ '../views/Thread/ReplyThread.vue'),
+                    beforeEnter(to, from, next) {
+                        if (!Store.state.user.login) {
+                            next('/login')
+                        } else {
+                            next()
+                        }
+                    }
                 }
             ]
     },

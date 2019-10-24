@@ -31,6 +31,9 @@ export default {
             state.email = ""
             state.gravatar = "https://www.gravatar.com/avatar/null"
             localStorage.removeItem('token')
+            localStorage.removeItem('username')
+            localStorage.removeItem('email')
+            localStorage.removeItem('gravatar')
         }
     },
     actions: {
