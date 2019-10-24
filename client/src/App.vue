@@ -42,6 +42,7 @@ export default {
   background-image: url('./assets/photo.png');
   background-attachment:local;
   background-size: cover;
+  font-size: 80%;
   /* height: 100vh; */
 }
 #nav {
