@@ -16,7 +16,9 @@ app.use(morgan('dev'))
 app.use(express.urlencoded({ extended: false }))
 app.use(express.json())
 
-const uri = `mongodb://localhost:27017/stackoverflow`
+const uri =  process.env.ATLAS_CONNECT 
+
+console.log(uri);
 
 mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true })
     .then(() => {

@@ -15,10 +15,18 @@ const questionSchema = new Schema({
         type: String,
         required: [true, 'description is required' ]
     },
-    votes: {
-        Types: Number,
-        default: 0
-    },
+    upvotes: [
+        {
+          type: Schema.Types.ObjectId,
+          ref: 'User'
+        }
+      ],
+    downvotes: [
+        {
+          type: Schema.Types.ObjectId,
+          ref: 'User'
+        }
+      ],
     tags: [String]
 
 }, { timestamps: true })

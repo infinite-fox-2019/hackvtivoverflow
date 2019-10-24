@@ -20,10 +20,18 @@ const answerSchema = new Schema({
         type: String,
         required: [true, 'description is required' ]
     },
-    votes: {
-        Types: Number,
-        default: 0
-    }
+    upvotes: [
+        {
+          type: Schema.Types.ObjectId,
+          ref: 'User'
+        }
+      ],
+    downvotes: [
+        {
+          type: Schema.Types.ObjectId,
+          ref: 'User'
+        }
+      ],
 }, { timestamps: true })
 
 module.exports = mongoose.model('Answer', answerSchema)

@@ -1,25 +1,33 @@
 <template>
-  <div class="card-question d-flex flex-column align-items-center">
-      <div class="card-item" v-for="question in questions" :key="question._id">
-          <div class="content mb-2">
-              <h4>{{ question.title }}</h4>
-                <div v-if="actions" class="actions">
-                    <span style="cursor: pointer;"  @click.prevent="toEdit(question._id)">edit</span> |
-                    <span style="cursor: pointer;"  @click.prevent="deleteQuestion(question._id)">remove</span>
-                </div>
-             <p  style="cursor: pointer;" @click.prevent="toAnswer(question._id)" class="card-des" v-html="question.description.substring(0, 500)"></p>
-          </div>
-
-        <div class="d-flex justify-content-between">
-            <div class="tags">
-                <span class="tag" v-for="(tag, index) in question.tags" :key="index">#{{tag}}</span>
+  <div>
+      <div v-if="questions.length" class="card-question d-flex flex-column align-items-center">
+        <div class="card-item" v-for="question in questions" :key="question._id">
+            <div class="content mb-2">
+                <h4>{{ question.title }}</h4>
+                  <div v-if="actions" class="actions">
+                      <span style="cursor: pointer;"  @click.prevent="toEdit(question._id)">edit</span> |
+                      <span style="cursor: pointer;"  @click.prevent="deleteQuestion(question._id)">remove</span>
+                  </div>
+              <p  style="cursor: pointer;" @click.prevent="toAnswer(question._id)" class="card-des" v-html="question.description.substring(0, 500)"></p>
             </div>
-            <div class="ask-by">
-                Ask by:  {{ question.userId.email +' | '+ dateFormat(question.createdAt)}}
+
+          <div class="d-flex justify-content-between">
+              <div class="tags">
+                  <span class="tag" v-for="(tag, index) in question.tags" :key="index" @click.prevent="getQuestionByTag(tag)">#{{tag}}</span>
+              </div>
+              <div class="ask-by">
+                  Ask by:  {{ question.userId.email +' | '+ dateFormat(question.createdAt)}}
+              </div>
+          </div>
+        </div>
+    </div>
+    <div v-else>
+            <h1 class="text-center mt-5">you never ask anything</h1>
+            <p class="text-center">your question goes here</p>
+            <div class="d-flex justify-content-center">
+              <img src="../../public/empty.svg" style="height: 300px;">
             </div>
         </div>
-      </div>
-
   </div>
 </template>
 
@@ -45,6 +53,9 @@ export default {
     },
     toEdit (questionId) {
       this.$router.push(`/update/${questionId}`)
+    },
+    getQuestionByTag(tag){
+      this.$store.dispatch('getQuestionByTag', tag)
     }
   }
 }

@@ -1,5 +1,6 @@
 <template>
-  <div>
+  <div class="d-flex">
+  <SideBar />
   <CardQuestion  :questions="userQuestion" :actions="1"/>
   <router-view></router-view>
   </div>
@@ -8,11 +9,13 @@
 <script>
 import CardQuestion from '@/components/CardQuestion'
 import { mapState } from 'vuex'
+import SideBar from '@/components/SideBar'
 
 export default {
   computed: mapState(['userQuestion']),
   components: {
-    CardQuestion
+    CardQuestion,
+    SideBar
   },
   data () {
     return {

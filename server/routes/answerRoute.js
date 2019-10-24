@@ -9,6 +9,7 @@ router.get('/question/:questionId', answerController.findByQuestionId)
 router.get('/:id', authentication, authorizationAnswer, answerController.findById)
 router.patch('/:id', authentication, authorizationAnswer, answerController.update)
 router.delete('/:id', authentication, authorizationAnswer, answerController.delete)
-
+router.post('/:id/upvote', authentication, answerController.upvote)
+router.post('/:id/downvote', authentication, answerController.downvote)
 
 module.exports = router

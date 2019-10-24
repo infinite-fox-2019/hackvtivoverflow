@@ -1,32 +1,17 @@
 <template>
     <div class="container my-5">
-        <h1 class="text-center">{{ answers[0].questionId.title }}</h1>
-        <div class="answer-ask">
-            <p v-html="answers[0].questionId.description"></p>
-        </div>
-        <div>
-            <!-- TEMPLATE -->
-            <div  v-for="answer in answers"  :key="answer._id" class="answers d-flex align-items-center">
-
-                <div class="answer-vote d-flex flex-column justify-content-center align-items-center">
-                    <i class="fas fa-caret-up"></i>
-                        <p class="mt-2">200</p>
-                    <i class="fas fa-caret-down"></i>
-                </div>
-
-                <div class="answer-content">
-                    <div class="des">
-                        <h3 class="text-center" v-html="answer.title"></h3>
-                        <p v-html="answer.description"></p>
-                    </div>
-                    <div class="author">
-                        <p class="text-right">{{ answer.userId.email + ' | '+  dateFormat(answer.createdAt)}} <a  @click.prevent="findOneAnswer(answer._id)" href="">edit</a> | <a @click.prevent="deleteAnswer(answer._id)" href="">remove</a></p>
-                    </div>
-                </div>
+        
+        <h1 class="text-center">{{ question.title }}</h1>
+        <div class="answer-ask d-flex">
+            <p v-html="question.description"></p>
+            <div class="answer-vote d-flex flex-column justify-content-center align-items-center mr-3">
+                      <i @click.prevent="upVoteQuestion(question._id)" class="fas fa-caret-up text-success"></i>
+                          <p class="mt-2">{{ getNumVoteQuestion(question) }}</p>
+                      <i @click.prevent="downVoteQuestion(question._id)" class="fas fa-caret-down text-danger"></i>
             </div>
-            <!-- TEMPLATE -->
         </div>
-        <div class="mt-5">
+
+          <div class="mt-5" id="quill">
             <h3>Your Answer:</h3>
             <input v-model="answer.title" class="answer-title" type="text" placeholder="Enter title">
              <quill-editor v-model="answer.description"
@@ -41,10 +26,37 @@
                 <button  @click.prevent="cancelUpdate" class="btn btn-danger mt-3 mx-1">Cancel</button>
             </div>
         </div>
+        
+        <div v-if="answers.length">
+            <!-- TEMPLATE -->
+            <div v-for="answer in answers"  :key="answer._id" class="answers d-flex align-items-center">
+
+                <div class="answer-vote d-flex flex-column justify-content-center align-items-center">
+                    <i @click.prevent="upVote(answer._id)" class="fas fa-caret-up"></i>
+                        <p class="mt-2">{{getNumVote(answer)}}</p>
+                    <i @click.prevent="downVote(answer._id)" class="fas fa-caret-down"></i>
+                </div>
+
+                <div class="answer-content">
+                    <div class="des">
+                        <h3 class="text-center" v-html="answer.title"></h3>
+                        <p v-html="answer.description"></p>
+                    </div>
+                    <div  class="author">
+                        <p class="text-right">{{ answer.userId.email + ' | '+  dateFormat(answer.createdAt)}} | <a v-if="answer.userId._id == userId" href="#quill" @click.prevent="findOneAnswer(answer._id)">edit</a></p>
+                    </div>
+                </div>
+            </div>
+            <!-- TEMPLATE -->
+        </div>
+        <div v-else>
+            <h1 class="text-center mt-5">no answer yet.. be the first one</h1>
+            <img src="../../public/empty.svg" style="height: 300px;">
+        </div>
+
     </div>
 
 </template>
-
 
 <script>
 import { mapState } from 'vuex'
@@ -62,40 +74,58 @@ export default {
     }
   },
   methods: {
-    createAnswer(){
-        let title = this.answer.title
-        let description = this.answer.description
-        let questionId = this.$route.params.id
-        this.$store.dispatch('createAnswer', { title, description, questionId })
-        this.answer.title = ''
-        this.answer.description = ''
+    getNumVote (answer) {
+      return answer.upvotes.length - answer.downvotes.length
     },
-    deleteAnswer(answerId){
-        let questionId = this.$route.params.id
-        this.$store.dispatch('deleteAnswer', {answerId, questionId})
+    upVote (answerId) {
+      let questionId = this.$route.params.id
+      this.$store.dispatch('upVoteAnswer', { answerId, questionId })
     },
-    findOneAnswer(answerId){
-        let questionId = this.$route.params.id
-        this.$store.dispatch('findOneAnswer', {answerId, questionId})
+    downVote (answerId) {
+      let questionId = this.$route.params.id
+      this.$store.dispatch('downVoteAnswer', { answerId, questionId })
     },
-    cancelUpdate(){
-       this.answer.title = ''
-       this.answer.description = ''
-       this.answer.id = ''
-       this.isEdit = false
-       this.$store.dispatch('cancelUpdate')
-
+    getNumVoteQuestion (question) {
+      return question.upvotes.length -  question.downvotes.length
     },
-    updateAnswer(){
-        let answerId = this.answer.id
-        let questionId = this.$route.params.id
-        let title = this.answer.title
-        let description = this.answer.description
-        this.$store.dispatch('updateAnswer', { title, description, answerId, questionId })
-        this.answer.title = ''
-        this.answer.description = ''
-        this.isEdit = false
-
+    upVoteQuestion (questionId) {
+      this.$store.dispatch('upVoteQuestion',  questionId )
+    },
+    downVoteQuestion (questionId) {
+      this.$store.dispatch('downVoteQuestion',  questionId )
+    },
+    createAnswer () {
+      let title = this.answer.title
+      let description = this.answer.description
+      let questionId = this.$route.params.id
+      this.$store.dispatch('createAnswer', { title, description, questionId })
+      this.answer.title = ''
+      this.answer.description = ''
+    },
+    deleteAnswer (answerId) {
+      let questionId = this.$route.params.id
+      this.$store.dispatch('deleteAnswer', { answerId, questionId })
+    },
+    findOneAnswer (answerId) {
+      let questionId = this.$route.params.id
+      this.$store.dispatch('findOneAnswer', { answerId, questionId })
+    },
+    cancelUpdate () {
+      this.answer.title = ''
+      this.answer.description = ''
+      this.answer.id = ''
+      this.isEdit = false
+      this.$store.dispatch('cancelUpdate')
+    },
+    updateAnswer () {
+      let answerId = this.answer.id
+      let questionId = this.$route.params.id
+      let title = this.answer.title
+      let description = this.answer.description
+      this.$store.dispatch('updateAnswer', { title, description, answerId, questionId })
+      this.answer.title = ''
+      this.answer.description = ''
+      this.isEdit = false
     },
     onEditorBlur (quill) {
       console.log('editor blur!', quill)
@@ -121,22 +151,23 @@ export default {
       return event.toLocaleDateString('en-US', options)
     }
   },
-  computed: 
-    mapState(['answers', 'oneAnswer']),
+  computed:
+    mapState(['answers', 'oneAnswer', 'question', 'userId']),
   created () {
     this.$store.dispatch('getAnswers', this.$route.params.id)
+    this.$store.dispatch('getOneQuestion', this.$route.params.id)
   },
   mounted () {
     console.log('this is current quill instance object', this.editor)
   },
-   watch: {
+  watch: {
     'oneAnswer': function () {
-       this.answer.title = this.oneAnswer.title
-       this.answer.description = this.oneAnswer.description
-       this.answer.id = this.oneAnswer._id
-       this.isEdit = true
+      this.answer.title = this.oneAnswer.title
+      this.answer.description = this.oneAnswer.description
+      this.answer.id = this.oneAnswer._id
+      this.isEdit = true
     }
-  },
+  }
 }
 </script>
 
@@ -193,8 +224,16 @@ export default {
     font-size: 12px;
 }
 
+.author a {
+    font-size: 15px;
+    background-color: #9633FF;
+    padding: 1px 5px;
+    color: white;
+    border-radius: 15px;
+}
+
 .ql-editor{
-    min-height: 200px !important;
+    min-height: 150px !important;
     border-radius: 30px !important;
 }
 

@@ -13,11 +13,13 @@ export default new Vuex.Store({
     question: {},
     userQuestion: [],
     answers: [],
-    oneAnswer: {}
+    oneAnswer: {},
+    userId: ''
   },
   mutations: {
     SET_LOCAL_STORAGE (state, data) {
       localStorage.setItem('token', data.token)
+      state.userId = data.id
       state.isLogin = true
     },
     LOGOUT (state) {
@@ -42,7 +44,7 @@ export default new Vuex.Store({
     SET_ONE_ANSWER (state, data) {
       state.oneAnswer = data
     },
-    REMOVE_ONE_ANSWARE(state, data){
+    REMOVE_ONE_ANSWARE (state, data) {
       state.oneAnswer = {}
     }
   },
@@ -105,6 +107,25 @@ export default new Vuex.Store({
       axios({
         method: 'get',
         url: `/questions/search?keyword=${keyword}`
+      })
+        .then(({ data }) => {
+          context.commit('SET_QUESTIONS', data)
+        })
+        .catch(err => {
+          console.log(err.response, 'ini error')
+          Swal.fire({
+            title: `${err.response.data.errors[0]}`,
+            animation: false,
+            customClass: {
+              popup: 'animated tada'
+            }
+          })
+        })
+    },
+    getQuestionByTag (context, keyword) {
+      axios({
+        method: 'get',
+        url: `/questions/tag?keyword=${keyword}`
       })
         .then(({ data }) => {
           context.commit('SET_QUESTIONS', data)
@@ -308,7 +329,7 @@ export default new Vuex.Store({
           })
         })
     },
-    deleteAnswer(context, {answerId, questionId}){
+    deleteAnswer (context, { answerId, questionId }) {
       Swal.fire({
         title: 'Are you sure?',
         text: "You won't be able to revert this!",
@@ -346,7 +367,7 @@ export default new Vuex.Store({
         }
       })
     },
-    findOneAnswer(context, {answerId, questionId}){
+    findOneAnswer (context, { answerId, questionId }) {
       axios({
         method: 'get',
         url: `/answers/${answerId}`,
@@ -354,21 +375,21 @@ export default new Vuex.Store({
           token: localStorage.getItem('token')
         }
       })
-      .then(({data})=>{
-        context.commit('SET_ONE_ANSWER', data)
-        context.dispatch('getAnswers', questionId)
-      })
-      .catch(err => {
-        Swal.fire({
-          title: `${err.response.data.errors[0]}`,
-          animation: false,
-          customClass: {
-            popup: 'animated tada'
-          }
+        .then(({ data }) => {
+          context.commit('SET_ONE_ANSWER', data)
+          context.dispatch('getAnswers', questionId)
         })
-      })
+        .catch(err => {
+          Swal.fire({
+            title: `${err.response.data.errors[0]}`,
+            animation: false,
+            customClass: {
+              popup: 'animated tada'
+            }
+          })
+        })
     },
-    updateAnswer(context, {title, description, answerId, questionId }){
+    updateAnswer (context, { title, description, answerId, questionId }) {
       axios({
         method: 'patch',
         url: `/answers/${answerId}`,
@@ -377,29 +398,113 @@ export default new Vuex.Store({
         },
         data: { title, description }
       })
-      .then(({data})=>{
-        Swal.fire({
-          position: 'top-end',
-          type: 'success',
-          title: 'Your work has been saved',
-          showConfirmButton: false,
-          timer: 1000
+        .then(({ data }) => {
+          Swal.fire({
+            position: 'top-end',
+            type: 'success',
+            title: 'Your work has been saved',
+            showConfirmButton: false,
+            timer: 1000
+          })
+          context.dispatch('getAnswers', questionId)
         })
-        context.dispatch('getAnswers', questionId)
-      })
-      .catch(err => {
-        Swal.fire({
-          title: `${err.response.data.errors[0]}`,
-          animation: false,
-          customClass: {
-            popup: 'animated tada'
-          }
+        .catch(err => {
+          Swal.fire({
+            title: `${err.response.data.errors[0]}`,
+            animation: false,
+            customClass: {
+              popup: 'animated tada'
+            }
+          })
         })
-      })
     },
-    cancelUpdate(){
+    cancelUpdate () {
       context.commit('REMOVE_ONE_ANSWARE')
-    }
+    },
+    upVoteAnswer (context, { answerId, questionId }) {
+      axios({
+        method: 'post',
+        url: `/answers/${answerId}/upvote`,
+        headers: {
+          token: localStorage.getItem('token')
+        }
+      })
+        .then(() => {
+          context.dispatch('getAnswers', questionId)
+        })
+        .catch(err => {
+          Swal.fire({
+            title: `${err.response.data.errors[0]}`,
+            animation: false,
+            customClass: {
+              popup: 'animated tada'
+            }
+          })
+        })
+    },
+    downVoteAnswer (context, { answerId, questionId }) {
+      axios({
+        method: 'post',
+        url: `/answers/${answerId}/downvote`,
+        headers: {
+          token: localStorage.getItem('token')
+        }
+      })
+        .then(() => {
+          context.dispatch('getAnswers', questionId)
+        })
+        .catch(err => {
+          Swal.fire({
+            title: `${err.response.data.errors[0]}`,
+            animation: false,
+            customClass: {
+              popup: 'animated tada'
+            }
+          })
+        })
+    },
+    upVoteQuestion (context, questionId) {
+      axios({
+        method: 'post',
+        url: `/questions/${questionId}/upvote`,
+        headers: {
+          token: localStorage.getItem('token')
+        }
+      })
+        .then(() => {
+          context.dispatch('getOneQuestion', questionId)
+        })
+        .catch(err => {
+          Swal.fire({
+            title: `${err.response.data.errors[0]}`,
+            animation: false,
+            customClass: {
+              popup: 'animated tada'
+            }
+          })
+        })
+    },
+    downVoteQuestion (context, questionId) {
+      axios({
+        method: 'post',
+        url: `/questions/${questionId}/downvote`,
+        headers: {
+          token: localStorage.getItem('token')
+        }
+      })
+        .then(() => {
+          context.dispatch('getOneQuestion', questionId)
+        })
+        .catch(err => {
+          Swal.fire({
+            title: `${err.response.data.errors[0]}`,
+            animation: false,
+            customClass: {
+              popup: 'animated tada'
+            }
+          })
+        })
+    },
 
   }
 })

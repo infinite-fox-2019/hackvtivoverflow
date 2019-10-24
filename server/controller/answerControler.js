@@ -84,6 +84,54 @@ static findByQuestionId(req, res, next){
         ])
         .catch(next)
     }
+
+    static upvote(req, res, next) {
+        const userId = req.decode.id
+        const id = req.params.id
+
+        Answer.findById(id)
+          .then(answer => {
+            if (answer) {
+              let downvotes = answer.downvotes.indexOf(userId)
+              let upvotes = answer.upvotes.indexOf(userId)    
+              if (downvotes > -1)  answer.downvotes.splice(downvotes, 1)
+              if (upvotes > -1)  answer.upvotes.splice(upvotes, 1)
+              else answer.upvotes.push(userId)
+              return answer.save()
+            }
+          })
+          .then((answer) => {
+            res.status(200).json({ 
+                message: 'success upvote', answer
+            })
+          })
+          .catch(next)
+      }
+    
+    
+      static downvote(req, res, next) {
+        const userId = req.decode.id
+        const id = req.params.id
+    
+        Answer.findById(id)
+          .then(answer => {
+            if (answer) {
+              let downvotes = answer.downvotes.indexOf(userId)
+              let upvotes = answer.upvotes.indexOf(userId)
+
+              if (upvotes > -1)  answer.upvotes.splice(upvotes, 1)
+              if (downvotes > -1) answer.downvotes.splice(downvotes, 1)
+              else answer.downvotes.push(userId)  
+              return answer.save()
+            }
+          })
+          .then((answer) => {
+            res.status(200).json({ 
+                message: 'success downvote', answer
+            })
+          })
+          .catch(next)
+      }
 }
 
 module.exports = AnswerController

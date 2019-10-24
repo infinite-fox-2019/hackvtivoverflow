@@ -13,7 +13,7 @@ const { compare } = require('../helpers/bcrypt')
                     }
                     let token = generateToken(payload)
                     console.log(token);
-                    res.status(201).json({ token })
+                    res.status(201).json({ token, id: user._id })
                 })
                 .catch(next)
         }
@@ -28,7 +28,7 @@ const { compare } = require('../helpers/bcrypt')
                                 id: user._id
                             }
                             let token = generateToken(payload)
-                            res.status(200).json({ token  })
+                            res.status(200).json({ token, id: user._id  })
                         } else {
                             next({
                                 status: 403,

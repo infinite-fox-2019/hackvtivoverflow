@@ -25,7 +25,7 @@ function authorizationAnswer(req, res, next) {
             } else {
                 next({
                     status: 403,
-                    message: 'unauthorized'
+                    message: 'You haven\'t authorize'
                 })
             }
         })

@@ -14,7 +14,6 @@ class QuestionController {
             .catch(next)
     }
 
-
     static find(req, res, next){
         Question.find().populate('userId', 'email').sort({ updatedAt: -1 })
         .then(questions => {
@@ -30,6 +29,20 @@ class QuestionController {
                 res.status(200).json(questions)
             })
             .catch(next)
+    }
+
+    static findByTag(req, res, next){
+        const { keyword } = req.query       
+            Question.find({
+                        tags: {
+                            $regex: `${keyword}`,
+                            $options: 'i'
+                        }
+            }).populate('userId', 'email').sort({ updatedAt: -1 })
+                .then(questions => {
+                    res.status(200).json(questions)
+                })
+                .catch(next)
     }
 
     static findById(req ,res, next){
@@ -67,7 +80,6 @@ class QuestionController {
                     res.status(200).json(questions)
                 })
                 .catch(next)
-        
     }
 
     static update(req, res, next){
@@ -94,6 +106,53 @@ class QuestionController {
         ])
         .catch(next)
     }
+
+    static upvote(req, res, next) {
+        const userId = req.decode.id
+        const id = req.params.id
+
+        Question.findById(id)
+          .then(question => {
+            if (question) {
+              let downvotes = question.downvotes.indexOf(userId)
+              let upvotes = question.upvotes.indexOf(userId)    
+              if (downvotes > -1)  question.downvotes.splice(downvotes, 1)
+              if (upvotes > -1)  question.upvotes.splice(upvotes, 1)
+              else question.upvotes.push(userId)
+              return question.save()
+            }
+          })
+          .then((question) => {
+            res.status(200).json({ 
+                message: 'success upvote', question
+            })
+          })
+          .catch(next)
+      }
+    
+      static downvote(req, res, next) {
+        const userId = req.decode.id
+        const id = req.params.id
+    
+        Question.findById(id)
+          .then(question => {
+            if (question) {
+              let downvotes = question.downvotes.indexOf(userId)
+              let upvotes = question.upvotes.indexOf(userId)
+
+              if (upvotes > -1)  question.upvotes.splice(upvotes, 1)
+              if (downvotes > -1) question.downvotes.splice(downvotes, 1)
+              else question.downvotes.push(userId)  
+              return question.save()
+            }
+          })
+          .then((question) => {
+            res.status(200).json({ 
+                message: 'success downvote', question
+            })
+          })
+          .catch(next)
+      }
 
 }
 

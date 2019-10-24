@@ -51,6 +51,24 @@ export default new Router({
     {
       path: '/myaccount',
       name: 'myaccount',
+      beforeEnter: (to, from, next) => {
+        if (localStorage.getItem('token')) {
+          next()
+        } else {
+          Swal.fire({
+            title: 'you have to Login',
+            text: 'You have to login first',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'login'
+          }).then((result) => {
+            if (result.value) {
+              next('/login')
+            }
+          })
+        }
+      },
       component: () => import(/* webpackChunkName: "about" */ './views/MyAccount.vue')
     },
     {

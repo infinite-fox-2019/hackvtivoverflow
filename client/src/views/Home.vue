@@ -2,9 +2,9 @@
   <div class="myhome">
     <div class="d-flex justify-content-between">
       <button @click.prevent="toAskQuestions" class="btn btn-info mybtn">Ask Questions</button>
-      <h1 class="mr-3">All Questions</h1>
+      <h1 @click.prevent="getQuestions" class="mr-3" >All Questions</h1>
     </div>
-    <div class="d-flex">
+    <div class="d-flex dashboard">
       <SideBar />
       <CardQuestion :questions="questions" :actions="0"/>
     </div>
@@ -26,6 +26,9 @@ export default {
   methods: {
     toAskQuestions () {
       this.$router.push('/ask')
+    },
+    getQuestions(){
+      this.$store.dispatch('getQuestion', ' ')
     }
   },
   created () {
@@ -42,6 +45,14 @@ export default {
 
 .myhome{
   padding-bottom: 100px;
+}
+
+.myhome h1 {
+  cursor: pointer;
+}
+
+.dashboard {
+  width: 100%;
 }
 
 </style>
