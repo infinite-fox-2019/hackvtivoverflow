@@ -16,7 +16,8 @@
 export default {
   data () {
     return {
-      answerData: ''
+      answerData: '',
+      temp: []
     }
   },
   props: ['sendQuestion'],
