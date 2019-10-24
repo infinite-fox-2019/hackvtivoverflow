@@ -96,28 +96,28 @@ export default new Vuex.Store({
         .catch(alert)
     },
     upvote ({ dispatch }, payload) {
-      console.log('upvote')
       axios.patch(`questions/upvote/${payload}`, null, {
         headers: {
           access_token: localStorage.getItem('access_token')
         }
       })
         .then(({ data }) => {
-          console.log('masuuk')
           dispatch('fetchQuestions')
           dispatch('fetchQuestion', payload)
         })
         .catch(alert)
     },
     downvote ({ dispatch }, payload) {
-      axios.post(`questions/${payload}/downvote`, {
+      console.log('downvote awhi')
+      console.log(payload)
+      axios.patch(`questions/downvote/5db08ed83544c23eaf490eb5`, null, {
         headers: {
           access_token: localStorage.getItem('access_token')
         }
       })
         .then(({ data }) => {
           dispatch('fetchQuestions')
-          dispatch('fetchQuestion')
+          dispatch('fetchQuestion', payload)
         })
         .catch(alert)
     }

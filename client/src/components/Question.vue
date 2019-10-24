@@ -2,7 +2,7 @@
   <div class="columns">
     <div class="column question-counts has-text-grey">
       <div class="question-counts-item num">
-        0
+        {{ totalVote }}
       </div>
       <div class="question-counts-item">
         votes
@@ -55,6 +55,9 @@ export default {
         result = result.substring(0, 200) + '...'
       }
       return result
+    },
+    totalVote () {
+      return this.question.upvotes.length - this.question.downvotes.length
     }
   }
 }

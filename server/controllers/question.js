@@ -57,9 +57,12 @@ module.exports = {
       let userId = req.loggedUser._id
       let upvotes = question.upvotes
       let downvotes = question.downvotes
-      if(upvotes.splice(upvotes.indexOf(userId), 1).length === 0) {
+      console.log(userId)
+      if(!upvotes.includes(userId)) {
         upvotes.push(userId)
         downvotes.splice(downvotes.indexOf(userId), 1)
+      } else {
+        upvotes.splice(upvotes.indexOf(userId), 1)
       }
       question.save()
       res.status(200).json(question) 
@@ -76,9 +79,11 @@ module.exports = {
       let userId = String(req.loggedUser._id)
       let upvotes = question.upvotes
       let downvotes = question.downvotes
-      if(downvotes.splice(upvotes.indexOf(userId), 1).length === 0) {
+      if(!downvotes.includes(userId)) {
         downvotes.push(userId)
-        upvotes.splice(downvotes.indexOf(userId), 1)
+        upvotes.splice(upvotes.indexOf(userId), 1)
+      } else {
+        downvotes.splice(upvotes.indexOf(userId), 1)
       }
       question.save()
       res.status(200).json(question)

@@ -18,18 +18,17 @@
         </b-icon>
       </div>
       <div class="question-counts-item num">
-        {{ question.upvotes.length }}
+        {{ totalVote }}
       </div>
-      <div class="question-counts-item">
-        <b-icon @click="downvote" class="vote"
+      <div class="question-counts-item" @click="downvote">
+        <b-icon class="vote"
           pack="fas"
           icon="caret-down">
         </b-icon>
       </div>
     </div>
     <div class="column question-details is-two-thirds">
-      <div class="question-details-item">
-        {{ normalizedDescription }}
+      <div class="question-details-item" v-html="question.description">
       </div>
     </div>
     <div class="column question-poster has-text-grey">
@@ -59,14 +58,8 @@ export default {
     userInitial () {
       return this.question.user.username.charAt(0).toUpperCase()
     },
-    normalizedDescription () {
-      const div = document.createElement('div')
-      div.innerHTML = this.question.description
-      let result = div.textContent || div.innerText || ''
-      if (result.length > 200) {
-        result = result.substring(0, 200) + '...'
-      }
-      return result
+    totalVote () {
+      return this.question.upvotes.length - this.question.downvotes.length
     }
   },
   methods: {
