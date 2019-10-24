@@ -5,6 +5,7 @@ if (process.env.NODE_ENV === 'development') {
 const express = require('express')
 const routes = require('./routes')
 const cors = require('cors')
+const morgan = require('morgan')
 const errorHandler = require('./middlewares/errorHandler')
 require('./config/mongoose')
 
@@ -15,6 +16,7 @@ const PORT = process.env.PORT
 app.use(express.urlencoded({ extended: false }))
 app.use(express.json())
 app.use(cors())
+app.use(morgan('dev'))
 
 // main route
 app.use('/', routes)
@@ -23,5 +25,5 @@ app.use('/', routes)
 app.use(errorHandler)
 
 // start server
-app.listen(PORT, () => console.log(`SERVER LISTENING ON PORT: PORT`))
+app.listen(PORT, () => console.log(`SERVER LISTENING ON PORT: ${PORT}`))
 
