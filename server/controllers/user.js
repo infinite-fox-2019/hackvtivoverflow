@@ -8,6 +8,7 @@ module.exports = {
     User.create({ username, email, password })
     .then(user => {
       res.status(201).json({
+        id: user._id,
         username: user.username,
         email: user.email,
         access_token: generateToken({ username, email })
@@ -23,6 +24,7 @@ module.exports = {
         throw {status: 400, msg: 'The email or password is incorrect.'}
       } else {
         res.status(200).json({
+          id: user._id,
           username: user.username,
           email: user.email,
           access_token: generateToken({ username: user.username, email })

@@ -27,7 +27,13 @@ module.exports = {
     .catch(next)
   },
   findAll: (req, res, next) => {
-    Question.find().populate('user').populate('answers')
+    let objFind = {}
+    if(req.query.userId) {
+      objFind = {
+        user: req.query.userId
+      }
+    }
+    Question.find(objFind).populate('user').populate('answers').sort([['created_at', -1]])
     .then(questions => {
       res.status(200).json(questions)
     })
@@ -35,7 +41,12 @@ module.exports = {
   },
   findById: (req, res, next) => {
     const { id } = req.params
-    Question.findById(id).populate('user')
+    Question.findById(id).populate('user').populate({
+      path: 'answers',
+      populate: {
+        path: 'user'
+      }
+    })
     .then(question => {
       if(!question) {
         throw {status: 400, msg: 'Question data not found'}

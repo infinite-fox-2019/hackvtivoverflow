@@ -1,26 +1,17 @@
 <template>
   <div>
-    <div class="header">
-      <div>
-        <h1>{{ question.title }}</h1>
-      </div>
-      <div>
-        <router-link to="/questions/ask"><button class="button is-info">Ask Question</button></router-link>
-      </div>
-    </div>
-    <hr>
-    <div class="columns">
+    <div class="columns" v-for="answer in answers" :key="answer._id">
       <div class="column question-counts has-text-grey">
-        <div class="question-counts-item" @click="upvote">
+        <div class="question-counts-item" @click="upvote(answer._id)">
           <b-icon class="vote"
             pack="fas"
             icon="caret-up">
           </b-icon>
         </div>
         <div class="question-counts-item num">
-          {{ totalVote }}
+          {{ totalVote(answer.upvotes, answer.downvotes) }}
         </div>
-        <div class="question-counts-item" @click="downvote">
+        <div class="question-counts-item" @click="downvote(answer._id)">
           <b-icon class="vote"
             pack="fas"
             icon="caret-down">
@@ -28,72 +19,65 @@
         </div>
       </div>
       <div class="column question-details is-two-thirds">
-        <div class="question-details-item" v-html="question.description">
+        <div>{{ answer.title }}</div>
+        <div class="question-details-item" v-html="answer.description">
         </div>
       </div>
       <div class="column question-poster has-text-grey">
         <div class="question-poster-item">
-        {{ timeAgoDate }}
+        {{ timeAgoDate(answer.created_at) }}
         </div>
         <div class="question-poster-item">
-          <button class="button is-dark">{{ userInitial }}</button>
-          {{ question.user.username }}
+          <button class="button is-dark">{{ userInitial(answer.user.username) }}</button>
+          {{ answer.user.username }}
         </div>
       </div>
     </div>
-    <div class="answer-count">{{ question.answers.length }} Answers</div>
     <hr>
-    <div>
-      <Answers></Answers>
-    </div>
+    <AnswerForm></AnswerForm>
   </div>
 </template>
 
 <script>
 import timeAgo from '../helpers/timeAgo'
-import { mapState } from 'vuex'
-import Answers from '../components/Answers'
+import AnswerForm from './AnswerForm'
 
 export default {
-  name: 'QuestionContent',
+  name: 'Answers',
   components: {
-    Answers
+    AnswerForm
   },
   computed: {
-    ...mapState(['question']),
-    timeAgoDate () {
-      return timeAgo.format(new Date(this.question.created_at))
-    },
-    userInitial () {
-      return this.question.user.username.charAt(0).toUpperCase()
-    },
-    totalVote () {
-      return this.question.upvotes.length - this.question.downvotes.length
+    answers () {
+      return this.$store.state.question.answers
     }
   },
   methods: {
-    getQuestion (id) {
-      this.$store.dispatch('fetchQuestion', id)
+    timeAgoDate (date) {
+      return timeAgo.format(new Date(date))
     },
-    upvote () {
+    userInitial (username) {
+      return username.charAt(0).toUpperCase()
+    },
+    totalVote (upvotes, downvotes) {
+      return upvotes.length - downvotes.length
+    },
+    upvote (id) {
       this.$store.dispatch('vote', {
-        collection: 'questions',
+        collection: 'answers',
         type: 'upvote',
-        id: this.question._id,
-        questionId: this.question._id
+        id,
+        questionId: this.$route.params.id
       })
     },
-    downvote () {
+    downvote (id) {
       this.$store.dispatch('vote', {
-        collection: 'questions',
+        collection: 'answers',
         type: 'downvote',
-        id: this.question._id,
-        questionId: this.question._id
+        id,
+        questionId: this.$route.params.id
       })
     }
-  },
-  created () {
-    this.getQuestion(this.$route.params.id)
   }
 }
 </script>
@@ -133,10 +117,6 @@ h1 {
 }
 .vote {
   cursor: pointer;
-}
-.answer-count {
-  font-size: 20px;
-  margin-left: 10px;
 }
 @media (max-width: 600px) {
   .question-counts {

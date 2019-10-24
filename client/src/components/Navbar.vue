@@ -24,7 +24,9 @@
             <strong>Sign up</strong>
           </a>
         </router-link>
+        <router-link to="/users">
         <button v-if="$store.state.isLogin" class="button is-dark">{{ $store.state.loggedUser.username.charAt(0).toUpperCase() }}</button>
+        </router-link>
         <router-link v-if="$store.state.isLogin" to="/login">
           <a @click="logout" class="button has-text-dark is-light login-button">
             Log out

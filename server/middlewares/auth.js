@@ -23,7 +23,7 @@ authentication = (req, res, next) => {
 }
 
 authorizationQuestion = (req, res, next) => {
-  console.log(req.params, 'aaaaa')
+  console.log('authorization q')
   Question.findById(req.params.id)
   .then(question => {
     if(!question) {
@@ -41,7 +41,7 @@ authorizationQuestion = (req, res, next) => {
 }
 
 authorizationAnswer = (req, res, next) => {
-  console.log(req.params, 'aaaaa')
+  console.log('authorization a')
   Answer.findById(req.params.id)
   .then(answer => {
     if(!answer) {
