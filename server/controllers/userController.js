@@ -1,6 +1,7 @@
 const User = require('../models/user');
 const { comparePassword } = require('../helpers/hash');
 const { signToken } =require('../helpers/jwt');
+const cron = require("node-cron");
 
 class UserController {
     static findOneUserforState (req,res,next) {

@@ -14,8 +14,8 @@
     <div class='qright col-10'>
       <div>
         <b-card no-body class="text-left">
-          <div class="bg-secondary text-light">
-            <h3 v-html='getAnswer.response'></h3>
+          <div class="bg-light text-dark">
+            <a v-html='getAnswer.response'></a>
             <small>by: {{ getAnswer.UserId.username }}</small>
           </div>
         </b-card>

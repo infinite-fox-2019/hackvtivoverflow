@@ -1,5 +1,7 @@
 const { decodeToken } = require('../helpers/jwt');
 const User = require('../models/user');
+const Question = require('../models/questions');
+const Answer = require('../models/answer');
 
 function authentication (req,res,next) {
     try{
@@ -20,28 +22,55 @@ function authentication (req,res,next) {
     }
 }
 
-function authorization (req,res,next) {
+function authorizationQuestion (req,res,next) {
     try{
-        console.log(req.query)
-        const id = req.params.id ;
-        User.findById({ _id: id })
-            .then(user => {
-                if(user.email === req.loggedUser.email) {
-                    next()
-                } else {
-                    throw error
-                }
-            })
-            .catch(err=>{
-                next({ msg: 'author' })
-            })
+      Question.findById({
+        _id: req.params.id
+      })
+        .then(question => {
+          console.log(question.UserId)
+          console.log(req.loggedUser.id)
+          if(!question) throw { msg: '0Q' }
+          else {
+            if(question.UserId == req.loggedUser.id) {
+              console.log('masuk di perkondisian next()')
+              next()
+            } else {
+              throw {msg: 'author'}
+            }
+          }
+        })
+        .catch(next)
     }
     catch(err) {
         next(err)
     }
 }
 
+function authorizationAnswer (req,res,next) {
+  try {
+    Answer.findById({
+      _id: req.params.id
+    })
+      .then(answer => {
+        if(!answer) throw {msg: '0A'}
+        else {
+          if(answer.UserId == req.loggedUser._id) {
+            next()
+          } else {
+            throw {msg: 'author'}
+          }
+        }
+      })
+      .catch(next)
+  }
+  catch(err) {
+    next(err)
+  }
+}
+
 module.exports = {
     authentication,
-    authorization
+    authorizationQuestion,
+    authorizationAnswer
 }

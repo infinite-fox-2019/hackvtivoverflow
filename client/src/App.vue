@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <Nav />
-    <div class="container bg-light">
+    <div class="fluid-container bg-light">
       <b-row class='mainn'>
         <b-col cols="3" class ='left' >
           <Left />
@@ -11,19 +11,29 @@
         </b-col>
       </b-row>
     </div>
+    <Footer />
   </div>
 </template>
 
 <script>
 import Nav from './components/Nav';
 import Left from './components/leftBar';
+import Footer from './components/Footer';
+import { mapState } from 'vuex'
 
 export default {
   components: {
     Nav,
-    Left
+    Left,
+    Footer
   },
   methods: {
+  },
+  computed: {
+    ...mapState([
+      'islogin',
+      'user'
+    ])
   },
   created () {
     this.$store.dispatch('checklogin')
@@ -34,12 +44,14 @@ export default {
 <style>
 .mainn{
   margin-top: 20px;
+  height: 1000px;
 }
 .left{
-  height: 150px;
+  height: 100%;
 }
 .right{
   height:100%;
-  padding: 10px;
+  padding: 1px;
+  overflow: auto
 }
 </style>

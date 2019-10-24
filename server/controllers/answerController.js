@@ -1,4 +1,5 @@
 const Answer = require('../models/answer');
+const mongoose = require('mongoose')
 
 class AnswerController {
     static findId (req,res,next) {
@@ -10,6 +11,14 @@ class AnswerController {
             .catch(err=>{
                 next(err);
             })
+    }
+    static findAnswerUser (req,res,next) {
+      const UserId = new mongoose.Types.ObjectId(req.loggedUser.id);
+      Answer.find({ UserId }).populate('QuestionId')
+        .then(answers => {
+          res.status(200).json(answers)
+        })
+        .catch(next)
     }
     static create (req,res,next) {
         const UserId = req.loggedUser.id;
@@ -24,7 +33,6 @@ class AnswerController {
     static updateUpAnswer (req,res,next) {
       const _id = req.body.id
       const id = req.loggedUser.id //userid
-      console.log(req.body)
       Answer.findById({_id})
         .then(answer => {
           let pass = true;

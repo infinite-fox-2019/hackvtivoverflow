@@ -1,4 +1,6 @@
 const Question = require("../models/questions");
+const Answer = require('../models/answer');
+const mongoose = require('mongoose')
 
 class QuestionController {
     static findAll (req,res,next) {
@@ -8,11 +10,12 @@ class QuestionController {
             })
             .catch(next)
     }
-    static findOne (req,res,next) {
-        const UserId = req.params.id
-        Question.findOne({ UserId })
+    static findQuestionUser (req,res,next) {
+        const UserId = new mongoose.Types.ObjectId(req.loggedUser.id)
+        console.log(UserId)
+        Question.find({ UserId }).exec()
             .then(question => {
-                console.log(question);
+              // console.log(question)
                 res.status(200).json(question)
             })
             .catch(next);
@@ -53,15 +56,9 @@ class QuestionController {
     }
     static searchTitle (req,res,next) {
         const title = req.params.name;
-        Question.find().populate('UserId')
-            .then(questions => {
-                const temp = []
-                for(let i=0;i<questions.length;i++){
-                    if(questions[i].title.match(new RegExp("\\b"+title+".*","g"))){
-                        temp.push(questions[i])
-                    }
-                }
-                res.status(200).json(temp)
+        Question.find({title: new RegExp(title, 'i')})
+            .then(datas => {
+                res.status(200).json(datas)
             })
             .catch(next)
     }
@@ -93,7 +90,7 @@ class QuestionController {
                 return Question.findByIdAndUpdate({_id},{downvotes: question.downvotes})
             })
             .then(success => {
-                res.status(200).json(success)
+                res.status(201).json(success)
             })
             .catch(next)
     }
@@ -125,9 +122,33 @@ class QuestionController {
                 return Question.findByIdAndUpdate({_id},{upvotes: question.upvotes})
             })
             .then(success => {
-                res.status(200).json(success)
+                res.status(201).json(success)
             })
             .catch(next)
+    }
+    static deleteQuestion (req,res,next) {
+      const _id = new mongoose.Types.ObjectId(req.params.id)
+      Question.findByIdAndDelete({_id})
+        .then(success => {
+          return Answer.find({QuestionId: _id})
+        })
+        .then(answers => {
+          console.log(answers)
+          return Answer.deleteMany({ QuestionId: _id})
+        })
+        .then(_ => {
+          res.status(200).json({msg: "success delete all"})
+        })
+        .catch(next)
+    }
+    static updateQuestion (req,res,next) {
+      console.log(req.params.id)
+      const _id = req.params.id
+      Question.findByIdAndUpdate({_id},{title: req.body.title, description: req.body.description})
+        .then(_ => {
+          res.status(201).json({msg: 'success update'})
+        })
+        .catch(next)
     }
 }
 

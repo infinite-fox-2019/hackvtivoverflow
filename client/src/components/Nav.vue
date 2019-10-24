@@ -1,5 +1,5 @@
 <template>
-<div class='container'>
+<div class='fluid-container'>
   <b-navbar toggleable="lg" type="dark" variant="dark">
     <b-navbar-brand href="#"><router-link to='/'>Hacktiv Overflow</router-link></b-navbar-brand>
        
@@ -50,10 +50,6 @@ export default {
           this.$store.dispatch('signout');
           this.$router.push('/')
           this.$awn.info('please comeback again :)')
-      },
-      search () {
-        const title = this.searchTitle;
-        axios
       }
   },
   computed: {

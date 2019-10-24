@@ -168,7 +168,7 @@ export default {
             }
           })
             .then(({data}) => {
-                this.postAnswer = ''
+                this.inputAnswer = ''
                 this.$awn.success('success post your answer!')
                 this.fetchAnswer()
             })

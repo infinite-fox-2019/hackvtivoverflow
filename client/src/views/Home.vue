@@ -1,6 +1,6 @@
 <template>
   <div class='main-container'>
-    <div class="header">
+    <div class="header bg-light">
       <div class="row">
         <div class="col-8">
           <div class="text">
@@ -18,13 +18,14 @@
       </div>
       <hr>
     </div>
+    <hr>
     <div class="body">
       <div v-for='(question,i) in questions' :key='i'>
         <QuestionHome :question='question' @fetchAgain='okeFetch'/>
     </div>
   </div>
     <div class="foot">
-      'sfasa
+      fasfasfs
     </div>
 </div>
 </template>
@@ -80,7 +81,6 @@ export default {
 }
 .header{
   height: 5vw;
-  background-color: bisque;
 }
 p {
   font-size: 15px;

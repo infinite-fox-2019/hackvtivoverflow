@@ -42,6 +42,16 @@ const routes = [
     path: '/search/:name',
     name: 'search',
     component: () => import(/* webpackChunkName: 'search' */ '../views/Search.vue')
+  },
+  {
+    path: '/rating',
+    name: 'rating',
+    component: () => import(/* webpackChunkName: 'rating' */ '../views/Rating.vue')
+  },
+  {
+    path: '/profile',
+    name: 'profile',
+    component: () => import(/* webpackChunkName: 'profile' */ '../views/Profile.vue')
   }
 ]
 

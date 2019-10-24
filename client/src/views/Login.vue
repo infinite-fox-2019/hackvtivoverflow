@@ -40,7 +40,7 @@ export default {
                   this.$router.push('/');
                 })
                 .catch(err=>{
-                  this.$awn.warning(err.response.data.msg)
+                  this.$awn.warning(err)
                 })
         }
     }

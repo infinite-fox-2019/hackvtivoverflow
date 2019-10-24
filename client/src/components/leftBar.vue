@@ -7,7 +7,13 @@
             </router-link>
         </div>
         <div class="cols">
-            Hacktiv Overflow
+            <router-link to='/rating'>Rating</router-link>
+        </div>
+        <div class="cols">
+          <router-link to='/profile'>Profile</router-link>
+        </div>
+        <div class="colbtm">
+          
         </div>
     </div>
 </div>
@@ -26,5 +32,6 @@ export default {
 }
 .cols{
     text-align: center;
+    padding: 20px;
 }
 </style>

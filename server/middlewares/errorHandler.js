@@ -14,6 +14,10 @@ module.exports = (err,req,res,next) => {
         res.status(403).json({ msg: 'Authorization Error' })
     }else if(err.msg == 'upspam' || err.msg == 'downspam') {
         res.status(403).json({ msg: 'Spam detected!'})
+    }else if(err.msg == '0Q') {
+      res.status(404).json({ msg: 'Question not Found!'})
+    }else if(err.msg == '0A') {
+      res.status(404).json({ msg: 'Answer not Found!'})
     }
     else {
         res.status(500).json(err)
