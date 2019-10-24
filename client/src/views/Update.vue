@@ -63,6 +63,7 @@ export default {
       console.log(payload,'ini payloaddd');
       
       this.$store.dispatch('updateQue',payload)
+      this.$store.dispatch('personalQuestion')
       this.$router.push('/myquestion')
     }
   },
