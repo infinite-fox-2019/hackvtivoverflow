@@ -3,6 +3,6 @@ const axios = require('axios')
 const token = localStorage.getItem('access_token')
 
 module.exports = axios.create({
-  baseURL: 'http://localhost:3000/',
+  baseURL: 'http://18.216.24.207/',
   headers: {'access_token': token}
 });
