@@ -5,7 +5,7 @@
       tag-placeholder="Add this as new tag"
       placeholder="Search or add a tag"
       label="name"
-      track-by="code"
+      track-by="name"
       :options="options"
       :multiple="true"
       :taggable="true"
@@ -24,11 +24,7 @@ export default {
   data() {
     return {
       value: [],
-      options: [
-        { name: "Vue.js", code: "vu" },
-        { name: "Javascript", code: "js" },
-        { name: "Open Source", code: "os" }
-      ]
+      options: []
     };
   },
   methods: {
@@ -40,6 +36,14 @@ export default {
       this.options.push(tag);
       this.value.push(tag);
     }
+  },
+  watch: {
+    value() {
+      this.$emit("passingtags", this.value);
+    }
+  },
+  created() {
+    this.options = this.$store.state.tags;
   }
 };
 </script>

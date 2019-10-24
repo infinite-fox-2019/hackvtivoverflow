@@ -15,8 +15,8 @@
       </form>
     </div>
     <div class="sign">
-      <p>Login</p>
-      <p v-if="false">Logout</p>
+      <p v-if="isLogin" @click.prevent="logout">Logout</p>
+      <router-link to="/login" style="color : black; text-decoration:none" v-else>Login</router-link>
     </div>
   </nav>
 </template>
@@ -27,9 +27,29 @@ export default {
   data() {
     return {};
   },
+  computed: {
+    isLogin() {
+      if (localStorage.getItem("token")) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+  },
   methods: {
     home() {
       this.$router.push("/ask");
+    },
+    logout() {
+      localStorage.removeItem("token");
+      this.$notify({
+        group: "foo",
+        type: "success",
+        position: "top right",
+        title: "Success",
+        text: "Bye Bye! Logged Out success!"
+      });
+      this.$router.push("/login");
     }
   }
 };

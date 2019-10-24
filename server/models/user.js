@@ -26,6 +26,8 @@ const userSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'Ask'
     }]
+}, {
+    versionKey: false
 })
 
 userSchema.pre('save', function (next) {

@@ -23,8 +23,7 @@ const askSchema = new Schema({
         ref: 'Answer'
     }],
     tags: [{
-        type: Schema.Types.ObjectId,
-        ref: 'Tag'
+        type: Map
     }],
     watcher: [{
         type: Schema.Types.ObjectId,

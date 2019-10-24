@@ -13,13 +13,13 @@
     <div class="tags">
       <div class="tag-card" v-for="(tag, i) in tags" :key="i">
         <div class="head">
-          <p class="title" v-text="tag" @click="goDetailTag('java')">javascript</p>
+          <p class="title" v-text="tag.name" @click="goDetailTag(tag.name)"></p>
           <p style="margin-right:5px">x</p>
-          <p>2345664</p>
+          <p v-text="tag.watcher.length"></p>
         </div>
 
         <div class="body">
-          <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Iusto repellat debitis natus voluptatem harum labore eos facere error eligendi. Repellat corporis eius delectus voluptas rem facilis ipsa labore natus commodi?</p>
+          <p v-text="tag.desc"></p>
         </div>
       </div>
     </div>
@@ -30,21 +30,16 @@
 export default {
   name: `tag-list`,
   data() {
-    return {
-      tags: [
-        `javascript`,
-        `node.js`,
-        `vue-cli`,
-        `vue-component`,
-        "html",
-        `css`,
-        `reactjs`
-      ]
-    };
+    return {};
   },
   methods: {
     goDetailTag(name) {
       this.$router.push(`/tag/${name}`);
+    }
+  },
+  computed: {
+    tags() {
+      return this.$store.state.tags;
     }
   }
 };

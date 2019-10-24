@@ -7,27 +7,36 @@
 
     <div class="card-ask" v-for="(ask, index) in asks" :key="index">
       <div class="number">
-        <p style="color: #757575; font-size: 24px;">1000</p>
+        <p style="color: #757575; font-size: 24px;" v-text="ask.downvote.length">1000</p>
         <p style="color: #757575; font-size: 10px;">vote</p>
 
         <div class="answer">
-          <p>20</p>
+          <p v-text="ask.answers.length">20</p>
           <p style="font-size:10px">answers</p>
         </div>
 
-        <p style="color: #f38024; font-size:10px">400 views</p>
+        <p style="color: #f38024; font-size:10px">{{ask.watcher.length}} views</p>
       </div>
 
       <div class="text">
         <p
           style="color: #007ED9; cursor:pointer"
-          @click.prevent="goDetailAsk(123)"
+          @click.prevent="goDetailAsk(ask._id)"
+          v-text="ask.title"
         >Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quo, consequuntur iste! Repellendus</p>
         <div class="content">
-          <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quos quod consequuntur a quam, esse nesciunt commodi voluptate ratione laborum nobis autem, nam ipsum sed delectus, nisi dolor veritatis et recusandae!. Lorem ipsum dolor sit amet consectetur adipisicing elit. A, quidem nostrum culpa praesentium odio ipsa. Suscipit, qui debitis odio sit reiciendis veritatis doloremque. Tenetur, error! Unde voluptate voluptatem quo tempora!</p>
+          <p
+            v-html="ask.content"
+          >Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quos quod consequuntur a quam, esse nesciunt commodi voluptate ratione laborum nobis autem, nam ipsum sed delectus, nisi dolor veritatis et recusandae!. Lorem ipsum dolor sit amet consectetur adipisicing elit. A, quidem nostrum culpa praesentium odio ipsa. Suscipit, qui debitis odio sit reiciendis veritatis doloremque. Tenetur, error! Unde voluptate voluptatem quo tempora!</p>
         </div>
         <div class="tags">
-          <p class="tag" v-for="(tag, i) in tags" :key="i">Vuejs</p>
+          <p
+            class="tag"
+            v-for="(tag, i) in ask.tags"
+            :key="i"
+            v-text="tag.name"
+            @click="goDetailTag(tag.name)"
+          ></p>
         </div>
       </div>
     </div>
@@ -39,9 +48,13 @@ export default {
   name: `ask-list`,
   data() {
     return {
-      tags: [`vue.js`, "reactjs", `javascript`],
-      asks: [1, 2, 3, 4, 5, 6, 7, 8, 9]
+      tags: [`vue.js`, "reactjs", `javascript`]
     };
+  },
+  computed: {
+    asks() {
+      return this.$store.state.asks;
+    }
   },
   methods: {
     toWritePage() {
@@ -49,7 +62,13 @@ export default {
     },
     goDetailAsk(id) {
       this.$router.push(`/ask/${id}`);
+    },
+    goDetailTag(name) {
+      this.$router.push(`/tag/${name}`);
     }
+  },
+  created() {
+    this.$store.dispatch("findAsk");
   }
 };
 </script>

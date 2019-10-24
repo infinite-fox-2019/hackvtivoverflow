@@ -15,7 +15,9 @@
         <p style="margin-bottom: 10px; cursor:pointer">
           <router-link to="/tags" style="color:black; text-decoration:none">Tag</router-link>
         </p>
-        <p style="cursor:pointer">User</p>
+        <p style="cursor:pointer">
+          <router-link to="/users" style="color:black; text-decoration:none">User</router-link>
+        </p>
       </div>
     </div>
   </div>

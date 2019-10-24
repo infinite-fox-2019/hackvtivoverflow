@@ -10,10 +10,6 @@ const tagSchema = new Schema({
         type: String,
         required: [true, `Desc Tag must be filled`]
     },
-    ask: [{
-        type: Schema.Types.ObjectId,
-        ref: 'Ask'
-    }],
     watcher: [{
         type: Schema.Types.ObjectId,
         ref: 'User'

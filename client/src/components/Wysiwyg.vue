@@ -10,6 +10,11 @@ export default {
     return {
       myHTML: ""
     };
+  },
+  watch: {
+    myHTML() {
+      this.$emit("passingcontent", this.myHTML);
+    }
   }
 };
 </script>

@@ -1,38 +1,56 @@
 <template>
   <div class="container">
-    <div class="boom">
+    <div v-if="!tag"></div>
+    <div class="boom" v-else>
       <div class="ask">
-        <p style="font-size:32px">Questions tagged [javascript]</p>
+        <p style="font-size:32px">Questions tagged [{{tag.name}}]</p>
         <button @click="toPageWrite">Ask Question</button>
       </div>
       <p
         style="font-size:12px; text-align:left; margin: 10px"
+        v-text="tag.desc"
       >JavaScript (not to be confused with Java) is a high-level, dynamic, multi-paradigm, object-oriented, prototype-based, weakly-typed, and interpreted language used for both client-side and server-side scripting. Its primary use is in the rendering and manipulation of web pages. Use this tag for questions regarding ECMAScript and its various dialects/implementations (excluding ActionScript and Google-Apps-Script).</p>
     </div>
 
-    <div class="card-ask" v-for="(ask, index) in asks" :key="index">
-      <div class="number">
-        <p style="color: #757575; font-size: 24px;">1000</p>
-        <p style="color: #757575; font-size: 10px;">vote</p>
+    <div v-if="asks.length == 0">
+      <img src="../assets/empty.svg" alt="empty" />
+      <h1>NO QUESTION!</h1>
+    </div>
+    <div v-else>
+      <div class="card-ask" v-for="(ask, index) in asks" :key="index">
+        <div class="number">
+          <p
+            style="color: #757575; font-size: 24px;"
+            v-text="ask.downvote.length+ask.upvote.length"
+          ></p>
+          <p style="color: #757575; font-size: 10px;">vote</p>
 
-        <div class="answer">
-          <p>20</p>
-          <p style="font-size:10px">answers</p>
+          <div class="answer">
+            <p v-text="ask.answers.length">20</p>
+            <p style="font-size:10px">answers</p>
+          </div>
+
+          <p style="color: #f38024; font-size:10px">{{ask.watcher.length}} views</p>
         </div>
 
-        <p style="color: #f38024; font-size:10px">400 views</p>
-      </div>
-
-      <div class="text">
-        <p
-          style="color: #007ED9; cursor:pointer"
-          @click.prevent="goDetailAsk(123)"
-        >Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quo, consequuntur iste! Repellendus</p>
-        <div class="content">
-          <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quos quod consequuntur a quam, esse nesciunt commodi voluptate ratione laborum nobis autem, nam ipsum sed delectus, nisi dolor veritatis et recusandae!. Lorem ipsum dolor sit amet consectetur adipisicing elit. A, quidem nostrum culpa praesentium odio ipsa. Suscipit, qui debitis odio sit reiciendis veritatis doloremque. Tenetur, error! Unde voluptate voluptatem quo tempora!</p>
-        </div>
-        <div class="tags">
-          <p class="tag" v-for="(tag, i) in tags" :key="i">Vuejs</p>
+        <div class="text">
+          <p
+            style="color: #007ED9; cursor:pointer"
+            @click.prevent="goDetailAsk(ask._id)"
+            v-text="ask.title"
+          ></p>
+          <div class="content">
+            <p v-html="ask.content"></p>
+          </div>
+          <div class="tags">
+            <p
+              class="tag"
+              v-for="(tag, i) in ask.tags"
+              :key="i"
+              v-text="tag.name"
+              @click="goDetailTag(tag.name)"
+            ></p>
+          </div>
         </div>
       </div>
     </div>
@@ -43,10 +61,7 @@
 export default {
   name: `ask-list`,
   data() {
-    return {
-      tags: [`vue.js`, "reactjs", `javascript`],
-      asks: [1, 2, 3, 4, 5, 6, 7, 8, 9]
-    };
+    return {};
   },
   methods: {
     toPageWrite() {
@@ -54,12 +69,29 @@ export default {
     },
     goDetailAsk(id) {
       this.$router.push(`/ask/${id}`);
+    },
+    goDetailTag(name) {
+      this.$router.push(`/tag/${name}`);
     }
+  },
+  computed: {
+    asks() {
+      return this.$store.state.tagdetail.asks;
+    },
+    tag() {
+      return this.$store.state.tagdetail.tag;
+    }
+  },
+  created() {
+    this.$store.dispatch("findTagByName", this.$route.params.name);
   }
 };
 </script>
 
 <style scoped>
+img {
+  height: 200px;
+}
 .container {
   width: 70vw;
 }

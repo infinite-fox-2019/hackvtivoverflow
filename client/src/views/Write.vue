@@ -2,12 +2,12 @@
   <div class="container">
     <div class="title">
       <form>
-        <input type="text" placeholder="Enter Title" />
+        <input type="text" placeholder="Enter Title" v-model="title" />
       </form>
     </div>
-    <Multiselect />
-    <Wysiwyg />
-    <button>Post Question</button>
+    <Multiselect @passingtags="passingtags" />
+    <Wysiwyg @passingcontent="passingcontent" />
+    <button @click.prevent="postask">Post Question</button>
   </div>
 </template>
 
@@ -16,9 +16,35 @@ import Wysiwyg from "../components/Wysiwyg.vue";
 import Multiselect from "../components/Multi-select.vue";
 export default {
   name: "write",
+  data() {
+    return {
+      title: "",
+      tags: [],
+      content: ""
+    };
+  },
   components: {
     Wysiwyg,
     Multiselect
+  },
+  methods: {
+    passingtags(tags) {
+      this.tags = tags;
+    },
+    passingcontent(content) {
+      this.content = content;
+    },
+    postask() {
+      let asked = {
+        title: this.title,
+        content: this.content,
+        tags: this.tags
+      };
+      this.$store.dispatch("postAsk", asked);
+    }
+  },
+  created() {
+    this.$store.dispatch("getTag");
   }
 };
 </script>

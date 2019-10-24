@@ -19,6 +19,10 @@ const routes = [
         component: () => import('../components/My-ask.vue')
       },
       {
+        path: 'users',
+        component: () => import('../components/User-list.vue')
+      },
+      {
         path: 'tags',
         component: () => import('../components/Tag-list.vue')
       },
@@ -36,6 +40,16 @@ const routes = [
     path: '/writeask',
     name: 'write ask',
     component: () => import('../views/Write.vue')
+  },
+  {
+    path: '/login',
+    name: 'login',
+    component: () => import('../views/Login.vue')
+  },
+  {
+    path: '/register',
+    name: 'register',
+    component: () => import('../views/Register.vue')
   }
 
 ]
