@@ -45,7 +45,7 @@ io.on('connection', function(socket){
   console.log('a user connected');
 });
 
-http.listen(3000, cron, function(){
+http.listen(PORT, cron, function(){
   console.log('listening on *:3000');
 });
 
