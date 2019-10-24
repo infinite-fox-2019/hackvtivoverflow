@@ -11,6 +11,7 @@ const errorHandler = require('./middlewares/errorHandler')
 const cors = require('cors')
 const morgan = require('morgan')
 const mongooseConnection = require('./config/mongoose')
+const cron = require('./cron')
 
 const app = express()
 const PORT = process.env.PORT || 3000
@@ -33,6 +34,9 @@ app.use('/', router)
 
 // Error handler
 app.use(errorHandler)
+
+// Call CRON
+cron()
 
 // Start the server
 app.listen(PORT, () => console.log(`App listening on port ${PORT}`))
