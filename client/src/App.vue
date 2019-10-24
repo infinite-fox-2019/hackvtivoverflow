@@ -10,10 +10,17 @@
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
 export default {
-  name:'app',
+  name: 'app',
   components: {
     Navbar,
     Footer
+  },
+  created(){
+    if(localStorage.getItem('access_token')){
+      console.log('masuk')
+      this.$store.commit('LOGIN_STATUS_CHANGE', true)
+      this.$router.push({path:'/'})
+    }
   }
 }
 </script>

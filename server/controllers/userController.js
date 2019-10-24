@@ -6,12 +6,13 @@ class UserController {
 
   static login(req,res,next){
     const {email, password} = req.body
+    console.log(req.body)
     User.findOne({email})
       .then(data => {
         if(data && decodeHash(password, data.password)){
           const {name, email, _id} = data
           let token = generateToken({name,email,_id})
-          res.status(200).json({access_token:token})
+          res.status(200).json({access_token:token,name})
         }
         else{
           res.status(400).json({msg:"Invalid email or password"})

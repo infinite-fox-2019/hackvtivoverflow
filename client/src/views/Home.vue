@@ -1,5 +1,5 @@
 <template>
-  
+
     <b-container class="w-75">
 
       <b-row>
@@ -9,7 +9,7 @@
           </b-jumbotron>
         </b-col>
       </b-row>
-      
+
       <router-link to="/question" style="text-decoration:none">
       <b-row href="#" align-v="center" no-gutters class="p-3 border-bottom border-top">
         <b-col md="1" class="">
@@ -28,7 +28,7 @@
         </b-col>
       </b-row>
       </router-link>
-      
+
       <b-row  align-v="center" no-gutters class="p-3 border-bottom border-top">
         <b-col md="1" class="">
           <p class="text-center m-1 p-1">1<br>votes</p>
@@ -97,21 +97,17 @@
         </b-col>
       </b-row>
 
-      
-
-
     </b-container>
-  
+
 </template>
 
 <script>
 // @ is an alias to /src
 
-
 export default {
   name: 'home',
   components: {
-    
+
   }
 }
 </script>

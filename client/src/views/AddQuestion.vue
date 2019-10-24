@@ -7,7 +7,7 @@
       </b-form-group>
       <b-row>
         <b-col>
-          <ckeditor :editor="editor" v-model="editorData" :config="editorConfig"></ckeditor>      
+          <ckeditor :editor="editor" v-model="editorData" :config="editorConfig"></ckeditor>
         </b-col>
       </b-row>
       <b-button type="submit" class="mr-2 mt-3" size="" variant="success">Submit</b-button>
@@ -16,17 +16,17 @@
 </template>
 
 <script>
-import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic'
 
 export default {
-  data() {
-      return {
-          editor: ClassicEditor,
-          editorData: '<p>Content of the editohohohohoholalallar.</p>',
-          editorConfig: {
-              // The configuration of the editor.
-          }
-      };
+  data () {
+    return {
+      editor: ClassicEditor,
+      editorData: '<p>Content of the editohohohohoholalallar.</p>',
+      editorConfig: {
+        // The configuration of the editor.
+      }
+    }
   }
 }
 </script>

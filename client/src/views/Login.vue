@@ -28,7 +28,7 @@
               type="password"
             ></b-form-input>
           </b-form-group>
-          
+
           <div class="mt-4">
             <b-button type="submit" class="mr-2" variant="success">Login</b-button>
             <b-button type="reset" class="mr-2" variant="danger">Reset</b-button>
@@ -41,35 +41,34 @@
 </template>
 
 <script>
-  export default {
-    data() {
-      return {
-        form: {
-          email: '',
-          name: '',
-          password: ''
-        },
-        show: true
-      }
-    },
-    methods: {
-      onSubmit(evt) {
-        evt.preventDefault()
-        alert(JSON.stringify(this.form))
+export default {
+  data () {
+    return {
+      form: {
+        email: '',
+        password: ''
       },
-      onReset(evt) {
-        evt.preventDefault()
-        // Reset our form values
-        this.form.email = ''
-        this.form.password = ''
-        // Trick to reset/clear native browser form validation state
-        this.show = false
-        this.$nextTick(() => {
-          this.show = true
-        })
-      }
+      show: true
+    }
+  },
+  methods: {
+    onSubmit (evt) {
+      evt.preventDefault()
+      this.$store.dispatch('A_LOGIN',{email:this.form.email, password:this.form.password})
+    },
+    onReset (evt) {
+      evt.preventDefault()
+      // Reset our form values
+      this.form.email = ''
+      this.form.password = ''
+      // Trick to reset/clear native browser form validation state
+      this.show = false
+      this.$nextTick(() => {
+        this.show = true
+      })
     }
   }
+}
 </script>
 
 <style>

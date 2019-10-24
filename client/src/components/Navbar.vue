@@ -5,9 +5,9 @@
       <b-collapse id="nav-collapse" is-nav>
         <!-- Right aligned nav items -->
         <b-navbar-nav class="ml-auto">
-          <router-link to="/login"><b-button size="sm" class="my-2 my-sm-0 mr-2">Login</b-button></router-link>
-          <router-link to="/addquestion"><b-button size="sm" class="my-2 my-sm-0 mr-2">Question?</b-button></router-link>
-          <b-button size="sm" class="my-2 my-sm-0 mr-2">Logout</b-button>
+          <router-link v-if="!$store.state.isLogin" to="/login"><b-button size="sm" class="my-2 my-sm-0 mr-2">Login</b-button></router-link>
+          <router-link v-if="$store.state.isLogin" to="/addquestion"><b-button size="sm" class="my-2 my-sm-0 mr-2">Question?</b-button></router-link>
+          <b-button v-if="$store.state.isLogin" @click.prevent="logout()" size="sm" class="my-2 my-sm-0 mr-2">Logout</b-button>
         </b-navbar-nav>
       </b-collapse>
     </b-navbar>
@@ -15,7 +15,16 @@
 
 <script>
 export default {
-
+  name:'navbar',
+  methods:{
+    logout(){
+      localStorage.removeItem('access_token')
+      localStorage.removeItem('name')
+      this.$store.commit('LOGIN_STATUS_CHANGE', false)
+      this.$store.commit('LOGIN_NAME_CHANGE', null)
+      this.$router.push({path:'/about'})
+    }
+  }
 }
 </script>
 

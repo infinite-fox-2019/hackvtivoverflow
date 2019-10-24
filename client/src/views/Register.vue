@@ -27,10 +27,10 @@
               placeholder="Enter name"
             ></b-form-input>
           </b-form-group>
-          
+
           <b-form-group id="input-group-2" label="Your Password:" label-for="input-2">
             <b-form-input
-              id="input-2"
+              id="input-3"
               v-model="form.password"
               required
               placeholder="Enter password"
@@ -39,7 +39,7 @@
           </b-form-group>
 
           <div class="mt-4">
-            <router-link to="/register"><b-button type="submit" class="mr-2" variant="success">Register</b-button></router-link>
+            <b-button type="submit" class="mr-2" variant="success">Register</b-button>
             <b-button type="reset" class="mr-2" variant="danger">Reset</b-button>
           </div>
         </b-form>
@@ -49,36 +49,36 @@
 </template>
 
 <script>
-  export default {
-    data() {
-      return {
-        form: {
-          email: '',
-          name: '',
-          password:''
-        },
-        show: true
-      }
-    },
-    methods: {
-      onSubmit(evt) {
-        evt.preventDefault()
-        alert(JSON.stringify(this.form))
+export default {
+  data () {
+    return {
+      form: {
+        email: '',
+        name: '',
+        password: ''
       },
-      onReset(evt) {
-        evt.preventDefault()
-        // Reset our form values
-        this.form.email = ''
-        this.form.name = ''
-        this.form.password = ''
-        // Trick to reset/clear native browser form validation state
-        this.show = false
-        this.$nextTick(() => {
-          this.show = true
-        })
-      }
+      show: true
+    }
+  },
+  methods: {
+    onSubmit (evt) {
+      evt.preventDefault()
+      this.$store.dispatch('A_REGISTER', {name:this.form.name,email:this.form.email,password:this.form.password})
+    },
+    onReset (evt) {
+      evt.preventDefault()
+      // Reset our form values
+      this.form.email = ''
+      this.form.name = ''
+      this.form.password = ''
+      // Trick to reset/clear native browser form validation state
+      this.show = false
+      this.$nextTick(() => {
+        this.show = true
+      })
     }
   }
+}
 </script>
 
 <style>

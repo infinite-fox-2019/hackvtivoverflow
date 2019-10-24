@@ -14,6 +14,6 @@ export default {
 
 <style>
 .footer{
-  
+
 }
 </style>
