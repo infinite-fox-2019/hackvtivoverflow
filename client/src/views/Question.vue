@@ -1,20 +1,23 @@
 <template>
-  <b-container class="w-75">
+  <b-container class="w-75 border-left">
     <!-- Question Section -->
-    <b-row class="border-left">
+    <b-row class="p-3">
       <QuestionSection :data="questionData" @updateResponse="fetchQuestionDetail"/>
     </b-row>
 
     <!-- Answer Section -->
-      <b-row class="border-left mt-3">
-        <h4 class="ml-3">Answer</h4>
-        <AnswerSection @updateResponse="fetchQuestionDetail" v-for="(dataAnswer,index) in questionData.AnswerId" :key="index" :data="dataAnswer"/>
+      <h4 class="p-3 mt-3 mb-0">Answer :</h4>
+
+      <b-row v-for="(dataAnswer,index) in questionData.AnswerId" :key="index" class="border-top p-3">
+
+        <AnswerSection @updateResponse="fetchQuestionDetail" :data="dataAnswer"/>
+
       </b-row>
 
     <!-- Your Answer Section -->
-    <b-row class=" border-left border-top">
+    <b-row class="border-top p-3">
       <b-col class="my-4">
-        <h4 class="mb-4">Your Answer</h4>
+        <h4 class="mb-4">Your Answer :</h4>
         <ckeditor :editor="editor" v-model="editorData" :config="editorConfig"></ckeditor>
         <b-button @click="addAnswer()" class="mr-2 mb-5 mt-3" size="" variant="success">Submit</b-button>
       </b-col>

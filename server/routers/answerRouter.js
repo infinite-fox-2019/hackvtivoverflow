@@ -9,7 +9,7 @@ router.patch('/upvotes/:_id', AnswerController.updateUpvotes)
 
 //Authorization here
 
-router.delete('/:_id', AnswerController.deleteAnswer)
+router.delete('/:_id/:QuestionId', AnswerController.deleteAnswer)
 router.put('/:_id', AnswerController.editAnswer)
 
 module.exports = router

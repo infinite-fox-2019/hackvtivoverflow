@@ -19,6 +19,16 @@
               <b-img @click="downvotes()" style="cursor:pointer;" src="https://image.flaticon.com/icons/svg/25/25623.svg" width="40" class="" alt="placeholder"></b-img>
             </b-col>
           </b-row>
+          <b-row>
+            <b-col>
+              <b-img v-if="data.UserId && data.UserId.name == $store.state.isLoginName" @click="editQuestion()" src="https://image.flaticon.com/icons/svg/1160/1160515.svg" width="20" class="" alt="placeholder" style="cursor:pointer; margin-left:10px; margin-top:10px;"></b-img>
+            </b-col>
+          </b-row>
+          <b-row>
+            <b-col class="m-auto">
+              <b-img v-if="data.UserId && data.UserId.name == $store.state.isLoginName" @click="deleteQuestion()" style="cursor:pointer; margin-left:10px; margin-top:10px;" src="https://image.flaticon.com/icons/svg/1632/1632708.svg" width="20" class="" alt="placeholder"></b-img>
+            </b-col>
+          </b-row>
         </b-container>
       </template>
       <div v-html="data.description">
@@ -77,7 +87,30 @@ export default {
           this.$emit('updateResponse')
         })
         .catch(err => { console.log(err.response) })
+    },
+    deleteQuestion () {
+      axios({
+        method: 'delete',
+        url: `/questions/${this.data._id}`,
+        data: {
+          QuestionId: this.data.QuestionId
+        },
+        headers: {
+          Authorization: localStorage.getItem('access_token')
+        }
+      })
+        .then(({ data }) => {
+          console.log(data)
+          this.$router.push({ path: '/' })
+        })
+        .catch(err => { console.log(err.response) })
+    },
+    editQuestion(){
+      this.$router.push({path:`/editquestion/${this.data._id}`})
     }
+  },
+  beforeMount () {
+    console.log(this.data, '<a<dA<DA<dAS<dAS<dA<')
   }
 }
 </script>

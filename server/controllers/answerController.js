@@ -21,14 +21,17 @@ class AnswerController {
         return Question.update({_id:QuestionId},{$push:{AnswerId:data._id}})
       })
       .then(data => {
-        res.status(200).json({data})
+        res.status(200).json(data)
       })
       .catch(next)
   }
 
   static deleteAnswer(req,res,next){
-    const {_id} = req.params // Need a answer id for delete the answer
+    const {_id,QuestionId} = req.params // Need a answer id for delete the answer
     Answer.deleteOne({_id})
+      .then(data => {
+        return Question.updateOne({_id:QuestionId},{$pull:{AnswerId:_id}})
+      })
       .then(data => {
         res.status(200).json(data)
       })

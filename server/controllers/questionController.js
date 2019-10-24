@@ -25,7 +25,8 @@ class QuestionController {
 
   static editQuestion(req,res,next){
     const {_id} = req.params //question id
-    Question.updateOne({_id},{description})
+    const {description, title} = req.body
+    Question.updateOne({_id},{description,title})
       .then(data => {
         res.status(200).json(data)
       })

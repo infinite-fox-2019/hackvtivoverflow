@@ -5,6 +5,7 @@ import Question from './views/Question.vue'
 import Login from './views/Login.vue'
 import Register from './views/Register.vue'
 import AddQuestion from './views/AddQuestion.vue'
+import EditQuestion from './views/EditQuestion.vue'
 
 Vue.use(Router)
 
@@ -21,6 +22,11 @@ export default new Router({
       path: '/question/:id',
       name: 'question',
       component: Question
+    },
+    {
+      path: '/editquestion/:id',
+      name: 'editquestion',
+      component: EditQuestion
     },
     {
       path: '/login',

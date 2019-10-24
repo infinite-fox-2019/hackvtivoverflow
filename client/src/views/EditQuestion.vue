@@ -1,7 +1,7 @@
 <template>
   <b-container>
-    <p class="h2 mt-5 mb-4">Your Question</p>
-    <b-form @submit.prevent="postQuestion()">
+    <p class="h2 mt-5 mb-4">Edit Question</p>
+    <b-form @submit.prevent="editQuestion()">
       <b-form-group>
         <b-form-input v-model="title" placeholder="Question Title" required></b-form-input>
       </b-form-group>
@@ -10,7 +10,7 @@
           <ckeditor :editor="editor" v-model="editorData" :config="editorConfig"></ckeditor>
         </b-col>
       </b-row>
-      <b-button type="submit" class="mr-2 mt-3" size="" variant="success">Submit</b-button>
+      <b-button type="submit" class="mr-2 mt-3" size="" variant="success">Edit</b-button>
     </b-form>
   </b-container>
 </template>
@@ -31,10 +31,11 @@ export default {
     }
   },
   methods: {
-    postQuestion () {
+    editQuestion () {
+      console.log("masuk edit")
       axios({
-        method: 'post',
-        url: '/questions',
+        method: 'put',
+        url: `/questions/${this.$route.params.id}`,
         data: {
           title: this.title,
           description: this.editorData
@@ -45,12 +46,32 @@ export default {
       })
         .then(({ data }) => {
           console.log(data)
-          this.$router.push({ path: `/question/${data._id}` })
+          this.$router.push({ path: `/question/${this.$route.params.id}`})
+        })
+        .catch(err => {
+          console.log(err.response)
+        })
+    },
+    fetchData(){
+      axios({
+        method: 'get',
+        url: `/questions/${this.$route.params.id}`,
+        headers:{
+          Authorization: localStorage.getItem('access_token')
+        }
+      })
+        .then(({data}) => {
+          this.title = data.title
+          this.editorData = data.description
+          console.log(data) 
         })
         .catch(err => {
           console.log(err.response)
         })
     }
+  },
+  created(){
+    this.fetchData()
   }
 }
 </script>
