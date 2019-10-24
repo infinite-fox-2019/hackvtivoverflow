@@ -72,12 +72,15 @@ class QuestionController {
     Question.findOne({_id: ObjectId(questionId), upVotes : req.loggedUser.id})
       .then(question=>{
         if(question){
-          return Question.update({_id: ObjectId(questionId)}, { $pull : { upVotes: req.loggedUser.id } })
+          return Question.findOneAndUpdate({_id: ObjectId(questionId)}, { $pull : { upVotes: req.loggedUser.id } })
         } else {
-          return Question.update({_id: ObjectId(questionId)}, { $push: { upVotes : req.loggedUser.id } })
+          return Question.findOneAndUpdate({_id: ObjectId(questionId)}, { $push: { upVotes : req.loggedUser.id } })
         }
       })
-      .then(response=>{
+      .then(question=>{
+        return Question.findOneAndUpdate({_id: ObjectId(questionId)}, { $pull : { downVotes: req.loggedUser.id}})
+      })
+      .then(question=>{
         res.status(200).json({ message: 'Successfully upvote'})
       })
       .catch(next)
@@ -87,12 +90,15 @@ class QuestionController {
     Question.findOne({_id: ObjectId(questionId), downVotes : req.loggedUser.id})
       .then(question=>{
         if(question){
-          return Question.update({_id: ObjectId(questionId)}, { $pull : { downVotes: req.loggedUser.id } })
+          return Question.findOneAndUpdate({_id: ObjectId(questionId)}, { $pull : { downVotes: req.loggedUser.id } })
         } else {
-          return Question.update({_id: ObjectId(questionId)}, { $push: { downVotes: req.loggedUser.id } })
+          return Question.findOneAndUpdate({_id: ObjectId(questionId)}, { $push: { downVotes: req.loggedUser.id } })
         }
       })
-      .then(response=>{
+      .then(question=>{
+        return Question.findOneAndUpdate({_id: ObjectId(questionId)}, { $pull : { upVotes: req.loggedUser.id } })        
+      })
+      .then(question=>{
         res.status(200).json({ message: 'Successfully downvote'})
       })
       .catch(next)

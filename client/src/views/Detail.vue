@@ -23,7 +23,7 @@
     </div>
   </div>
    <div class="flex my-2 border border-gray-400 shadow bg-blue-100"  v-for="answer in answers" :key="answer._id">
-    <div class="flex flex-wrap items-center border border-gray-100 bg-yellow-200">
+    <div class="flex-column justify-start border border-gray-100 bg-yellow-200">
       <span class="m-2 w-full"><a href=""><i class="fas fa-caret-up text-4xl" @click.prevent="aUpVote(answer._id)"></i></a></span>
       <span class="m-2 w-full"><a href="">{{ answer.upVotes.length - answer.downVotes.length }}</a></span>
       <span class="m-2 w-full"><a href=""><i class="fas fa-caret-down text-4xl" @click.prevent="aDownVote(answer._id)"></i></a></span>

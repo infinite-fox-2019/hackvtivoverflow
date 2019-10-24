@@ -227,7 +227,7 @@ export default new Vuex.Store({
           context.dispatch('fetchAnswers', { questionId })
           context.dispatch('getQuestionById', { id: questionId })
         })
-        .catch(alert)
+        .catch(console.log)
     },
     aUpVote (context, payload) {
       const { answerId, questionId } = payload
@@ -238,10 +238,10 @@ export default new Vuex.Store({
         headers: { token: localStorage.getItem('token') }
       })
         .then(({ data }) => {
-          alert(data.message)
           context.dispatch('fetchAnswers', { questionId })
+          context.dispatch('getQuestionById', { id: questionId })
         })
-        .catch(alert)
+        .catch(console.log)
     },
     aDownVote (context, payload) {
       const { answerId, questionId } = payload
@@ -252,22 +252,26 @@ export default new Vuex.Store({
         headers: { token: localStorage.getItem('token') }
       })
         .then(({ data }) => {
-          alert(data.message)
           context.dispatch('fetchAnswers', { questionId })
+          context.dispatch('getQuestionById', { id: questionId })
         })
         .catch(alert)
     },
     deleteQuestion (context, payload) {
       const { questionId } = payload
-      axios({
-        method: 'DELETE',
-        url: `/questions/${questionId}`,
-        headers: { token: localStorage.getItem('token') }
-      })
-        .then(({ data }) => {
-          alert(data.message)
+      return new Promise ((resolve, reject) => {
+        axios({
+          method: 'DELETE',
+          url: `/questions/${questionId}`,
+          headers: { token: localStorage.getItem('token') }
         })
-        .catch(alert)
+        .then(({ data }) => {
+          resolve(data.message)
+        })
+        .catch(({ response }) => {
+          reject(response.data)
+        })
+      })
     }
   }
 })

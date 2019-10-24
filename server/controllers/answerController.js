@@ -60,6 +60,9 @@ class AnswerController {
         }
       })
       .then(respnse=>{
+        return Answer.updateOne({_id: ObjectId(answerId)}, { $pull : { downVotes: req.loggedUser.id }})
+      })
+      .then(response=>{
         res.status(200).json({message: 'Successfully upvote answer'})
       })
       .catch(next)
@@ -75,6 +78,9 @@ class AnswerController {
         }
       })
       .then(response =>{
+        return Answer.updateOne({_id: ObjectId(answerId)}, { $pull : { upVotes: req.loggedUser.id }})
+      })
+      .then(response=>{
         res.status(200).json({message:'Successfully downvote answer'})
       })
       .catch(next)
