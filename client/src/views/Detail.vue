@@ -1,5 +1,5 @@
 <template>
-<div class="container">
+<div class="container" style="margin: 0 auto;">
   <div class="main-page p-2 my-2">
     <div class="flex my-2 border border-gray-400 shadow bg-red-100">
       <div class="flex flex-wrap items-center border border-gray-400 bg-blue-200">

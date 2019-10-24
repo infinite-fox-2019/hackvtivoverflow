@@ -1,4 +1,5 @@
 <template>
+<div class="container" style="margin:0 auto;">
   <div class="page">
     <div class="m-4">Edit your answer </div>
     <quill-editor v-model="description"
@@ -11,6 +12,7 @@
       <button class="bg-blue-400 hover:bg-blue-700 text-white hover:text-gray-800 rounded p-2 m-2 align-left" @click.prevent="updateAnswer">Update your Answer</button>
     </div>
   </div>
+</div>
 </template>
 
 <script>
@@ -41,7 +43,4 @@ export default {
 </script>
 
 <style>
-.page {
-  margin-left: 25%;
-}
 </style>

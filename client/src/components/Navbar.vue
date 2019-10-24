@@ -2,7 +2,7 @@
   <nav class="p-6 px-14 flex justify-between items-center text-white shadow-lg w-full">
     <div class="ml-24 p-0 flex items-center">
       <a href=""><img src="../assets/logo.png" alt="home" class="h-12" @click.prevent="goHome"></a>
-      <a href="" class="mx-4 hover:text-blue-400" @click.prevent="goUser">My Questions</a>
+      <a v-if="isLogin" href="" class="mx-4 hover:text-blue-400" @click.prevent="goUser">My Questions</a>
     </div>
     <div v-if="isLogin" class="flex items-center justify-center w-1/4">
       <form action="" class="w-full" @submit.prevent="search">

@@ -39,11 +39,11 @@ export default {
   text-align: center;
   color: #2c3e50;
   background-color: #f7f6f9;
-  background-image: url('./assets/photo.png');
-  background-attachment:local;
-  background-size: cover;
+  background: url('./assets/photo.png');
+  background-position: fixed;
+  background-repeat: repeat;
   font-size: 80%;
-  /* height: 100vh; */
+  height: 200%;
 }
 #nav {
   padding: 30px;
@@ -57,5 +57,6 @@ export default {
 #nav a.router-link-exact-active {
   color: #42b983;
 }
+
 
 </style>

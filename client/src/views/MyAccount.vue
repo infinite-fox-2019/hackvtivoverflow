@@ -1,5 +1,6 @@
 <template>
-  <div class="main-page w-1/5 sm:w-1/3 md:w-3/4 p-4 my-2 mr-64">
+<div class="container" style="margin: 0 auto;">
+  <div class="main-page w-1/5 sm:w-1/3 md:w-3/4 p-4" style="margin: 0 auto;">
   <div class="flex justify-between items-center shadow-lg p-6 m-4 bg-white" v-for="question in questions" :key="question._id">
     <div class="flex justify-between w-1/6">
       <div class="flex-column">
@@ -31,6 +32,7 @@
         </div>
   </div>
 </div>
+</div>
 </template>
 
 <script>
@@ -61,7 +63,7 @@ export default {
 </script>
 
 <style>
-.main-page {
+/* .main-page {
   margin-left: 25%;
-}
+} */
 </style>

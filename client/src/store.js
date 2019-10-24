@@ -42,28 +42,37 @@ export default new Vuex.Store({
   actions: {
     register (context, payload) {
       const { name, email, password } = payload
-      axios({
-        method: 'POST',
-        url: '/users/register',
-        data: { name, email, password }
-      })
-        .then(({ data }) => {
-          alert(data.message)
-          router.push('/login')
+      return new Promise ((resolve, reject) => {
+        axios({
+          method: 'POST',
+          url: '/users/register',
+          data: { name, email, password }
         })
-        .catch(alert)
+        .then(({ data }) => {
+          router.push('/login')
+          resolve(data.message)  
+        })
+        .catch(({ response }) => {
+          reject(response.data)
+        })
+      })
     },
     login ({ commit }, payload) {
-      const { email, password } = payload
-      axios({
-        method: 'POST',
-        url: '/users/login',
-        data: { email, password }
-      })
+      return new Promise ((resolve, reject) => {
+        const { email, password } = payload
+        axios({
+          method: 'POST',
+          url: '/users/login',
+          data: { email, password }
+        })
         .then(({ data }) => {
           commit('LOGIN', data.token)
+          resolve('Welcome back')
         })
-        .catch(alert)
+        .catch(({ response }) => {
+          reject(response.data)
+        })
+      })
     },
     fetchQuestions ({ commit }) {
       let keyword = this.state.keyword
@@ -75,7 +84,9 @@ export default new Vuex.Store({
         .then(({ data }) => {
           commit('GET_QUESTIONS', data)
         })
-        .catch(alert)
+        .catch(({ response }) => {
+          console.log(response.data)
+        })
     },
     getQuestionById ({ commit }, payload) {
       const { id } = payload
@@ -88,7 +99,7 @@ export default new Vuex.Store({
           commit('GET_A_QUESTION', data)
         })
         .catch(({ response }) => {
-          alert(response.data)
+          console.log(response.data)
         })
     },
     getMyQuestions (context) {
@@ -100,19 +111,26 @@ export default new Vuex.Store({
         .then(({ data }) => {
           context.commit('GET_QUESTIONS', data)
         })
-        .catch(alert)
+        .catch(({ response }) => {
+          console.log(response.data)
+        })
     },
     askQuestion ({ commit }, payload) {
-      axios({
-        method: 'POST',
-        url: '/questions',
-        data: payload,
-        headers: { token: localStorage.getItem('token') }
-      })
+      return new Promise ((resolve, reject) => {
+        axios({
+          method: 'POST',
+          url: '/questions',
+          data: payload,
+          headers: { token: localStorage.getItem('token') }
+        })
         .then(({ data }) => {
+          resolve()
           router.push('/')
         })
-        .catch(alert)
+        .catch(({ response }) => {
+          reject(response.data)
+        })
+      })
     },
     updateQuestion ({ commit }, payload) {
       const { id, title, description, tags } = payload
@@ -141,7 +159,9 @@ export default new Vuex.Store({
         .then(({ data }) => {
           commit('GET_ANSWERS', data)
         })
-        .catch(alert)
+        .catch(({ response }) => {
+          console.log(response.data)
+        })
     },
     getAnswer (context, payload) {
       const { id } = payload
@@ -153,35 +173,46 @@ export default new Vuex.Store({
         .then(({ data }) => {
           router.push(`/answer/${id}`)
         })
-        .catch(alert)
+        .catch(({ response }) => {
+          console.log(response.data)
+        })
     },
     addAnswer (context, payload) {
-      const { description, questionId } = payload
-      axios({
-        method: 'POST',
-        url: '/answers',
-        data: { description, questionId },
-        headers: { token: localStorage.getItem('token') }
-      })
+      return new Promise ((resolve, reject) => {
+
+        const { description, questionId } = payload
+        axios({
+          method: 'POST',
+          url: '/answers',
+          data: { description, questionId },
+          headers: { token: localStorage.getItem('token') }
+        })
         .then(({ data }) => {
-          alert('post answer success')
+          resolve('Success add answer')
           context.dispatch('fetchAnswers', { questionId })
         })
-        .catch(alert)
+        .catch(({ response })=>{
+          reject(response.data)
+        })
+      })
     },
     updateAnswer (context, payload) {
-      const { description, id } = payload
-      axios({
-        method: 'PATCH',
-        url: `/answers/${id}`,
-        data: { description },
-        headers: { token: localStorage.getItem('token') }
-      })
+      return new Promise ((resolve, reject) => {
+        const { description, id } = payload
+        axios({
+          method: 'PATCH',
+          url: `/answers/${id}`,
+          data: { description },
+          headers: { token: localStorage.getItem('token') }
+        })
         .then(({ data }) => {
-          alert(data.message)
+          resolve(data.message)
           router.push('/')
         })
-        .catch(alert)
+        .catch(({ response}) => {
+          reject(response.data)
+        })
+      })
     },
     verifyToken ({ commit }) {
       return new Promise((resolve, reject) => {
@@ -208,11 +239,12 @@ export default new Vuex.Store({
         headers: { token: localStorage.getItem('token') }
       })
         .then(({ data }) => {
-          alert(data.message)
           context.dispatch('fetchAnswers', { questionId })
           context.dispatch('getQuestionById', { id: questionId })
         })
-        .catch(alert)
+        .catch(({ response }) => {
+          console.log(response.data)
+        })
     },
     qDownVote (context, payload) {
       const { questionId } = payload
@@ -223,11 +255,12 @@ export default new Vuex.Store({
         headers: { token: localStorage.getItem('token') }
       })
         .then(({ data }) => {
-          alert(data.message)
           context.dispatch('fetchAnswers', { questionId })
           context.dispatch('getQuestionById', { id: questionId })
         })
-        .catch(console.log)
+        .catch(({ response }) => {
+          console.log(response.data)
+        })
     },
     aUpVote (context, payload) {
       const { answerId, questionId } = payload
@@ -241,7 +274,9 @@ export default new Vuex.Store({
           context.dispatch('fetchAnswers', { questionId })
           context.dispatch('getQuestionById', { id: questionId })
         })
-        .catch(console.log)
+        .catch(({ response }) => {
+          console.log(response.data)
+        })
     },
     aDownVote (context, payload) {
       const { answerId, questionId } = payload
@@ -255,7 +290,9 @@ export default new Vuex.Store({
           context.dispatch('fetchAnswers', { questionId })
           context.dispatch('getQuestionById', { id: questionId })
         })
-        .catch(alert)
+        .catch(({ response }) => {
+          console.log(response.data)
+        })
     },
     deleteQuestion (context, payload) {
       const { questionId } = payload

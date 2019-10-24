@@ -1,4 +1,5 @@
 <template>
+<div class="container" style="margin: 0 auto;">
   <div class="main-page w-full p-2 my-2">
       <div>
         <label for="title">Title</label>
@@ -36,6 +37,7 @@
       <button class="bg-blue-400 hover:bg-blue-700 text-white hover:text-gray-100 rounded p-2" @click.prevent="createQuestion">Submit</button>
     </div>
   </div>
+</div>
 </template>
 
 <script>
@@ -130,11 +132,7 @@ export default {
 </script>
 
 <style>
-.main-page {
-  margin-left: 25%;
-  height: 100vh;
-}
-.ql-editor {
+ .ql-editor {
   min-height: 300px !important;
  }
  .quill-editor {
