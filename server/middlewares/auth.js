@@ -7,7 +7,6 @@ module.exports = {
     try {
       const decode = verifyToken(req.headers.token)
       req.loggedUser = decode
-      console.log(req.loggedUser, "<<<")
       next()   
     }
     catch(err) {
@@ -15,11 +14,14 @@ module.exports = {
     }
   },
   qAuthorize: (req, res, next) => {
-    const {id} = req.params
+    const { id } = req.params
     Question.findById(id)
       .then(question=>{
+        console.log('masuk');
         if(question && question.userId.toString() === req.loggedUser.id){
+          console.log('benar');
           next()
+
         } else {
           res.status(403).json({message: 'Authorization failed'})
         }

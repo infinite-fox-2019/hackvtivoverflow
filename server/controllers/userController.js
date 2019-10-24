@@ -30,7 +30,7 @@ class UserController {
       res.status(200).json({message: 'user verified'})
     }
     catch (err){
-      next(err)
+      next({status: 400, message: 'Please login first!'})
     }
   }
 }

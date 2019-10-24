@@ -38,7 +38,8 @@ class QuestionController {
       .catch(next)
   }
   static findById (req, res, next) {
-    const {id} = req.params
+    const { id } = req.params
+    console.log(id);
     Question.findOne({_id: id}).populate('userId')
       .then(question=>{
         res.status(200).json(question)

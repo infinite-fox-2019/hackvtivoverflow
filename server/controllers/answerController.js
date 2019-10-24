@@ -8,7 +8,6 @@ class AnswerController {
     const { id } = req.loggedUser
     Answer.create({description, userId: id, questionId})
       .then(answer=>{
-        console.log(answer);
         return Question.updateOne({_id: questionId}, { $push: { answers : answer._id}})
       })
       .then(response=>{

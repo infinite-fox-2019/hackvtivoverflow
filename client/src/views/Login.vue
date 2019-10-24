@@ -1,6 +1,6 @@
 <template>
-  <div class="m-0 py-40 flex justify-center ">
-    <div class=" flex justify-center rounded-lg shadow-lg flex-wrap form-container w-1/2 xs:w-full sm:w-1/2 md:w-1/2 lg:w-1/3 ">
+  <div class="m-0 py-40 w-full flex justify-center ">
+    <div class=" flex justify-center rounded-lg shadow-2xl flex-wrap form-container w-1/2 xs:w-full sm:w-1/2 md:w-1/2 lg:w-1/3 ">
         <div class="p-2">
           <p class="font-bold text-2xl text-white ">log in</p>
         </div>

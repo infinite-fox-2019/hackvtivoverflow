@@ -1,5 +1,5 @@
 <template>
-  <div class="home">
+  <div class="main-page w-1/5 sm:w-1/3 md:w-3/4 p-4 my-2 mr-64">
     <List/>
   </div>
 </template>
@@ -13,7 +13,7 @@ export default {
 }
 </script>
 <style >
-  .home {
+  /* .home {
     margin-left: 25%;
-  }
+  } */
 </style>

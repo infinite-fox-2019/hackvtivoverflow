@@ -1,6 +1,6 @@
 <template>
-<div class="main-page w-1/4 sm:w-1/3 md:w-full p-2 my-2">
-  <div class="flex justify-between shadow p-4 m-4 bg-white" v-for="question in questions" :key="question._id">
+<div>
+  <div class="flex justify-between items-center shadow-lg p-6 m-4 bg-white" v-for="question in questions" :key="question._id">
     <div class="flex justify-between w-1/5">
       <div class="flex-column">
         <b>{{ question.upVotes.length - question.downVotes.length }}</b>
@@ -11,15 +11,20 @@
         <p>answers</p>
       </div>
     </div>
-    <div class="flex justify-between w-2/4">
-      <div class="w-full">
-        <h3 class="cursor-pointer hover:text-blue-600" @click.prevent="goToDetail(question._id)">{{question.title}}</h3>
+    <div class=" w-2/5 flex-column items-start ml-10">
+      <div class=" flex justify-start">
+        <h3 class="cursor-pointer hover:text-green-700 text-lg font-bold" @click.prevent="goToDetail(question._id)">{{question.title}}</h3>
       </div>
-      <div class="w-full">
-        <small>asked on {{new Date(question.createdAt).toDateString()}}</small>
+      <div class="flex flex-wrap" >
+        <a class="px-1 bg-green-300 mx-1 rounded text-sm cursor-pointer my-1" v-for="(tag, index) in question.tags" :key="index" @click.prevent="searchByTag(tag)">{{ tag }}</a>
       </div>
     </div>
-  <small class="text-xs">by: {{question.userId.name}}</small>
+    <div class="w-2/5">
+      <div >
+        <small>{{new Date(question.createdAt).toDateString()}}</small>
+      </div>
+        <small class="text-xs">by: {{question.userId.name}}</small>
+    </div>
   </div>
 </div>
 </template>
@@ -47,6 +52,4 @@ export default {
 </script>
 
 <style>
-.main-page {
-}
 </style>

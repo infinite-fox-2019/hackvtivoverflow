@@ -29,7 +29,8 @@ export default {
   created () {
     axios({
       method: 'GET',
-      url: `/answers/${this.$route.params.id}`
+      url: `/answers/${this.$route.params.id}`,
+      headers: { token: localStorage.getItem('token')}
     })
       .then(({ data }) => {
         this.description = data.description

@@ -25,7 +25,7 @@
         </form>
       <div class="flex">
         <div v-for="(item, index) in tags" :key="index">
-          <span class="p-2 flex items-center justify-between bg-green-200 rounded">
+          <span class="p-2 mx-1 flex items-center justify-between bg-green-200 rounded">
             {{ item }}
             <i class="fas fa-times cursor-pointer px-1" @click.prevent="deleteTag(index)"></i>
           </span>
@@ -51,10 +51,26 @@ export default {
   },
   methods: {
     createQuestion () {
-      const description = this.content
+      const description = this.description
       const title = this.title
       const tags = this.tags
       this.$store.dispatch('updateQuestion', { id: this.$route.params.id, title, description, tags })
+        .then(message => {
+          this.$notify({
+            group: 'foo',
+            type: 'success',
+            title: 'Success!',
+            text: `${message}`
+          })
+        })
+        .catch(err=>{
+          this.$notify({
+            group: 'foo',
+            type: 'error',
+            title: 'Error!',
+            text: `${err}`
+          })
+        })
     },
     addTag () {
       let tags = this.tag.split(' ').map(el => {
@@ -94,14 +110,21 @@ export default {
   created () {
     axios({
       method: 'GET',
-      url: `questions/${this.$route.params.id}`
+      url: `questions/${this.$route.params.id}`,
+      headers: { token: localStorage.getItem('token')}
     })
       .then(({ data }) => {
         this.description = data.description
         this.title = data.title
         this.tags = data.tags
       })
-      .catch(alert)
+      .catch(({ response }) => {
+        this.$notify({
+          group: 'foo',
+          type: 'error',
+          text: `${response.data}`
+        })
+      })
   }
 }
 </script>

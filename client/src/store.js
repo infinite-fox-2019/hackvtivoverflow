@@ -18,6 +18,9 @@ export default new Vuex.Store({
       localStorage.setItem('token', payload)
       router.push('/')
     },
+    VERIFY (state, payload) {
+      state.isLogin = true
+    },
     LOGOUT (state) {
       state.isLogin = false
       localStorage.removeItem('token')
@@ -84,7 +87,9 @@ export default new Vuex.Store({
         .then(({ data }) => {
           commit('GET_A_QUESTION', data)
         })
-        .catch(alert)
+        .catch(({response})=>{
+          alert(response.data)
+        })
     },
     getMyQuestions (context) {
       axios({
@@ -111,16 +116,21 @@ export default new Vuex.Store({
     },
     updateQuestion ({ commit }, payload) {
       const { id, title, description, tags } = payload
-      axios({
-        method: 'PATCH',
-        url: `/questions/${id}`,
-        data: { title, description, tags },
-        headers: { token: localStorage.getItem('token') }
-      })
-        .then(({ data }) => {
-          alert(data.message)
+      return new Promise ((resolve, reject) => {
+
+        axios({
+          method: 'PATCH',
+          url: `/questions/${id}`,
+          data: { title, description, tags },
+          headers: { token: localStorage.getItem('token') }
         })
-        .catch(alert)
+        .then(({ data }) => {
+          resolve(data.message)
+        })
+        .catch(({ response })=>{
+          reject(response.data.message)
+        })
+      })
     },
     fetchAnswers ({ commit }, payload) {
       const { questionId } = payload
@@ -175,15 +185,20 @@ export default new Vuex.Store({
         .catch(alert)
     },
     verifyToken ({ commit }) {
-      axios({
-        method: 'GET',
-        url: '/users/verify',
-        headers: { token: localStorage.getItem('token') }
-      })
-        .then(({ data }) => {
-          commit('LOGIN', localStorage.getItem('token'))
+      return new Promise((resolve, reject) => {
+        axios({
+          method: 'GET',
+          url: '/users/verify',
+          headers: { token: localStorage.getItem('token') }
         })
-        .catch(alert)
+          .then(({ data }) => {
+            commit('VERIFY')
+            resolve()
+          })
+          .catch(({ response }) => {
+            reject(response.data.message)
+          })
+      })
     },
     qUpVote (context, payload) {
       const { questionId } = payload

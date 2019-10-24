@@ -37,7 +37,7 @@ export default {
   top: 0;
   left: 0;
   overflow-x: hidden; /* Disable horizontal scroll */
-  margin-top: 86px;
+  margin-top: 97px;
   /* border: 0.6px black solid; */
 }
 .side-menu {

@@ -1,5 +1,6 @@
 <template>
   <div id="app" class="flex flex-wrap">
+    <notifications group="foo" position="bottom right"/>
     <Navbar/>
     <Sidebar v-if="isLogin"/>
     <router-view/>
@@ -20,6 +21,16 @@ export default {
   },
   created () {
     this.$store.dispatch('verifyToken')
+      .then()
+      .catch(err => {
+        this.$notify({
+          group: 'foo',
+          title: 'Sorry',
+          type: 'error',
+          speed: 1000,
+          text: `${err}`
+        })
+      })
   }
 }
 </script>
