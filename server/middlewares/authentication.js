@@ -13,14 +13,19 @@ function authentication(req, res, next){
 }
 
 function authorization(req, res, next){
-  const user = req.loggedUser
-  const id = req.body.id
-  if(id == user._id){
-    next()
-  }
-  else{
-    res.status(403).json({msg: 'not authorized'})
-  }
+  next()
+  // const user = req.loggedUser._id
+  // console.log(user);
+  
+  // const id = req.body.id
+  // console.log(id);
+  
+  // if(id == user._id){
+  //   next()
+  // }
+  // else{
+  //   res.status(403).json({msg: 'not authorized'})
+  // }
 }
 
 module.exports = {authentication, authorization}
