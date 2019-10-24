@@ -88,13 +88,6 @@ export default {
             text: JSON.parse(err.response.request.response).message[0]
           })
         })
-        .catch(err => {
-          Swal.fire({
-            type: 'error',
-            title: 'Oops...',
-            text: JSON.parse(err.response.request.response).message[0]
-          })
-        })
     }
   }
 }

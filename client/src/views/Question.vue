@@ -7,14 +7,14 @@
                 <h1>\/</h1>
             </div>
             <div class="questionAnswer">
-                <h3>Question by {{  }} :</h3>
+                <h3>Question by {{ this.$store.state.question.userId.username }} :</h3>
                 <h2>{{ this.$store.state.question.title }}</h2>
                 <div class="buttonflex">
                     <updateQuestion
                         :title="this.$store.state.question.title"
                         :description="this.$store.state.question.description"
                     ></updateQuestion>
-                    <button class="btn btn-danger">delete</button>
+                    <button class="btn btn-danger" @click="deleteQuestion">delete</button>
                 </div>
             </div>
         </div>
@@ -43,6 +43,7 @@
 import addAnswer from '../components/addAnswer'
 import updateQuestion from '../components/updateQuestion'
 import updateAnswer from '../components/updateAnswer'
+import Swal from 'sweetalert2'
 
 export default {
   name: 'question',
@@ -50,10 +51,53 @@ export default {
     addAnswer,
     updateQuestion,
     updateAnswer
+  },
+  methods: {
+    deleteQuestion () {
+      Swal.fire({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!'
+      })
+        .then((result) => {
+          if (result.value) {
+            this.$store.dispatch('deleteQuestion', this.$route.params.id)
+              .then(data => {
+                Swal.fire(
+                  'Deleted!',
+                  'Your file has been deleted.',
+                  'success'
+                )
+                this.$router.push('/')
+              })
+              .catch(err => {
+                Swal.fire({
+                  type: 'error',
+                  title: 'Oops...',
+                  text: JSON.parse(err.response.request.response).message[0]
+                })
+              })
+          }
+        })
+    }
+  },
+  created () {
+    this.$store.dispatch('getAnswer', this.$route.params.id)
+      .then(data => {
+
+      })
+      .catch(err => {
+        Swal.fire({
+          type: 'error',
+          title: 'Oops...',
+          text: JSON.parse(err.response.request.response).message[0]
+        })
+      })
   }
-//   created () {
-//     this.$store.dispatch()
-//   }
 }
 </script>
 

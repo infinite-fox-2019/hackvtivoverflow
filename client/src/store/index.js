@@ -170,6 +170,23 @@ export default new Vuex.Store({
           })
       })
     },
+    deleteQuestion ({ state, commit }, payload) {
+      return new Promise(function (resolve, reject) {
+        axios({
+          method: 'delete',
+          url: `http://localhost:3000/question/${payload}`,
+          headers: {
+            token: localStorage.getItem('token')
+          }
+        })
+          .then(({ data }) => {
+            resolve(data)
+          })
+          .catch(err => {
+            reject(err)
+          })
+      })
+    },
     updateAnswer ({ state, commit }, payload) {
       return new Promise(function (resolve, reject) {
         axios({
