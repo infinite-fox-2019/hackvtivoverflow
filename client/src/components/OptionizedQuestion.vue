@@ -64,7 +64,7 @@ export default {
     deleteOne() {
       Axios({
         method: "delete",
-        url: `http://localhost:3000/question/${this.question._id}`,
+        url: `http://hoverflow-server.ricky-works.online/question/${this.question._id}`,
         headers: { token: localStorage.getItem("token") }
       })
         .then(({ data }) => {

@@ -1,6 +1,10 @@
 <template>
   <div id="form" class="q-pa-md">
-    <q-form @submit.prevent="onSubmit" style=" width: 60vw; margin: 10vh 20vw; padding: 5%;" class="q-gutter-md shadow-2">
+    <q-form
+      @submit.prevent="onSubmit"
+      style=" width: 60vw; margin: 10vh 20vw; padding: 5%;"
+      class="q-gutter-md shadow-2"
+    >
       <q-input
         rounded
         outlined

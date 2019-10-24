@@ -70,7 +70,7 @@ export default {
     fetchQuestion(question_id) {
       Axios({
         method: "get",
-        url: `http://localhost:3000/question/${question_id}`,
+        url: `http://hoverflow-server.ricky-works.online/question/${question_id}`,
         headers: { token: localStorage.getItem("token") }
       })
         .then(({ data }) => {
@@ -81,7 +81,7 @@ export default {
     fetchAnswers(question_id) {
       Axios({
         method: "get",
-        url: `http://localhost:3000/answer/${question_id}`,
+        url: `http://hoverflow-server.ricky-works.online/answer/${question_id}`,
         headers: { token: localStorage.getItem("token") }
       })
         .then(({ data }) => {
@@ -92,7 +92,7 @@ export default {
     upvote(questionId) {
       Axios({
         method: "post",
-        url: `http://localhost:3000/question/upvote/${questionId}`,
+        url: `http://hoverflow-server.ricky-works.online/question/upvote/${questionId}`,
         headers: { token: localStorage.getItem("token") }
       })
         .then(({ data }) => {
@@ -105,7 +105,7 @@ export default {
     downvote(questionId) {
       Axios({
         method: "post",
-        url: `http://localhost:3000/question/downvote/${questionId}`,
+        url: `http://hoverflow-server.ricky-works.online/question/downvote/${questionId}`,
         headers: { token: localStorage.getItem("token") }
       })
         .then(({ data }) => {

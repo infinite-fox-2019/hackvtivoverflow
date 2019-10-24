@@ -52,7 +52,7 @@ export default {
     fetchQuestions() {
       Axios({
         method: "get",
-        url: "http://localhost:3000/question",
+        url: "http://hoverflow-server.ricky-works.online/question",
         headers: { token: localStorage.getItem("token") }
       })
         .then(({ data }) => {
@@ -63,7 +63,7 @@ export default {
     fetchAnswers() {
       Axios({
         method: "get",
-        url: "http://localhost:3000/answer",
+        url: "http://hoverflow-server.ricky-works.online/answer",
         headers: { token: localStorage.getItem("token") }
       })
         .then(({ data }) => {

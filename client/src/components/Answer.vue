@@ -45,7 +45,7 @@ export default {
     upvote(answerId) {
       Axios({
         method: "post",
-        url: `http://localhost:3000/answer/${this.question._id}/upvote/${answerId}`,
+        url: `http://hoverflow-server.ricky-works.online/answer/${this.question._id}/upvote/${answerId}`,
         headers: { token: localStorage.getItem("token") }
       })
         .then(({ data }) => {
@@ -58,7 +58,7 @@ export default {
     downvote(answerId) {
       Axios({
         method: "post",
-        url: `http://localhost:3000/answer/${this.question._id}/downvote/${answerId}`,
+        url: `http://hoverflow-server.ricky-works.online/answer/${this.question._id}/downvote/${answerId}`,
         headers: { token: localStorage.getItem("token") }
       })
         .then(({ data }) => {

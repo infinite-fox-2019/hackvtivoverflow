@@ -26,14 +26,14 @@ export default new Vuex.Store({
     login(context, user) {
       return Axios({
         method: "post",
-        url: "http://localhost:3000/user/login",
+        url: "http://hoverflow-server.ricky-works.online/user/login",
         data: user
       });
     },
     register(context, user) {
       return Axios({
         method: "post",
-        url: "http://localhost:3000/user/register",
+        url: "http://hoverflow-server.ricky-works.online/user/register",
         data: user
       });
     },
@@ -42,7 +42,7 @@ export default new Vuex.Store({
       if (token) {
         return Axios({
           method: "post",
-          url: `http://localhost:3000/user/refresh/${token}`
+          url: `http://hoverflow-server.ricky-works.online/user/refresh/${token}`
         })
           .then(({ data }) => {
             commit("LOGIN", data);
@@ -53,7 +53,7 @@ export default new Vuex.Store({
     fetchAllQuestions({ commit }) {
       Axios({
         method: "get",
-        url: "http://localhost:3000/question/all"
+        url: "http://hoverflow-server.ricky-works.online/question/all"
       })
         .then(({ data }) => {
           commit("FETCHQUESTIONS", data);

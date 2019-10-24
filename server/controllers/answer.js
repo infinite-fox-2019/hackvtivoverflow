@@ -11,7 +11,7 @@ class AnswerController {
     }
     static findAll (req, res, next) {
         const { question } = req.params
-        Answer.find({ user: req.loggedUser._id, question }).populate("user").exec()
+        Answer.find({ question }).populate("user").exec()
         .then(answers => {
             res.status(200).json(answers)
         })

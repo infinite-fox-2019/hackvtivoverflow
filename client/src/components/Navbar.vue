@@ -54,7 +54,7 @@ export default {
   name: "Navbar",
   data() {
     return {
-      socket: io.connect("http://localhost:3000"),
+      socket: io.connect("http://hoverflow-server.ricky-works.online"),
       current: null
     };
   },

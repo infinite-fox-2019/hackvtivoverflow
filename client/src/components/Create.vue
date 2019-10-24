@@ -98,7 +98,7 @@ export default {
       };
       Axios({
         method: "post",
-        url: `http://localhost:3000/question`,
+        url: `http://hoverflow-server.ricky-works.online/question`,
         headers: { token: localStorage.getItem("token") },
         data
       })

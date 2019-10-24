@@ -49,7 +49,7 @@ export default {
     getNumOfAnswers(id) {
       Axios({
         method: "get",
-        url: `http://localhost:3000/answer/${id}`,
+        url: `http://hoverflow-server.ricky-works.online/answer/${id}`,
         headers: { token: localStorage.getItem("token") }
       })
         .then(({ data }) => {

@@ -103,7 +103,7 @@ export default {
       const { question } = this.$route.params;
       Axios({
         method: "get",
-        url: `http://localhost:3000/question/${question}`,
+        url: `http://hoverflow-server.ricky-works.online/question/${question}`,
         headers: { token: localStorage.getItem("token") }
       })
         .then(({ data }) => {
@@ -117,7 +117,7 @@ export default {
       const { question, answer } = this.$route.params;
       Axios({
         method: "get",
-        url: `http://localhost:3000/answer/${question}/${answer}`,
+        url: `http://hoverflow-server.ricky-works.online/answer/${question}/${answer}`,
         headers: { token: localStorage.getItem("token") }
       })
         .then(({ data }) => {
@@ -135,7 +135,7 @@ export default {
       if (this.mode === "question") {
         Axios({
           method: "patch",
-          url: `http://localhost:3000/question/${this.question._id}`,
+          url: `http://hoverflow-server.ricky-works.online/question/${this.question._id}`,
           headers: { token: localStorage.getItem("token") },
           data
         })
@@ -147,7 +147,7 @@ export default {
       } else {
         Axios({
           method: "patch",
-          url: `http://localhost:3000/answer/${this.answer.question._id}/${this.answer._id}`,
+          url: `http://hoverflow-server.ricky-works.online/answer/${this.answer.question._id}/${this.answer._id}`,
           headers: { token: localStorage.getItem("token") },
           data
         })
