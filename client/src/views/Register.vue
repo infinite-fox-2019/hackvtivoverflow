@@ -18,6 +18,7 @@
                       type="text"
                       v-model="name"
                       class="form-control"
+                      required
                     />
                   </div>
                   <div class="form-group">
@@ -26,6 +27,7 @@
                       type="email"
                       v-model="email"
                       class="form-control"
+                      required
                     />
                   </div>
                   <div class="form-group">
@@ -34,6 +36,7 @@
                       type="password"
                       v-model="password"
                       class="form-control"
+                      required
                     />
                     <small class="form-text text-muted">Passwords must contain at least eight characters</small>
                   </div>
@@ -48,7 +51,7 @@
         <div class="mt-5" style="font-size: 13px">
           <span>
             Already have account ?
-            <a id="linklogin" href="#"><b>Log in</b></a>
+            <a id="linklogin" @click="linkto"><b>Log in</b></a>
           </span>
         </div>
       </div>
@@ -68,6 +71,9 @@ export default {
     }
   },
   methods: {
+    linkto () {
+      this.$router.push('/login')
+    },
     sendData () {
       this.$store
         .dispatch('register', {
@@ -76,15 +82,22 @@ export default {
           password: this.password
         })
         .then(result => {
-          // swal
           this.$router.push('/login')
           this.$notify({
             group: 'notify',
             title: 'Successfull Create User',
-            text: `Login to continue`
+            text: `Login to continue`,
+            type: 'success'
           })
         })
-        .catch(console.log)
+        .catch(error => {
+          this.$notify({
+            group: 'notify',
+            title: 'Registration error',
+            text: `${error.data.message}`,
+            type: 'error'
+          })
+        })
     }
   }
 }
@@ -97,5 +110,9 @@ export default {
 }
 .card {
   text-align: left;
+}
+#linklogin {
+  cursor: pointer;
+  color: #007bff
 }
 </style>

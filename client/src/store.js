@@ -134,6 +134,24 @@ export default new Vuex.Store({
             reject(response)
           })
       })
+    },
+    upVote ({ commit, dispatch }, payload) {
+      return new Promise((resolve, reject) => {
+        axios({
+          method: 'put',
+          url: `/questions/upvote/${payload}`,
+          headers: {
+            'token': localStorage.getItem('token')
+          }
+        })
+          .then(({ data }) => {
+            dispatch('fetchQuestionId', payload)
+            resolve(data)
+          })
+          .catch(({ response }) => {
+            reject(response)
+          })
+      })
     }
   }
 })

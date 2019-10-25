@@ -18,6 +18,7 @@
                       type="email"
                       v-model="email"
                       class="form-control"
+                      required
                     />
                   </div>
                   <div class="form-group">
@@ -26,6 +27,7 @@
                       type="password"
                       v-model="password"
                       class="form-control"
+                      required
                     />
                   </div>
                   <button type="submit" class="btn btn-primary" style="width: 100%;">
@@ -39,7 +41,7 @@
         <div class="mt-5" style="font-size: 13px">
           <span>
             No account ?
-            <a id="linkregister" href="#"><b>Create an account</b></a>
+            <a id="linkregister" @click="linkto"><b>Create an account</b></a>
           </span>
         </div>
       </div>
@@ -59,6 +61,9 @@ export default {
   },
   computed: {},
   methods: {
+    linkto () {
+      this.$router.push('/register')
+    },
     sendData () {
       this.$store
         .dispatch('login', {
@@ -71,12 +76,20 @@ export default {
           this.$notify({
             group: 'notify',
             title: 'Successfull Login',
-            text: `Welcome ${result.name}`
+            text: `Welcome ${result.name}`,
+            type: 'success'
             // type: 'warn'
-            // type: 'success'
           })
         })
-        .catch(console.log)
+        .catch(error => {
+          console.log(error)
+          this.$notify({
+            group: 'notify',
+            title: 'Login error',
+            text: `${error.data.message}`,
+            type: 'error'
+          })
+        })
     }
   }
 }
@@ -89,5 +102,9 @@ export default {
 }
 .card {
   text-align: left;
+}
+#linkregister {
+  cursor: pointer;
+  color: #007bff
 }
 </style>

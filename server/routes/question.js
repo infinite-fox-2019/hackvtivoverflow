@@ -10,7 +10,6 @@ router.post('/', QuestionController.create)
 
 // read
 router.get('/personal', QuestionController.findMyQuestion)
-router.get('/:id', QuestionController.findQuestionId)
 
 // update
 router.put('/update/:id', questionAuthorization, QuestionController.updateQuestion)

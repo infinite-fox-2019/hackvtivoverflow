@@ -3,7 +3,6 @@
     <b-container>
       <b-row>
         <div class="col-1">
-          <h3>Left</h3>
         </div>
         <div class="col-8">
           <div class="d-flex justify-content-between px-2">
@@ -24,7 +23,7 @@
                     </b-col>
                     <b-col cols="9">
                       <a class="link" @click="linkto(question._id)"><p>{{ question.title }}</p></a>
-                      <p v-html="question.desc"></p>
+                      <p class="desc-preview" v-html="question.desc"></p>
                     </b-col>
                   </b-row>
                 </b-container>
@@ -33,7 +32,6 @@
           </div>
         </div>
         <div class="col-3">
-          <h3>Right</h3>
         </div>
       </b-row>
     </b-container>
@@ -76,7 +74,13 @@ export default {
   cursor: pointer;
 }
 .link p {
-  color:lightseagreen;
+  color: #007bff;
   margin: 0;
+}
+.desc-preview p {
+  margin-right: 50px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 </style>

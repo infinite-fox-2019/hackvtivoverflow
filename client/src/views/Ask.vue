@@ -3,7 +3,7 @@
     <b-container>
       <h3>Ask a question</h3>
       <b-card class="my-5" style="width: 70%;">
-        <form>
+        <form @submit.prevent="sendData">
           <div class="form-group">
             <label style="margin: 0;"><strong>Title</strong></label>
             <small class="form-text text-muted">Be specific and imagine you’re asking a question to another developer</small>
@@ -14,7 +14,7 @@
             <small class="form-text text-muted">Include all the information someone would need to answer your question</small>
             <quill v-model="desc" :config="config" output="html"></quill>
           </div>
-          <button type="submit" @click.prevent="sendData" class="btn btn-primary mt-3">Submit</button>
+          <button type="submit" class="btn btn-primary mt-3">Submit</button>
         </form>
       </b-card>
     </b-container>
@@ -43,10 +43,20 @@ export default {
   },
   methods: {
     sendData () {
-      this.$store.dispatch('newQuestion', {
-        title: this.title,
-        desc: this.desc
-      })
+      this.$store
+        .dispatch('newQuestion', {
+          title: this.title,
+          desc: this.desc
+        })
+        .then(result => {
+          this.$router.push('/question')
+          this.$notify({
+            group: 'notify',
+            title: 'Success Create Question',
+            text: `Your question published`,
+            type: 'success'
+          })
+        })
     }
   }
 }

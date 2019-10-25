@@ -39,7 +39,20 @@ export default new Router({
       // route level code-splitting
       // this generates a separate chunk (about.[hash].js) for this route
       // which is lazy-loaded when the route is visited.
-      component: () => import(/* webpackChunkName: "ask" */ './views/Ask.vue')
+      component: () => import(/* webpackChunkName: "ask" */ './views/Ask.vue'),
+      beforeEnter: (to, from, next) => {
+        if (localStorage.getItem('token')) {
+          next()
+        } else {
+          Vue.notify({
+            group: 'notify',
+            title: 'Login first',
+            text: 'You need login to ask question',
+            type: 'error'
+          })
+          next('/login')
+        }
+      }
     },
     {
       path: '/question/:id',

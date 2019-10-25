@@ -11,6 +11,7 @@ router.get('/', (req, res) => {
 
 // question route
 router.get('/questions', QuestionController.find)
+router.get('/questions/:id', QuestionController.findQuestionId)
 router.use('/questions', QuestionRoute)
 
 // answer route
