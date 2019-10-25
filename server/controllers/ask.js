@@ -37,8 +37,9 @@ class AskController {
     }
 
     static upvote(req, res, next) {
-        Ask.findById(req.params.id)
+        Ask.findOne({ _id: req.params.id })
             .then(ask => {
+                console.log(req.params.id)
                 return Ask.findByIdAndUpdate(ask._id, {
                     $pull: { downvote: req.decode.id }
                 }, { new: true })
@@ -52,7 +53,7 @@ class AskController {
                         $pull: { upvote: req.decode.id }
                     }, { new: true })
                 } else {
-                    return Ask.findByIdAndUpdate(ask._id, {
+                    return Ask.findByIdAndUpdate(req.params.id, {
                         $push: { upvote: req.decode.id }
                     }, { new: true })
                 }
@@ -79,7 +80,7 @@ class AskController {
                         $pull: { downvote: req.decode.id }
                     }, { new: true })
                 } else {
-                    return Ask.findByIdAndUpdate(ask._id, {
+                    return Ask.findByIdAndUpdate(req.params.id, {
                         $push: { downvote: req.decode.id }
                     }, { new: true })
                 }

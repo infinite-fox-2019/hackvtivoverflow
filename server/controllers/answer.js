@@ -35,7 +35,7 @@ class AnswerController {
                         $pull: { upvote: req.decode.id }
                     }, { new: true })
                 } else {
-                    return Answer.findByIdAndUpdate(answer._id, {
+                    return Answer.findByIdAndUpdate(req.params.id, {
                         $push: { upvote: req.decode.id }
                     }, { new: true })
                 }
@@ -62,7 +62,7 @@ class AnswerController {
                         $pull: { downvote: req.decode.id }
                     }, { new: true })
                 } else {
-                    return Answer.findByIdAndUpdate(answer._id, {
+                    return Answer.findByIdAndUpdate(req.params.id, {
                         $push: { downvote: req.decode.id }
                     }, { new: true })
                 }

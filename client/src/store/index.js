@@ -115,24 +115,6 @@ export default new Vuex.Store({
             text: 'Create Ask failed!'
           })
         })
-    },
-    postAnswer(context, payload) {
-      axios({
-        method: `post`,
-        url: `${context.state.baseUrl}/answers/${payload.id}`,
-        data: {
-          content: payload.content
-        },
-        headers: {
-          token: localStorage.getItem('token')
-        }
-      })
-        .then(({ data }) => {
-          console.log(data)
-        })
-        .catch(err => {
-          console.log(err)
-        })
     }
   },
   modules: {

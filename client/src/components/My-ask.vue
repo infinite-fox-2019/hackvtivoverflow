@@ -5,6 +5,8 @@
       <button @click="toPageWrite">Ask Question</button>
     </div>
 
+    <img src="../assets/empty.svg" alt="empty" v-if="asks.length == 0" />
+
     <div class="card-ask" v-for="(ask, index) in asks" :key="index">
       <div class="number">
         <p style="color: #757575; font-size: 24px;" v-text="ask.downvote.length+ask.upvote.length"></p>

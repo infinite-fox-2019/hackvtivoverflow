@@ -58,10 +58,15 @@
 </template>
 
 <script>
+import axios from "axios";
+let baseUrl = `http://localhost:3000`;
 export default {
   name: `ask-list`,
   data() {
-    return {};
+    return {
+      tag: null,
+      asks: []
+    };
   },
   methods: {
     toPageWrite() {
@@ -72,18 +77,25 @@ export default {
     },
     goDetailTag(name) {
       this.$router.push(`/tag/${name}`);
-    }
-  },
-  computed: {
-    asks() {
-      return this.$store.state.tagdetail.asks;
     },
-    tag() {
-      return this.$store.state.tagdetail.tag;
+    findTagByName() {
+      let name = this.$route.params.name;
+      axios({
+        method: `get`,
+        url: `${baseUrl}/tags/${name}`
+      })
+        .then(({ data }) => {
+          this.asks = data.asks;
+          this.tag = data.tag;
+        })
+        .catch(err => {
+          console.log(err);
+        });
     }
   },
+  computed: {},
   created() {
-    this.$store.dispatch("findTagByName", this.$route.params.name);
+    this.findTagByName();
   }
 };
 </script>

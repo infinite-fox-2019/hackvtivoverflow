@@ -1,4 +1,6 @@
 const { varify } = require('../helpers/jwt')
+const Answer = require('../models/answer')
+const Ask = require('../models/ask')
 
 function Authentication(req, res, next) {
     try {

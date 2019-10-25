@@ -13,9 +13,9 @@
 
     <div class="content" v-if="ask">
       <div class="vote">
-        <i class="fas fa-chevron-up fa-2x"></i>
-        <p v-text="vote">23445</p>
-        <i class="fas fa-chevron-down fa-2x"></i>
+        <i class="fas fa-chevron-up fa-2x" @click.prevent="upvoteAsk(ask._id)"></i>
+        <p v-text="vote"></p>
+        <i class="fas fa-chevron-down fa-2x" @click.prevent="downvoteAsk(ask._id)"></i>
       </div>
 
       <div class="content-ask">
@@ -27,9 +27,9 @@
       <p>{{ask.answers.length}} Answer</p>
       <div class="content" v-for="(answer, i) in ask.answers" :key="i">
         <div class="vote">
-          <i class="fas fa-chevron-up fa-2x"></i>
-          <p>13</p>
-          <i class="fas fa-chevron-down fa-2x"></i>
+          <i class="fas fa-chevron-up fa-2x" @click.prevent="upvoteAnswer(answer._id)"></i>
+          <p v-text="answer.upvote.length - answer.downvote.length">13</p>
+          <i class="fas fa-chevron-down fa-2x" @click.prevent="downvoteAnswer(answer._id)"></i>
         </div>
 
         <div class="content-answer">
@@ -97,6 +97,66 @@ export default {
       })
         .then(({ data }) => {
           this.ask = data;
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
+    upvoteAsk(id) {
+      axios({
+        method: `patch`,
+        url: `${baseUrl}/asks/upvote/${id}`,
+        headers: {
+          token: localStorage.getItem("token")
+        }
+      })
+        .then(({ data }) => {
+          this.getAsk();
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
+    downvoteAsk(id) {
+      axios({
+        method: `patch`,
+        url: `${baseUrl}/asks/downvote/${id}`,
+        headers: {
+          token: localStorage.getItem("token")
+        }
+      })
+        .then(({ data }) => {
+          this.getAsk();
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
+    upvoteAnswer(id) {
+      axios({
+        method: `patch`,
+        url: `${baseUrl}/answers/upvote/${id}`,
+        headers: {
+          token: localStorage.getItem("token")
+        }
+      })
+        .then(({ data }) => {
+          this.getAsk();
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
+    downvoteAnswer(id) {
+      axios({
+        method: `patch`,
+        url: `${baseUrl}/answers/downvote/${id}`,
+        headers: {
+          token: localStorage.getItem("token")
+        }
+      })
+        .then(({ data }) => {
+          this.getAsk();
         })
         .catch(err => {
           console.log(err);
