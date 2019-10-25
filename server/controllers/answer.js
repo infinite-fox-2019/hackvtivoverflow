@@ -20,15 +20,67 @@ class AnswerController {
     }
 
     static upvote(req, res, next) {
-
+        Answer.findById(req.params.id)
+            .then(answer => {
+                return Answer.findByIdAndUpdate(answer._id, {
+                    $pull: { downvote: req.decode.id }
+                }, { new: true })
+            })
+            .then(answer => {
+                return Answer.findOne({ _id: answer._id, upvote: req.decode.id })
+            })
+            .then(answer => {
+                if (answer) {
+                    return Answer.findByIdAndUpdate(answer._id, {
+                        $pull: { upvote: req.decode.id }
+                    }, { new: true })
+                } else {
+                    return Answer.findByIdAndUpdate(answer._id, {
+                        $push: { upvote: req.decode.id }
+                    }, { new: true })
+                }
+            })
+            .then(answer => {
+                res.status(200).json(answer)
+            })
+            .catch(next)
     }
 
     static downvote(req, res, next) {
-
+        Answer.findById(req.params.id)
+            .then(answer => {
+                return Answer.findByIdAndUpdate(answer._id, {
+                    $pull: { upvote: req.decode.id }
+                }, { new: true })
+            })
+            .then(answer => {
+                return Answer.findOne({ _id: answer._id, downvote: req.decode.id })
+            })
+            .then(answer => {
+                if (answer) {
+                    return Answer.findByIdAndUpdate(answer._id, {
+                        $pull: { downvote: req.decode.id }
+                    }, { new: true })
+                } else {
+                    return Answer.findByIdAndUpdate(answer._id, {
+                        $push: { downvote: req.decode.id }
+                    }, { new: true })
+                }
+            })
+            .then(answer => {
+                res.status(200).json(answer)
+            })
+            .catch(next)
     }
 
-    static update(req, res, next) {
 
+    static update(req, res, next) {
+        const { content } = req.body
+        Answer.findByIdAndUpdate(req.params.id, { content }, { new: true })
+            .then(answer => {
+                res.status(200).json(answer)
+            })
+            .catch(next)
     }
 
     static remove(req, res, next) {
