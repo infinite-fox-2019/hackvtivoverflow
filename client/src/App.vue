@@ -8,6 +8,7 @@
 
 <script>
 import Navbar from './components/Navbar'
+
 // import Footer from './components/Footer'
 export default {
   name: 'app',
@@ -18,6 +19,7 @@ export default {
     if (localStorage.getItem('access_token')) {
       this.$store.commit('LOGIN_STATUS_CHANGE', true)
       this.$store.commit('LOGIN_NAME_CHANGE', localStorage.getItem('name'))
+      
       // this.$router.push({path:'/'})
     }
   }

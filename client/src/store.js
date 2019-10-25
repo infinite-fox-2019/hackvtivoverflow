@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import router from './router'
 import axios from './api/server'
+import Swal from 'sweetalert2'
 
 Vue.use(Vuex)
 
@@ -35,11 +36,19 @@ export default new Vuex.Store({
         .then(({ data }) => {
           localStorage.setItem('access_token', data.access_token)
           localStorage.setItem('name', data.name)
+          localStorage.setItem('_id', data._id)
           commit('LOGIN_STATUS_CHANGE', true)
           commit('LOGIN_NAME_CHANGE', localStorage.getItem('name'))
           router.push({ path: '/' })
         })
-        .catch(err => { console.log(err.response || err) })
+        .catch(err => { 
+          console.log(err.response || err) 
+          Swal.fire(
+            'Awwww!',
+            err.response.data.msg,
+            'error'
+          )
+        })
     },
     A_REGISTER ({ commit, dispatch }, payload) {
       axios({
@@ -55,7 +64,14 @@ export default new Vuex.Store({
           console.log(data)
           dispatch('A_LOGIN', { email: data.email, password: payload.password })
         })
-        .catch(err => { console.log(err.response) })
+        .catch(err => { 
+          console.log(err.response)
+          Swal.fire(
+            'Opps!',
+            err.response.data.message,
+            'error'
+          )
+        })
     },
     A_FETCH_QUESTION_LIST ({ commit, dispatch }, payload) {
       axios({

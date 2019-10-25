@@ -45,10 +45,15 @@ export default {
       })
         .then(({ data }) => {
           console.log(data)
-          this.$router.push({ path: `/question/${data._id}` })
+          this.$router.push({ path: `/question/${data._id}`})
         })
         .catch(err => {
-          console.log(err.response)
+          console.log(err.response,"masuk")
+          Swal.fire(
+            'Wait!',
+            'You must be logged in to answer a question!',
+            'error'
+          )
         })
     }
   }

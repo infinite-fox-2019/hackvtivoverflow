@@ -6,6 +6,7 @@ import Login from './views/Login.vue'
 import Register from './views/Register.vue'
 import AddQuestion from './views/AddQuestion.vue'
 import EditQuestion from './views/EditQuestion.vue'
+import Swal from 'sweetalert2'
 
 Vue.use(Router)
 
@@ -41,7 +42,20 @@ export default new Router({
     {
       path: '/addquestion',
       name: 'addquestion',
-      component: AddQuestion
+      component: AddQuestion,
+      beforeEnter: (to, from, next) => {
+        if(localStorage.getItem('access_token')){
+          next()
+        }
+        else{
+          Swal.fire(
+            'Stop!',
+            'You must login first to continue!',
+            'error'
+          )
+          next('/login')
+        }
+      }
     },
     {
       path: '/about',

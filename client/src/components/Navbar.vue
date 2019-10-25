@@ -14,6 +14,7 @@
 </template>
 
 <script>
+import Swal from 'sweetalert2'
 export default {
   name: 'navbar',
   methods: {
@@ -22,6 +23,11 @@ export default {
       localStorage.removeItem('name')
       this.$store.commit('LOGIN_STATUS_CHANGE', false)
       this.$store.commit('LOGIN_NAME_CHANGE', null)
+      Swal.fire(
+        'GoodBye!',
+        'You have successfully logged out!',
+        'success'
+      )
       this.$router.push({ path: '/' })
     }
   }

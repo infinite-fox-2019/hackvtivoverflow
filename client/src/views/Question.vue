@@ -31,6 +31,7 @@ import ClassicEditor from '@ckeditor/ckeditor5-build-classic'
 import QuestionSection from '@/components/QuestionSection.vue'
 import AnswerSection from '@/components/AnswerSection.vue'
 import axios from '../api/server'
+import Swal from 'sweetalert2'
 
 export default {
   components: {
@@ -65,7 +66,14 @@ export default {
           this.fetchQuestionDetail()
           this.editorData = ''
         })
-        .catch(err => { console.log(err.response) })
+        .catch(err => { 
+          console.log(err.response,"masuk")
+          Swal.fire(
+            'Wait!',
+            'You must be logged in to answer a question!',
+            'error'
+          )
+        })
     },
     fetchQuestionDetail () {
       axios({
