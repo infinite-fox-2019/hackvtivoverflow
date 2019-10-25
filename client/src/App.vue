@@ -8,12 +8,11 @@
 
 <script>
 import Navbar from './components/Navbar'
-import Footer from './components/Footer'
+// import Footer from './components/Footer'
 export default {
   name: 'app',
   components: {
-    Navbar,
-    Footer
+    Navbar
   },
   created () {
     if (localStorage.getItem('access_token')) {

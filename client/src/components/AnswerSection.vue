@@ -38,7 +38,6 @@
         <b-button @click="updateAnswerProcess()" class="mr-2 mb-5 mt-3" size="" variant="success">Edit answer</b-button>
       </b-col>
 
-    
     </b-media>
   </div>
 </template>
@@ -53,7 +52,7 @@ export default {
     'data'
   ],
   created () {
-    console.log(this.data,"ini data di answer");
+    console.log(this.data, 'ini data di answer')
     this.votes = this.data.upvotes.length - this.data.downvotes.length
   },
   data () {
@@ -61,32 +60,32 @@ export default {
       editor: ClassicEditor,
       editorData: this.data.description,
       editorConfig: {
-        
+
       },
-      votes:0,
+      votes: 0,
       show: false
     }
   },
   methods: {
-    updateAnswerProcess(){
+    updateAnswerProcess () {
       axios({
-        method:'put',
+        method: 'put',
         url: `/answers/${this.data._id}`,
-        data:{
+        data: {
           description: this.editorData
         },
         headers: {
           Authorization: localStorage.getItem('access_token')
         }
       })
-        .then(({data}) => {
+        .then(({ data }) => {
           console.log(data)
           this.$emit('updateResponse')
           this.show = false
         })
-        .catch(err => {console.log(err.response)})
+        .catch(err => { console.log(err.response) })
     },
-    editAnswer(){
+    editAnswer () {
       this.show = !this.show
     },
     upvotes () {

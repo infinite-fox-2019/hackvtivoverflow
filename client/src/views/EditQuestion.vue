@@ -32,7 +32,7 @@ export default {
   },
   methods: {
     editQuestion () {
-      console.log("masuk edit")
+      console.log('masuk edit')
       axios({
         method: 'put',
         url: `/questions/${this.$route.params.id}`,
@@ -46,31 +46,31 @@ export default {
       })
         .then(({ data }) => {
           console.log(data)
-          this.$router.push({ path: `/question/${this.$route.params.id}`})
+          this.$router.push({ path: `/question/${this.$route.params.id}` })
         })
         .catch(err => {
           console.log(err.response)
         })
     },
-    fetchData(){
+    fetchData () {
       axios({
         method: 'get',
         url: `/questions/${this.$route.params.id}`,
-        headers:{
+        headers: {
           Authorization: localStorage.getItem('access_token')
         }
       })
-        .then(({data}) => {
+        .then(({ data }) => {
           this.title = data.title
           this.editorData = data.description
-          console.log(data) 
+          console.log(data)
         })
         .catch(err => {
           console.log(err.response)
         })
     }
   },
-  created(){
+  created () {
     this.fetchData()
   }
 }

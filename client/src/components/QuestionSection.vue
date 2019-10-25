@@ -105,8 +105,8 @@ export default {
         })
         .catch(err => { console.log(err.response) })
     },
-    editQuestion(){
-      this.$router.push({path:`/editquestion/${this.data._id}`})
+    editQuestion () {
+      this.$router.push({ path: `/editquestion/${this.data._id}` })
     }
   },
   beforeMount () {
