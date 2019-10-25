@@ -44,10 +44,9 @@ export default new Router({
       name: 'addquestion',
       component: AddQuestion,
       beforeEnter: (to, from, next) => {
-        if(localStorage.getItem('access_token')){
+        if (localStorage.getItem('access_token')) {
           next()
-        }
-        else{
+        } else {
           Swal.fire(
             'Stop!',
             'You must login first to continue!',

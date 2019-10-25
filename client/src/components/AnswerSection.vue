@@ -88,7 +88,7 @@ export default {
           this.$emit('updateResponse')
           this.show = false
         })
-        .catch(err => { 
+        .catch(err => {
           console.log(err.response)
         })
     },
@@ -109,7 +109,7 @@ export default {
           this.$store.dispatch('A_FETCH_QUESTION_LIST')
           this.$emit('updateResponse')
         })
-        .catch(err => { 
+        .catch(err => {
           console.log(err.response)
           Swal.fire(
             'Wait!',
@@ -133,7 +133,7 @@ export default {
           this.$store.dispatch('A_FETCH_QUESTION_LIST')
           this.$emit('updateResponse')
         })
-        .catch(err => { 
+        .catch(err => {
           console.log(err.response)
           Swal.fire(
             'Wait!',
@@ -161,32 +161,29 @@ export default {
     data () {
       this.votes = this.data.upvotes.length - this.data.downvotes.length
 
-      if(this.data.upvotes.length === 0){
+      if (this.data.upvotes.length === 0) {
         this.upBold = false
-      }else{
-        for(let i = 0; i < this.data.upvotes.length; i++){
-          if(this.data.upvotes[i] == localStorage.getItem('_id')){
+      } else {
+        for (let i = 0; i < this.data.upvotes.length; i++) {
+          if (this.data.upvotes[i] == localStorage.getItem('_id')) {
             this.upBold = true
-          }
-          else{
+          } else {
             this.upBold = false
           }
         }
       }
 
-      if(this.data.downvotes.length === 0){
+      if (this.data.downvotes.length === 0) {
         this.downBold = false
-      }else{
-        for(let i = 0; i < this.data.downvotes.length; i++){
-          if(this.data.downvotes[i] == localStorage.getItem('_id')){
+      } else {
+        for (let i = 0; i < this.data.downvotes.length; i++) {
+          if (this.data.downvotes[i] == localStorage.getItem('_id')) {
             this.downBold = true
-          }
-          else{
+          } else {
             this.downBold = false
           }
         }
       }
-
     }
   }
 }

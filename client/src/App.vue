@@ -19,7 +19,7 @@ export default {
     if (localStorage.getItem('access_token')) {
       this.$store.commit('LOGIN_STATUS_CHANGE', true)
       this.$store.commit('LOGIN_NAME_CHANGE', localStorage.getItem('name'))
-      
+
       // this.$router.push({path:'/'})
     }
   }

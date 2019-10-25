@@ -12,7 +12,7 @@ class UserController {
         if(data && decodeHash(password, data.password)){
           const {name, email, _id} = data
           let token = generateToken({name,email,_id})
-          res.status(200).json({access_token:token,name})
+          res.status(200).json({access_token:token,name,_id})
         }
         else{
           res.status(400).json({msg:"Invalid email or password"})

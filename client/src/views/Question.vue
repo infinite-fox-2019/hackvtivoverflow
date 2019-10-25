@@ -66,8 +66,8 @@ export default {
           this.fetchQuestionDetail()
           this.editorData = ''
         })
-        .catch(err => { 
-          console.log(err.response,"masuk")
+        .catch(err => {
+          console.log(err.response, 'masuk')
           Swal.fire(
             'Wait!',
             'You must be logged in to answer a question!',

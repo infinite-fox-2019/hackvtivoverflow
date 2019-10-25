@@ -41,8 +41,8 @@ export default new Vuex.Store({
           commit('LOGIN_NAME_CHANGE', localStorage.getItem('name'))
           router.push({ path: '/' })
         })
-        .catch(err => { 
-          console.log(err.response || err) 
+        .catch(err => {
+          console.log(err.response || err)
           Swal.fire(
             'Awwww!',
             err.response.data.msg,
@@ -64,7 +64,7 @@ export default new Vuex.Store({
           console.log(data)
           dispatch('A_LOGIN', { email: data.email, password: payload.password })
         })
-        .catch(err => { 
+        .catch(err => {
           console.log(err.response)
           Swal.fire(
             'Opps!',
