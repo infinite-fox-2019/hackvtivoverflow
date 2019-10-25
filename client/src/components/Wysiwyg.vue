@@ -11,9 +11,15 @@ export default {
       myHTML: ""
     };
   },
+  props: ["post"],
   watch: {
     myHTML() {
       this.$emit("passingcontent", this.myHTML);
+    },
+    post() {
+      if (this.post.length == 0) {
+        this.content = "";
+      }
     }
   }
 };

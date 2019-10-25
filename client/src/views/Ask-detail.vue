@@ -1,15 +1,17 @@
 <template>
   <div class="container">
-    <p style="font-size: 24px;">
+    <div v-if="!ask"></div>
+
+    <p style="font-size: 24px;" v-if="ask">
       <strong v-text="ask.title"></strong>
     </p>
 
-    <div class="mini-info">
+    <div class="mini-info" v-if="ask">
       <p>published</p>
       <p>20 September 2019</p>
     </div>
 
-    <div class="content">
+    <div class="content" v-if="ask">
       <div class="vote">
         <i class="fas fa-chevron-up fa-2x"></i>
         <p v-text="vote">23445</p>
@@ -21,7 +23,7 @@
       </div>
     </div>
 
-    <div class="answer-container">
+    <div class="answer-container" v-if="ask">
       <p>{{ask.answers.length}} Answer</p>
       <div class="content" v-for="(answer, i) in ask.answers" :key="i">
         <div class="vote">
@@ -31,37 +33,35 @@
         </div>
 
         <div class="content-answer">
-          <p v-html="answer.content">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Enim, eos excepturi dolore molestiae, sed minima totam dolor veniam tempora ducimus aut expedita consequatur. Perspiciatis saepe maiores iste atque in quia?.
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Ex, earum ab laborum cum dolores totam atque ullam aliquam veniam quisquam quas dolorum aut molestiae exercitationem, necessitatibus consectetur recusandae enim? Explicabo.
-          </p>
+          <p v-html="answer.content"></p>
         </div>
       </div>
     </div>
 
-    <p>Your Answer</p>
-    <Wysiwyg @passingcontent="passingcontent" />
-    <button @click="postAnswer(ask._id)">Post Answer</button>
+    <div v-if="ask">
+      <p>Your Answer</p>
+      <Wysiwyg @passingcontent="passingcontent" :post="content" />
+      <button @click="postAnswer(ask._id)">Post Answer</button>
+    </div>
   </div>
 </template>
 
 <script>
 import Wysiwyg from "../components/Wysiwyg.vue";
+import axios from "axios";
+let baseUrl = `http://localhost:3000`;
 export default {
   name: `ask-detail`,
   data() {
     return {
-      answers: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-      content: ""
+      content: "",
+      ask: null
     };
   },
   components: {
     Wysiwyg
   },
   computed: {
-    ask() {
-      return this.$store.state.ask;
-    },
     vote() {
       return this.ask.upvote.length - this.ask.downvote.length;
     }
@@ -71,16 +71,40 @@ export default {
       this.content = content;
     },
     postAnswer(id) {
-      let payload = {
-        id,
-        content: this.content
-      };
-
-      this.$store.dispatch("postAnswer", payload);
+      axios({
+        method: `post`,
+        url: `${baseUrl}/answers/${id}`,
+        data: {
+          content: this.content
+        },
+        headers: {
+          token: localStorage.getItem("token")
+        }
+      })
+        .then(({ data }) => {
+          this.content = "";
+          this.getAsk();
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
+    getAsk() {
+      let id = this.$route.params.id;
+      axios({
+        method: `get`,
+        url: `${baseUrl}/asks/${id}`
+      })
+        .then(({ data }) => {
+          this.ask = data;
+        })
+        .catch(err => {
+          console.log(err);
+        });
     }
   },
   created() {
-    this.$store.dispatch("findAskById", this.$route.params.id);
+    this.getAsk();
   }
 };
 </script>

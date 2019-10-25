@@ -85,18 +85,6 @@ export default new Vuex.Store({
           console.log(err)
         })
     },
-    findAskById(context, id) {
-      axios({
-        method: `get`,
-        url: `${context.state.baseUrl}/asks/${id}`,
-      })
-        .then(({ data }) => {
-          context.commit('INITIAL_ASK', data)
-        })
-        .catch(err => {
-          console.log(err)
-        })
-    },
     postAsk(context, payload) {
       context.commit('LOADER', true)
       axios({
@@ -108,7 +96,6 @@ export default new Vuex.Store({
         }
       })
         .then(({ data }) => {
-          console.log(data)
           context.commit('LOADER', false)
           Vue.notify({
             group: 'foo',
@@ -116,6 +103,7 @@ export default new Vuex.Store({
             title: 'Success!',
             text: 'Create Ask Success!'
           })
+          context.dispatch('findAsk')
         })
         .catch(err => {
           console.log(err)
