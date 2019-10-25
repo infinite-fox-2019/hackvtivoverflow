@@ -68,6 +68,7 @@ export default {
     }
   },
   created() {
+    this.$store.commit("LOADER", true);
     this.$store.dispatch("findAsk");
   }
 };

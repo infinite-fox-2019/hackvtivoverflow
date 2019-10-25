@@ -49,7 +49,7 @@
 <script>
 import Wysiwyg from "../components/Wysiwyg.vue";
 import axios from "axios";
-let baseUrl = `http://localhost:3000`;
+let baseUrl = `http://52.14.60.30`;
 export default {
   name: `ask-detail`,
   data() {

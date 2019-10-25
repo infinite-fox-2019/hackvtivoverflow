@@ -47,9 +47,7 @@
 export default {
   name: `ask-list`,
   data() {
-    return {
-      tags: [`vue.js`, "reactjs", `javascript`]
-    };
+    return {};
   },
   computed: {
     asks() {
@@ -68,6 +66,7 @@ export default {
     }
   },
   created() {
+    this.$store.commit("LOADER", true);
     this.$store.dispatch("findMyAsk");
   }
 };

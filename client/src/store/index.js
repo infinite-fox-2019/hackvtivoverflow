@@ -46,18 +46,6 @@ export default new Vuex.Store({
           console.log(err)
         })
     },
-    findTagByName(context, name) {
-      axios({
-        method: `get`,
-        url: `${context.state.baseUrl}/tags/${name}`
-      })
-        .then(({ data }) => {
-          context.commit('INITIAL_TAGDETAIL', data)
-        })
-        .catch(err => {
-          console.log(err)
-        })
-    },
     findAsk(context) {
       axios({
         method: `get`,
@@ -65,6 +53,7 @@ export default new Vuex.Store({
       })
         .then(({ data }) => {
           context.commit('INITIAL_ASKS', data)
+          context.commit("LOADER", false);
         })
         .catch(err => {
           console.log(err)
@@ -80,6 +69,7 @@ export default new Vuex.Store({
       })
         .then(({ data }) => {
           context.commit('INITIAL_ASKS', data)
+          context.commit("LOADER", false);
         })
         .catch(err => {
           console.log(err)
