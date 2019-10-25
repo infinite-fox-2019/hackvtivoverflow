@@ -19,7 +19,7 @@ export default new Vuex.Store({
   },
   actions: {
     fetchQuestions ({ commit }) {
-      axios.get('/questions')
+      return axios.get('/questions')
         .then(({ data }) => {
           console.log(data.questions)
           commit('getQuestions', data.questions)

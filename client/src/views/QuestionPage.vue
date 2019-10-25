@@ -1,7 +1,7 @@
 <template>
   <div class="detail">
       <div>{{currentQuestion.title}}</div>
-      <div>{{currentQuestion.description}}</div>
+      <div v-html="currentQuestion.description"></div>
       <div v-for="(answer, i) in currentQuestion.answers" :key="i">
           {{answer.description}}
       </div>
@@ -19,18 +19,23 @@ export default {
   },
   methods: {
     ...mapMutations(['setCurrentQuestion']),
-    ...mapActions(['getQuestionById'])
+    ...mapActions(['fetchQuestions', 'getQuestionById'])
   },
   computed: {
     ...mapState(['questions', 'currentQuestion'])
   },
   created: function () {
-    for (let i = 0; i < this.questions.length; i++) {
-      console.log(this.questions)
-      if (this.questions[i]._id === this.$route.params.id) {
-        this.setCurrentQuestion(this.questions[i])
+    this.fetchQuestions().then(_ => {
+      for (let i = 0; i < this.questions.length; i++) {
+        console.log(this.questions)
+        if (this.questions[i]._id === this.$route.params.id) {
+          this.setCurrentQuestion(this.questions[i])
+        }
       }
-    }
+    })
+      .catch(err => {
+        console.log(err)
+      })
   }
 }
 </script>
