@@ -7,7 +7,7 @@
             <h5> votes </h5>
           </div>
           <div class="col-6 ket">
-            <h5> {{ question.views.length }} </h5>
+            <h5> {{ question.answersId.length }} </h5>
             <h5> answer </h5>
           </div>
           <div class="col-6 ket">
@@ -29,7 +29,6 @@
 </template>
 
 <script>
-// import Swal from 'sweetalert2'
 
 export default {
   name: 'home',

@@ -51,10 +51,20 @@ export default {
     addAnswer () {
       this.$store.dispatch('addAnswer', { description: this.content })
         .then(data => {
+          return this.$store.dispatch('updateQuestionAnswer', data._id)
+        })
+        .then(data => {
           return this.$store.dispatch('getAnswer', this.$route.params.id)
         })
         .then(data => {
           this.content = ''
+          Swal.fire({
+            position: 'top-end',
+            type: 'success',
+            title: `Success Add Answer`,
+            showConfirmButton: false,
+            timer: 2000
+          })
         })
         .catch(err => {
           Swal.fire({

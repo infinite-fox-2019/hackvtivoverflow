@@ -21,6 +21,20 @@ class QuestionController {
             })
             .catch(next)
     }
+    static addAnswer(req, res, next){  
+        let {id} = req.params
+        let {answerId} = req.body
+        Question.findOne({_id:id})
+            .then(data => {
+                let answersId = data.answersId
+                answersId.push(answerId)
+                return Question.updateOne({_id:id}, {answersId})
+            })
+            .then(data => {
+                res.status(200).json(data)
+            })
+            .catch(next)
+    }
     static upVote(req, res, next){
         let {id} = req.params
         Question.findOne({_id:id})

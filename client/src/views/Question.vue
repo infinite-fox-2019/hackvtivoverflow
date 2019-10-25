@@ -13,8 +13,9 @@
                 </div>
             </div>
             <div class="questionAnswer">
-                <h3>Question by {{ this.$store.state.question.userId.username }} :</h3>
+                <h5>Question by {{ this.$store.state.question.userId.username }} :</h5>
                 <h2>{{ this.$store.state.question.title }}</h2>
+                <h4 v-html="this.$store.state.question.description"></h4>
                 <div class="buttonflex">
                     <updateQuestion
                         :title="this.$store.state.question.title"

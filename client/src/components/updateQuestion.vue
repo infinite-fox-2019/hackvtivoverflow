@@ -70,7 +70,7 @@ export default {
       this.$refs['my-modal'].hide()
     },
     updateQuestion () {
-      this.$store.dispatch('updateQuestion', { title: this.title, description: this.content })
+      this.$store.dispatch('updateQuestion', { title: this.title, description: this.description })
         .then(data => {
           Swal.fire({
             position: 'top-end',

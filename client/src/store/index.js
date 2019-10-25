@@ -2,6 +2,9 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import axios from 'axios'
 // import router from '../router'
+import cron from 'cron'
+import Swal from 'sweetalert2'
+
 
 Vue.use(Vuex)
 
@@ -31,6 +34,23 @@ export default new Vuex.Store({
   },
   actions: {
     login ({ state, commit }, payload) {
+      const CronJob = cron.CronJob
+      new CronJob('* */30 * * * *', () => {
+        if(localStorage.getItem('token')){
+          let username = localStorage.getItem('username')
+          localStorage.removeItem('username')
+          localStorage.removeItem('token')
+          commit('logout')
+          Swal.fire({
+            title: 'Timeout, Please Login Again',
+            animation: true,
+            customClass: {
+              popup: 'animated tada'
+            }
+          })
+        }
+      }, null, true, 'Asia/Jakarta');
+
       return new Promise(function (resolve, reject) {
         axios({
           method: 'post',
@@ -137,6 +157,26 @@ export default new Vuex.Store({
           },
           data: {
             description: payload.description
+          }
+        })
+          .then(({ data }) => {
+            resolve(data)
+          })
+          .catch(err => {
+            reject(err)
+          })
+      })
+    },
+    updateQuestionAnswer ({state, commit}, payload) {
+      return new Promise (function (resolve, reject) {
+        axios({
+          method: 'put',
+          url: `http://localhost:3000/question/addAnswer/${state.question._id}`,
+          headers: {
+            token: localStorage.getItem('token')
+          },
+          data: {
+            answerId: payload
           }
         })
           .then(({ data }) => {
