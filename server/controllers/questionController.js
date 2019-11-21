@@ -26,14 +26,11 @@ class QuestionController {
   }
 
   static async findOne(req, res, next) {
-    console.log(req.params)
     try {
       let { _id } = req.params;
-      console.log(req.params);
       let question = await Question.findOne({ _id }).populate('userId').populate('votes.userId').populate('answerId')
       res.status(200).json(question);
     } catch (error) {
-      console.log(error);
       next(error);
     }
   }

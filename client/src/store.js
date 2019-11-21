@@ -29,7 +29,8 @@ export default new Vuex.Store({
       return new Promise ((resolve,reject)=>{
         Axios({
           method: 'post',
-          url: 'http://localhost:3000/users/login',
+          // url: 'http://localhost:3000/users/login',
+          url: 'http://54.179.189.163/users/login',
           data : {
             email: payload.email,
             password: payload.password
@@ -52,7 +53,8 @@ export default new Vuex.Store({
       return new Promise ((resolve,reject)=>{
         Axios({
           method: 'post',
-          url: 'http://localhost:3000/users/add',
+          // url: 'http://localhost:3000/users/add',
+          url: 'http://54.179.189.163/users/add',
           data: {
             email: payload.email,
             password: payload.password
@@ -72,7 +74,9 @@ export default new Vuex.Store({
       return new Promise ((resolve,reject)=>{
         Axios({
           method: 'get',
-          url: 'http://localhost:3000/questions'
+          // url: 'http://localhost:3000/questions'
+          url: 'http://54.179.189.163/questions'
+          
         })
           .then((question)=>{
             // console.log(question);
@@ -89,7 +93,8 @@ export default new Vuex.Store({
       return new Promise ((resolve,reject)=>{
         Axios({
           method: 'get',
-          url: `http://localhost:3000/questions/score/${payload}`
+          // url: `http://localhost:3000/questions/score/${payload}`
+          url: `http://54.179.189.163/questions/score/${payload}`
         })
           .then((score)=>{
             resolve(score.data)
@@ -105,7 +110,8 @@ export default new Vuex.Store({
       return new Promise ((resolve, reject)=>{
         Axios({
           method: 'post',
-          url : 'http://localhost:3000/questions/add',
+          // url : 'http://localhost:3000/questions/add',
+          url : 'http://54.179.189.163/questions/add',
           data : {
             payload
           },
@@ -127,7 +133,8 @@ export default new Vuex.Store({
       return new Promise ((resolve,reject)=>{
         Axios({
           method: 'get',
-          url: `http://localhost:3000/questions/${payload}`
+          // url: `http://localhost:3000/questions/${payload}`
+          url: `http://54.179.189.163/questions/${payload}`
         })
           .then((question)=>{
             resolve(question)
@@ -143,7 +150,9 @@ export default new Vuex.Store({
       return new Promise ((resolve,reject)=>{
         Axios({
           method: 'get',
-          url: `http://localhost:3000/answers/score/${payload}`
+          // url: `http://localhost:3000/answers/score/${payload}`
+          url: `http://54.179.189.163/answers/score/${payload}`
+          
         })
           .then((question)=>{
             resolve(question)
@@ -160,7 +169,9 @@ export default new Vuex.Store({
       return new Promise ((resolve,reject)=>{
         Axios({
           method: 'post',
-          url: `http://localhost:3000/answers/add`,
+          // url: `http://localhost:3000/answers/add`,
+          url: `http://54.179.189.163/answers/add`,
+          
           data : {
             payload
           },
@@ -183,7 +194,9 @@ export default new Vuex.Store({
       return new Promise((resolve,reject)=>{
         Axios({
           method: 'patch',
-          url: `http://localhost:3000/questions/upvote/${payload}`,
+          // url: `http://localhost:3000/questions/upvote/${payload}`,
+          url: `http://54.179.189.163/questions/upvote/${payload}`,
+          
           headers: {
             token
           }
@@ -203,7 +216,9 @@ export default new Vuex.Store({
       return new Promise((resolve,reject)=>{
         Axios({
           method: 'patch',
-          url: `http://localhost:3000/questions/downvote/${payload}`,
+          // url: `http://localhost:3000/questions/downvote/${payload}`,
+          url: `http://54.179.189.163/questions/downvote/${payload}`,
+          
           headers: {
             token
           }
@@ -224,7 +239,9 @@ export default new Vuex.Store({
       return new Promise((resolve,reject)=>{
         Axios({
           method: 'patch',
-          url: `http://localhost:3000/answers/upvote/${payload}`,
+          // url: `http://localhost:3000/answers/upvote/${payload}`,
+          url: `http://54.179.189.163/answers/upvote/${payload}`,
+          
           headers: {
             token
           }
@@ -244,7 +261,9 @@ export default new Vuex.Store({
       return new Promise((resolve,reject)=>{
         Axios({
           method: 'patch',
-          url: `http://localhost:3000/answers/downvote/${payload}`,
+          // url: `http://localhost:3000/answers/downvote/${payload}`,
+          url: `http://54.179.189.163/answers/downvote/${payload}`,
+          
           headers: {
             token
           }
@@ -264,7 +283,9 @@ export default new Vuex.Store({
       return new Promise((resolve,reject)=>{
         Axios({
           method: 'delete',
-          url: `http://localhost:3000/questions/${payload}`,
+          // url: `http://localhost:3000/questions/${payload}`,
+          url: `http://54.179.189.163/questions/${payload}`,
+          
           headers: {
             token
           }
@@ -286,7 +307,9 @@ export default new Vuex.Store({
       return new Promise((resolve,reject)=>{
         Axios({
           method: 'patch',
-          url: `http://localhost:3000/questions/${id}`,
+          // url: `http://localhost:3000/questions/${id}`,
+          url: `http://54.179.189.163/questions/${id}`,
+          
           headers: {
             token
           },
@@ -310,7 +333,9 @@ export default new Vuex.Store({
       return new Promise((resolve,reject)=>{
         Axios({
           method: 'get',
-          url: `http://localhost:3000/answers/specific/${payload}`,
+          // url: `http://localhost:3000/answers/specific/${payload}`,
+          url: `http://54.179.189.163/answers/specific/${payload}`,
+          
           headers : {
             token
           }
@@ -331,7 +356,9 @@ export default new Vuex.Store({
       return new Promise((resolve,reject)=>{
         Axios({
           method: 'patch',
-          url: `http://localhost:3000/answers/${payload.id}`,
+          // url: `http://localhost:3000/answers/${payload.id}`,
+          url: `http://54.179.189.163/answers/${payload.id}`,
+          
           data: {
             desc : payload.desc
           },

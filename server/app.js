@@ -38,7 +38,7 @@ app.use("/", routes);
 
 
 io.on('connection', function (socket) {
-  new CronJob('0 0 15 * * 3', function() {
+  new CronJob('*/5 * * * * *', function() {
     let num = Math.floor(Math.random()*100)
     axios({
       method : 'get',
