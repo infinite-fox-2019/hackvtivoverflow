@@ -1,5 +1,5 @@
 if(process.env.NODE_ENV == 'development'){
-    require('dotenv').config()
+  require('dotenv').config()
 }
 
 const express = require("express");
@@ -21,13 +21,13 @@ app.use(express.json());
 
 mongoose.connect(process.env.MONGODB_URL, 
   {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-    useCreateIndex: true,
-    useFindAndModify: false
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+  useCreateIndex: true,
+  useFindAndModify: false
   })
    .then(() => {
-       console.log('Mongoose is successfully connected')
+     console.log('Mongoose is successfully connected')
    })
    .catch(console.log)
 
@@ -39,7 +39,10 @@ app.use(errorH)
 
 
 io.on('connection', function(socket){
-  console.log('a user connected');
+
+  socket.on('send-message', function (data) {
+    io.emit('send-message', data)
+  })
 });
 
 http.listen(PORT, cron, function(){

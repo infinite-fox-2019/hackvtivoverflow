@@ -2,45 +2,48 @@
   
 <footer class="footer">
   <div class="footer__addr">
-    <h1 class="footer__logo">hacktiv overflow</h1>
-        
-    <h2>Contact</h2>
+  <h1 class="footer__logo">hacktiv overflow</h1>
     
-    <address>
-      Eric Sudhartio - Hacktiv8<br>
-          
-      <a class="footer__btn" target="_" href="http://www.instagram.com/ericsudhartio">
-        instagram
-      </a>
-    </address>
+  <h2>Contact</h2>
+  
+  <address>
+    Eric Sudhartio - Hacktiv8<br>
+      
+    <a class="footer__btn" target="_" href="http://www.instagram.com/ericsudhartio">
+    instagram
+    </a>
+  </address>
   </div>
   
   <ul class="footer__nav">
-    <li class="nav__item">
-      <h2 class="nav__title">PortFolio</h2>
+  <li class="nav__item">
+    <h2 class="nav__title">PortFolio</h2>
 
-      <ul class="nav__ul">
-        <li>
-          <a href="http://started.dreamcarofficial.com/" target='_'>Dream Car</a>
-        </li>
-
-        <li>
-          <a href="https://kamvan-d66ed.firebaseapp.com/" target='_'>Kanban</a>
-        </li>
-            
-        <li>
-          <a href="http://newminiwpres.thinkhappy.site/" target='_'>Mini Wp</a>
-        </li>
-      </ul>
+    <ul class="nav__ul">
+    <li>
+      <a href="http://started.dreamcarofficial.com/" target='_'>Dream Car</a>
     </li>
+
+    <li>
+      <a href="https://kamvan-d66ed.firebaseapp.com/" target='_'>Kanban</a>
+    </li>
+      
+    <li>
+      <a href="http://dcminiwp.dreamcarofficial.com/" target='_'>Mini Wp</a>
+    </li>
+    <li>
+      <a href="http://todo.dreamcarofficial.com/" target='_'>Fancy Todo</a>
+    </li>
+    </ul>
+  </li>
   </ul>
   
   <div class="legal">
-    <p>&copy; 2019 Eric Sudhartio - Dreamcar_</p>
-    
-    <div class="legal__links">
-      <span>Made with <span class="heart">♥</span> remotely from Indonesia - South Sumatra</span>
-    </div>
+  <p>&copy; 2019 Eric Sudhartio - Dreamcar_</p>
+  
+  <div class="legal__links">
+    <span>Made with <span class="heart">♥</span> remotely from Indonesia - South Sumatra</span>
+  </div>
   </div>
 </footer>
 </template>
@@ -158,25 +161,25 @@ export default {
 
 @media screen and (min-width: 24.375em) {
   .legal .legal__links {
-    margin-left: auto;
+  margin-left: auto;
   }
 }
 
 @media screen and (min-width: 40.375em) {
   .footer__nav > * {
-    flex: 1;
+  flex: 1;
   }
   
   .nav__item--extra {
-    flex-grow: 2;
+  flex-grow: 2;
   }
   
   .footer__addr {
-    flex: 1 0px;
+  flex: 1 0px;
   }
   
   .footer__nav {
-    flex: 2 0px;
+  flex: 2 0px;
   }
 }
 </style>

@@ -8,7 +8,34 @@ const routes = [
   {
     path: '/',
     name: 'home',
-    component: Home
+    component: Home,
+    children: [
+      {
+        path: '',
+        name: 'questionHome',
+        component: () => import(/* webpackChunkName: "questionHome" */ '../views/QuestionView.vue')
+      },
+      {
+        path: '/rating',
+        name: 'rating',
+        component: () => import(/* webpackChunkName: 'rating' */ '../views/Rating.vue')
+      },
+      {
+        path: '/watch/tag',
+        name: 'watchTag',
+        component: () => import(/* webpackChuckName: "watchTag" */ '../views/WatchTag.vue')
+      },
+      {
+        path: '/tag/:name',
+        name: 'tag',
+        component: () => import(/* webpackChunkName: 'tag' */ '../views/FindTag.vue')
+      }
+    ]
+  },
+  {
+    path: '/chat',
+    name: 'chat',
+    component: () => import(/* webpackChunkName: "chat" */ '../views/Chat.vue')
   },
   {
     path: '/login',
@@ -17,6 +44,11 @@ const routes = [
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
     component: () => import(/* webpackChunkName: "about" */ '../views/Login.vue')
+  },
+  {
+    path: '/tags',
+    name: 'tags',
+    component: () => import(/* webpackChunkName: "tags" */ '../views/AllTags.vue')
   },
   {
     path: '/ask',
@@ -34,24 +66,19 @@ const routes = [
     component: () => import(/* webpackChunkName: 'details' */ '../views/Detail.vue')
   },
   {
-    path: '/tag/:name',
-    name: 'tag',
-    component: () => import(/* webpackChunkName: 'tag' */ '../views/FindTag.vue')
-  },
-  {
     path: '/search/:name',
     name: 'search',
     component: () => import(/* webpackChunkName: 'search' */ '../views/Search.vue')
   },
   {
-    path: '/rating',
-    name: 'rating',
-    component: () => import(/* webpackChunkName: 'rating' */ '../views/Rating.vue')
-  },
-  {
     path: '/profile',
     name: 'profile',
     component: () => import(/* webpackChunkName: 'profile' */ '../views/Profile.vue')
+  },
+  {
+    path: '/profile/:id',
+    name: 'userProfile',
+    component: () => import(/* webpackChunkName: "userProfile" */ '../views/UserProfile.vue')
   }
 ]
 

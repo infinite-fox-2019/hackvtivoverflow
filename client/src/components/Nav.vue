@@ -1,7 +1,7 @@
 <template>
-<div class='fluid-container'>
+<div class='fluid-container' style='border-top: 2px solid #fcf5b0'>
   <b-navbar toggleable="lg" type="dark" variant="dark">
-    <b-navbar-brand href="#"><router-link to='/'>Hacktiv Overflow</router-link></b-navbar-brand>
+    <b-navbar-brand href="#"><router-link to='/'>DC OverThink</router-link></b-navbar-brand>
        
     <b-collapse id="nav-collapse" is-nav>
       <b-navbar-nav>

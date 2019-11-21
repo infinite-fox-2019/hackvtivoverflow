@@ -1,48 +1,60 @@
 <template>
-  <div class="container">
-    <form autocomplete="off" @submit.prevent="register()">
-      <div class="group">
-        <label for="email">Username:</label>
-        <input type="text" id="username" name="username" v-model='username'>
-      </div>
-      <div class="group">
-        <label for="password">Password:</label>
-        <input id="password" type="password" name="password" v-model='password'>
-      </div>
-      <div class="group">
-        <label for="email">Email:</label>
-        <input type="email" id="email" name="email" v-model='email'>
-      </div>
+<div class="container">
+  <form autocomplete="off" @submit.prevent="register()">
+    <div class="group">
+      <label for="email">Username:</label>
+      <input type="text" id="username" name="username" v-model='username'>
+    </div>
+    <div class="group">
+      <label for="password">Password:</label>
+      <input id="password" type="password" name="password" v-model='password'>
+    </div>
+    <div class="group">
+      <label for="email">Email:</label>
+      <input type="email" id="email" name="email" v-model='email'>
+    </div>
+    <div class="group">
+      <select v-model='city'>
+        <option value='Jakarta'>Jakarta</option>
+        <option value='Palembang'>Palembang</option>
+        <option value="Surabaya">Surabaya</option>
+        <option value="Medan">Medan</option>
+        <option value="Batam">Batam</option>
+        <option value="Papua">Papua</option>
+      </select>
+    </div>
       <input type="submit" value="register" id="submit">
-    </form>
-  </div>
+  </form>
+</div>
 </template>
 
 <script>
 export default {
   data () {
-      return {
-          username: '',
-          password: '',
-          email: ''
-      }
+    return {
+      username: null,
+      password: null,
+      email: null,
+      city: null
+    }
   },
   methods: {
-      register () {
-          const payload = {
-              username: this.username,
-              password: this.password,
-              email: this.email
-          }
-          this.$store.dispatch('register', payload)
-            .then(success => {
-                this.$awn.success(success.msg);
-                this.$router.push('/')
-            })
-            .catch(err => {
-                this.$awn.warning(err.response.data.msg)
-            })
-      }
+  register () {
+    const payload = {
+    username: this.username,
+    password: this.password,
+    email: this.email,
+    city: this.city
+  }
+    this.$store.dispatch('register', payload)
+    .then(success => {
+      this.$awn.success(success.msg);
+      this.$router.push('/')
+    })
+    .catch(err => {
+      this.$awn.warning(err.response.data.msg)
+    })
+  }
   }
 }
 </script>
@@ -75,7 +87,7 @@ export default {
   transition:all .3s ease-in-out;
 }
 .social-login:hover{
-    box-shadow:0 10px 15px -5px rgba(0,0,0,0.4);
+  box-shadow:0 10px 15px -5px rgba(0,0,0,0.4);
 }
 a.fb-login{
   background-color:#3B5998;

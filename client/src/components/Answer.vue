@@ -84,7 +84,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .qright{
     width:680px;
 }

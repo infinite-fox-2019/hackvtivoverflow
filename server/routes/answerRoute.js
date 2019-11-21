@@ -1,16 +1,18 @@
 const Route = require('express').Router();
-const AController = require('../controllers/answerController.js');
+const { create, findId, findAnswerUser, updateDownVote, updateUpAnswer, deleteAnswer } = require('../controllers/answerController.js');
 const { authentication, authorizationAnswer } = require('../middlewares/auth');
 
 //find by QuestionId ==> semua paramsnya QuestionId
 
-Route.post('/:id', authentication, AController.create);
+Route.post('/:id', authentication, create);
 
 //ini idQuestion
-Route.get('/:id', AController.findId);
-Route.get('/', authentication, AController.findAnswerUser);
+Route.get('/:id', findId);
+Route.get('/', authentication, findAnswerUser);
 
-Route.patch('/up', authentication, AController.updateUpAnswer);
-Route.patch('/down', authentication, AController.updateDownVote);
+Route.patch('/up/:id', authentication, updateUpAnswer);
+Route.patch('/down/:id', authentication, updateDownVote);
+
+Route.delete('/:id', authentication, deleteAnswer)
 
 module.exports = Route;

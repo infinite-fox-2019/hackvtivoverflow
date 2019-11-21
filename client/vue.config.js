@@ -1,8 +1,8 @@
 module.exports = {
   pluginOptions: {
-    quasar: {}
+  quasar: {}
   },
   transpileDependencies: [
-    /[\\\/]node_modules[\\\/]quasar[\\\/]/
+  /[\\\/]node_modules[\\\/]quasar[\\\/]/
   ]
 }

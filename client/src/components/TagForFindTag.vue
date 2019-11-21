@@ -25,30 +25,30 @@
 import Tag from './Tag'
 
 export default {
-    data () {
-        return {
-            answerss: ''
-        }
-    },
-    props: ['questionTag'],
-    components: {
-        Tag
-    },
-    methods: {
-        fetchAnswer () {
-            const id = this.questionTag._id
-            this.$store.dispatch('getAnswer', id)
-                .then(data => {
-                    this.answerss = data
-                })
-                .catch(err => {
-                    this.$awn.warning(err.response.data.msg)
-                })
-        }
-    },
-    created () {
-        this.fetchAnswer()
+  data () {
+    return {
+      answerss: ''
     }
+  },
+  props: ['questionTag'],
+  components: {
+    Tag
+  },
+  methods: {
+    fetchAnswer () {
+      const id = this.questionTag._id
+      this.$store.dispatch('getAnswer', id)
+        .then(data => {
+          this.answerss = data
+        })
+        .catch(err => {
+          this.$awn.warning(err.response.data.msg)
+        })
+    }
+  },
+  created () {
+    this.fetchAnswer()
+  }
 }
 </script>
 

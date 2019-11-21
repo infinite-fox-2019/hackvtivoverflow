@@ -8,7 +8,7 @@
     "dev": "NODE_ENV=development nodemon app.js"
   },
   "keywords": [],
-  "author": "",
+  "author": "shadowfiend2509",
   "license": "ISC",
   "dependencies": {
     "bcryptjs": "^2.4.3",

@@ -1,6 +1,7 @@
 <template>
   <div id="app">
     <Nav />
+    <vue-progress-bar></vue-progress-bar>
     <div class="fluid-container bg-light">
       <b-row class='mainn'>
         <b-col cols="3" class ='left' >
@@ -37,6 +38,13 @@ export default {
   },
   created () {
     this.$store.dispatch('checklogin')
+    this.$awn.asyncBlock(
+      this.$store.dispatch('fetchData'),
+      'Fetching Success',
+      'Fetching Failed',
+      'Fetching Question'
+    )
+    this.$store.dispatch('fetchTags')
   }
 }
 </script>

@@ -1,49 +1,49 @@
 <template>
   <div class="container">
-    <form autocomplete="off" @submit.prevent="login()">
-      <div class="group">
-        <label for="email">Email:</label>
-        <input type="email" id="email" name="email" v-model='email'>
-      </div>
-      <div class="group">
-        <label for="password">Password:</label>
-        <input id="password" type="password" name="password" v-model='password'>
-      </div>
-        <router-link
-          :to='{ name: "register" }'>
-          <a class="forget-link">Dont have account?</a>
-        </router-link>
-      <input type="submit" value="Login" id="submit">
-    </form>
+  <form autocomplete="off" @submit.prevent="login()">
+    <div class="group">
+    <label >username / email :</label>
+    <input type="text" id="email" name="email" v-model='request'>
+    </div>
+    <div class="group">
+    <label for="password">Password:</label>
+    <input id="password" type="password" name="password" v-model='password'>
+    </div>
+    <router-link
+      :to='{ name: "register" }'>
+      <a class="forget-link">Dont have account?</a>
+    </router-link>
+    <input type="submit" value="Login" id="submit">
+  </form>
   </div>
 </template>
 
 <script>
-import axios from 'axios';
+import axios from '@/apis/server.js'
 
 export default {
-    data () {
-        return {
-            email: '',
-            password: ''
-        }
-    },
-    methods: {
-        login () {
-            const payload = {
-                email: this.email,
-                password: this.password
-            }
-            this.$store.dispatch('login', payload)
-                .then(data => {
-                  this.$awn.success('You\'re online now!')
-                  this.$router.push('/');
-                })
-                .catch(err=>{
-                  this.$awn.warning(err)
-                })
-        }
+  data () {
+    return {
+      request: '',
+      password: ''
     }
+  },
+  methods: {
+    login () {
+      const payload = {
+        request: this.request,
+        password: this.password
+      }
+      this.$store.dispatch('login', payload)
+        .then(data => {
+          this.$awn.success('You\'re online now!')
+          this.$router.push('/');
+        })
+        .catch(err=>{
+          this.$awn.warning(err)
+        })
+    }
+  }
 }
 </script>
 
@@ -75,7 +75,7 @@ export default {
   transition:all .3s ease-in-out;
 }
 .social-login:hover{
-    box-shadow:0 10px 15px -5px rgba(0,0,0,0.4);
+  box-shadow:0 10px 15px -5px rgba(0,0,0,0.4);
 }
 a.fb-login{
   background-color:#3B5998;

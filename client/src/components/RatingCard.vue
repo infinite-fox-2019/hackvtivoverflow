@@ -2,12 +2,12 @@
   <div class='ratingcard'>
       <b-card bg-variant="light" text-variant="black" :title="sendQuestion.title">
         <b-card-text>
-          <p>Rating: {{ sendQuestion.upvotes.length - sendQuestion.downvotes.length }}<br>
+          <p>Views: {{sendQuestion.views}}<br>
           <small>Answer: {{ answerData.length }}</small>
           </p>
           <hr>
         </b-card-text>
-        <b-button href="#" variant="secondary"><router-link :to='{ name:"detail", params: { id: sendQuestion._id }}'>Detail</router-link></b-button>
+        <b-button href="#" variant="info"><router-link :to='{ name:"detail", params: { id: sendQuestion._id }}'><a class='detailbtn'>Detail</a></router-link></b-button>
       </b-card>
   </div>
 </template>
@@ -23,7 +23,7 @@ export default {
   props: ['sendQuestion'],
   methods: {
     getAnswer () {
-      const id = this.question._id
+      const id = this.sendQuestion._id
       this.$store.dispatch('getAnswer', id)
         .then(data => {
           this.answerData = data
@@ -45,5 +45,11 @@ export default {
 <style>
 .ratingcard {
   padding-top:10px;
+}
+.detailbtn {
+  color:aquamarine !important;
+}
+.detailbtn:hover {
+  color: blue !important;
 }
 </style>

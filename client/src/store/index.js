@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import axios from 'axios'
+import axios from '@/apis/server.js'
 
 Vue.use(Vuex)
 
@@ -9,8 +9,8 @@ export default new Vuex.Store({
     user: '',
     islogin: false,
     questions: '',
-    newQuestion: '',
-    answers: ''
+    answers: '',
+    allTags: ''
   },
   mutations: {
     LOGIN_SUCCESS (state, payload) {
@@ -28,52 +28,68 @@ export default new Vuex.Store({
     FETCHING_DATA (state, payload) {
       state.questions = payload;
     },
-    NEW_QUESTION (state, payload) {
-      state.newQuestion = payload;
-    },
     REGISTER_STATUS_LOGIN (state,payload) {
       state.user = payload.data
       state.islogin = true
     },
     GET_ANSWER (state, payload) {
       state.answers = payload
+    },
+    SEND_QUESTION (state, payload) {
+      state.questions.unshift(payload)
+    },
+    GET_TAGS (state, payload) {
+      state.allTags = payload
     }
   },
   actions: {
+    fetchTags (context, payload) {
+      axios({
+        method: 'get',
+        url: '/questions/find/tags'
+      })
+        .then(({data}) => {
+          context.commit('GET_TAGS', data.tag)
+        })
+        .catch(err => {
+          this.$awn.warning(err.response.data.msg)
+        })
+    },
     fetchData ({ commit }) {
       return new Promise ((resolve, reject) => {
-        axios({
-          method: 'get',
-          url: 'http://localhost:3000/questions'
+      axios({
+        method: 'get',
+        url: '/questions'
+      })
+        .then(({data}) => {
+        commit('FETCHING_DATA', data);
+        resolve(data)
         })
-          .then(({data}) => {
-            commit('FETCHING_DATA', data);
-            resolve(data)
-          })
-          .catch(err => {
-            rejext(err.response.data.msg)
-          });
+        .catch(err => {
+        reject(err.response.data.msg)
+        });
       })
     },
     register ({ commit }, payload) {
       return new Promise ((resolve,reject) => {
-        axios({
-          method: 'post',
-          url: 'http://localhost:3000/users/register',
-          data: {
-            username: payload.username,
-            password: payload.password,
-            email: payload.email
-          }
+      axios({
+        method: 'post',
+        url: '/users/register',
+        data: {
+        username: payload.username,
+        password: payload.password,
+        email: payload.email,
+        city: payload.city
+        }
+      })
+        .then(({data}) => {
+          localStorage.setItem('token', data.token)
+          commit('REGISTER_STATUS_LOGIN', data)
+          resolve(data.msg)
         })
-          .then(({data}) => {
-            localStorage.setItem('token', data.token)
-            commit('REGISTER_STATUS_LOGIN', data)
-            resolve(data.msg)
-          })
-          .catch(err => {
-            reject(err)
-          })
+        .catch(err => {
+          reject(err)
+        })
       })
     },
     signout ({ commit }) {
@@ -82,32 +98,32 @@ export default new Vuex.Store({
     },
     login({ commit }, payload ) {
       return new Promise ((resolve, reject) => {
-        axios({
-          method: 'post',
-          url: 'http://localhost:3000/users/login',
-          data: {
-            email: payload.email,
-            password: payload.password
-          }
+      axios({
+        method: 'post',
+        url: '/users/login',
+        data: {
+        request: payload.request,
+        password: payload.password
+        }
+      })
+        .then(({ data }) => {
+        console.log(data)
+        localStorage.setItem('token', data.token);
+        commit('LOGIN_SUCCESS', data.user);
+        resolve(data)
         })
-          .then(({ data }) => {
-            console.log(data)
-            localStorage.setItem('token', data.token);
-            commit('LOGIN_SUCCESS', data.user);
-            resolve(data)
-          })
-          .catch(err => {
-            reject(err.response.data.msg)
-          })
+        .catch(err => {
+        reject(err.response.data.msg)
+        })
       })
     },
     checklogin ({ commit }) {
       if(localStorage.getItem('token')) {
         axios({
           method: 'get',
-          url: 'http://localhost:3000/users',
+          url: '/users',
           headers: {
-            token: localStorage.getItem('token')
+          token: localStorage.getItem('token')
           }
         })
           .then(({data}) => {
@@ -128,7 +144,7 @@ export default new Vuex.Store({
       return new Promise ((resolve,reject) => {
         axios({
           method: 'post',
-          url: 'http://localhost:3000/questions/ask',
+          url: '/questions/ask',
           headers: {
             token: localStorage.getItem('token')
           },
@@ -139,8 +155,8 @@ export default new Vuex.Store({
           }
         })
           .then(({data}) => {
-            context.commit('NEW_QUESTION', data.question);
-            resolve(data.msg)
+            context.commit('SEND_QUESTION', data.question)
+            resolve(data)
           })
           .catch(err => {
             reject(err)
@@ -149,69 +165,60 @@ export default new Vuex.Store({
     },
     getAnswer (context, payload) {
       return new Promise ((resolve, reject) => {
-        axios({
-          method: 'get',
-          url: `http://localhost:3000/answers/${payload}`
+      axios({
+        method: 'get',
+        url: `/answers/${payload}`
+      })
+        .then(({data}) => {
+          context.commit('GET_ANSWER', data)
+          resolve(data)
         })
-            .then(({data}) => {
-              context.commit('GET_ANSWER', data)
-              resolve(data)
-            })
-            .catch(err => {
-              reject(err)
-            })
+        .catch(err => {
+          reject(err)
+        })
       })
     },
     plusVote (context, payload) {
       return new Promise ((resolve, reject) => {
-        axios({
-          method: 'patch',
-          url: `http://localhost:3000/questions/up`,
-          data: {
-            id: payload
-          },
-          headers: {
-            token: localStorage.getItem('token')
-          }
+      axios({
+        method: 'patch',
+        url: `/questions/up/${payload}`,
+        headers: {
+        token: localStorage.getItem('token')
+        }
+      })
+        .then(({data}) => {
+        resolve(data)
         })
-          .then(({data}) => {
-            resolve(data)
-          })
-          .catch(err => {
-            reject(err)
-          })
+        .catch(err => {
+        reject(err)
+        })
       })
     },
     minVote (context, payload) {
       return new Promise ((resolve, reject) => {
-        axios({
-          method: 'patch',
-          url: 'http://localhost:3000/questions/down',
-          data: {
-            id: payload
-          },
-          headers: {
-            token: localStorage.getItem('token')
-          }
+      axios({
+        method: 'patch',
+        url: `/questions/down/${payload}`,
+        headers: {
+        token: localStorage.getItem('token')
+        }
+      })
+        .then(({data}) => {
+        resolve(data)
         })
-          .then(({data}) => {
-            resolve(data)
-          })
-          .catch(err => {
-            reject(err)
-          })
+        .catch(err => {
+        reject(err)
+        })
       })
     },
     plusVoteAnswer (context, payload) {
       return new Promise ((resolve, reject) => {
         axios({
           method: 'patch',
-          url: 'http://localhost:3000/answers/up',
-          data: {
-            id: payload
-          },
+          url: `/answers/up/${payload}`,
           headers: {
-            token: localStorage.getItem('token')
+          token: localStorage.getItem('token')
           }
         })
           .then(({data}) => {
@@ -220,18 +227,15 @@ export default new Vuex.Store({
           .catch(err => {
             reject(err)
           })
-      })
+        })
     },
     minVoteAnswer (context, payload) {
       return new Promise ((resolve, reject) => {
         axios({
           method: 'patch',
-          url: 'http://localhost:3000/answers/down',
-          data: {
-            id: payload
-          },
+          url: `/answers/down/${payload}`,
           headers: {
-            token: localStorage.getItem('token')
+          token: localStorage.getItem('token')
           }
         })
         .then(({data}) => {

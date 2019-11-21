@@ -1,48 +1,48 @@
 <template>
 <div>
-    <div v-for='(questionTag, i) in questionByTag' :key='i'>
-        <TagForFindTag :question-tag='questionTag'/>
-    </div>
+  <div v-for='(questionTag, i) in questionByTag' :key='i'>
+    <TagForFindTag :question-tag='questionTag'/>
+  </div>
 </div>
 </template>
 
 <script>
-import axios from 'axios'
+import axios from '@/apis/server.js'
 import TagForFindTag from '../components/TagForFindTag'
 
 export default {
-    data () {
-        return {
-            questionByTag: ''
-        }
-    },
-    components: {
-        TagForFindTag
-    },
-    methods: {
-        fetchTags () {
-            axios({
-                method: 'get',
-                url: `http://localhost:3000/questions/search/tags/${this.tag}`
-            })
-                .then(({data}) => {
-                    this.questionByTag = data
-                    this.tag = this.$route.params.name
-                    this.$awn.success('fetch tags')
-                })
-                .catch(err => {
-                    this.$awn.warning(err.response.data.msg)
-                })
-        }
-    },
-    computed: {
-        tag () {
-            return this.$route.params.name
-        }
-    },
-    created () {
-        this.fetchTags();
+  data () {
+  return {
+    questionByTag: ''
+  }
+  },
+  components: {
+    TagForFindTag
+  },
+  methods: {
+    fetchTags (name) {
+      axios({
+      method: 'get',
+      url: `/questions/search/tags/${name}`
+      })
+      .then(({data}) => {
+        this.questionByTag = data
+        this.tag = this.$route.params.name
+        this.$awn.success('fetch tags')
+      })
+      .catch(err => {
+        this.$awn.warning(err.response.data.msg)
+      })
     }
+  },
+  watch: {
+    '$route.params.name'(val) {
+      this.fetchTags(val);
+    }
+  },
+  created () {
+    this.fetchTags(this.$route.params.name);
+  }
 }
 </script>
 

@@ -1,105 +1,106 @@
 <template>
-<div class="card25 card-blue-light">
+<div class="card25 card card-blue-light">
   <div class="tittle">
-    <h3>{{ getQuestion.title }}</h3>
-    <div class="row">
-      <div class="col">
-        <small>Vote: {{ getQuestion.upvotes.length - getQuestion.downvotes.length }}</small>
-      </div>
-      <div class="col">
-        <small>CreatedAt: {{ getQuestion.createdAt }}</small>
-      </div>
+  <h3>{{ getQuestion.title }}</h3>
+  <div class="row">
+    <div class="col">
+    <small>Vote: {{ getQuestion.upvotes.length - getQuestion.downvotes.length }}</small>
     </div>
-    <hr>
+    <div class="col">
+    <small>CreatedAt: {{ getQuestion.createdAt }}</small>
+    </div>
+  </div>
+  <hr>
   </div>
   <div class="boddyy">
-    <p v-html='getQuestion.description'></p>
-    <hr>
+  <p v-html='getQuestion.description'></p>
+  <hr>
   </div>
   <div class="foott">
-    <div class="row">
-      <div class="col-6">
-        <div class='modall'>
-           <b-button v-b-modal.modal-prevent-closing @click='editData()'>Edit Question</b-button>
-
-        </div>
-      </div>
-      <div class="col-6 kanann">
-     <b-button @click="showMsgBoxTwo(getQuestion._id)">Delete</b-button>
+  <div class="row">
+    <div class="col-6">
+      <div class='modall'>
+        <!-- <b-button v-b-modal.modal-prevent-closing>Edit Question</b-button> -->
+          <b-button v-b-modal.modal-xl variant="primary" @click='editData()'>Edit Question</b-button>
       </div>
     </div>
+      <div class="col-6 kanann">
+      <b-button @click="showMsgBoxTwo(getQuestion._id)">Delete</b-button>
+      </div>
+  </div>
   </div>
 </div>
 </template>
 
 <script>
-import axios from 'axios'
+import axios from '@/apis/server.js'
 
 export default {
   data () {
-    return {
-      editedQuestion: {
-        id: '',
-        title: '',
-        desc: ''
-      }
+  return {
+    editedQuestion: {
+    id: '',
+    title: '',
+    desc: ''
     }
+  }
   },
   props: ['getQuestion'],
   methods: {
-    editData () {
-      this.editedQuestion.id = this.getQuestion._id;
-      this.editedQuestion.title = this.getQuestion.title;
-      this.editedQuestion.description = this.getQuestion.description
-      this.$emit('oldQuestion', this.editedQuestion)
-    },
-    showMsgBoxTwo(id) {
-      this.boxTwo = ''
-      this.$bvModal.msgBoxConfirm('Are you sure want delete this Question?', {
-        title: 'Please Confirm',
-        size: 'sm',
-        buttonSize: 'sm',
-        okVariant: 'danger',
-        okTitle: 'Sure',
-        cancelTitle: 'No',
-        footerClass: 'p-2',
-        hideHeaderClose: false,
-        centered: true
+  editData () {
+    this.editedQuestion.id = this.getQuestion._id;
+    this.editedQuestion.title = this.getQuestion.title;
+    this.editedQuestion.description = this.getQuestion.description
+    this.$emit('oldQuestion', this.editedQuestion)
+  },
+  showMsgBoxTwo(id) {
+    this.boxTwo = ''
+    this.$bvModal.msgBoxConfirm('Are you sure want delete this Question?', {
+    title: 'Please Confirm',
+    size: 'sm',
+    buttonSize: 'sm',
+    okVariant: 'danger',
+    okTitle: 'Sure',
+    cancelTitle: 'No',
+    footerClass: 'p-2',
+    hideHeaderClose: false,
+    centered: true
+    })
+    .then(value => {
+      if(value) {
+      axios({
+        method: 'delete',
+        url: `/questions/${id}`,
+        headers: {
+        token: localStorage.getItem('token')
+        }
       })
-        .then(value => {
-          if(value) {
-            axios({
-              method: 'delete',
-              url: `http://localhost:3000/questions/${id}`,
-              headers: {
-                token: localStorage.getItem('token')
-              }
-            })
-              .then(({data}) => {
-                this.$emit('fetchProfile')
-                this.$awn.success('success')
-              })
-              .catch(err => {
-                this.$awn.warning(err.response.data.msg)
-              })
-          } else {
-            this.$awn.info('You cancel delete')
-          }
+        .then(({data}) => {
+        this.$emit('fetchProfile')
+        this.$awn.success('success')
         })
         .catch(err => {
-          this.$awn.warning(err)
+        this.$awn.warning(err.response.data.msg)
         })
-    }
+      } else {
+      this.$awn.info('You cancel delete')
+      }
+    })
+    .catch(err => {
+      this.$awn.warning(err)
+    })
+  }
   }
 }
 </script>
 
 <style lang='scss'>
 .kanann{
-  bottom: -10px;
+  bottom: 10px;
 }
 .modall{
-  padding:10px;
+  padding: 10px;
+  margin: -20px 0px
 }
 .button2{
   position: absolute;
@@ -113,8 +114,8 @@ export default {
   padding: 10px 20px;
   transition: .3s all;
   &:hover {
-    background: rgba(255,255,255,.8);
-    color: #2e2e2e;
+  background: rgba(255,255,255,.8);
+  color: #2e2e2e;
   }
 }
 .tittle {

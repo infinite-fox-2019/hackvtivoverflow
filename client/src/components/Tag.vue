@@ -12,7 +12,8 @@ export default {
 
 <style>
 .btntag{
-  background-color: blanchedalmond !important;
+
+  background-color: #9dd8c8 !important;
 }
 .btntag:hover{
   background-color:cadetblue !important;
