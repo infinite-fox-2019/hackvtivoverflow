@@ -10,7 +10,7 @@ Vue.use(Notifications)
 export default new Vuex.Store({
   state: {
     showCustomizeLoader: false,
-    baseUrl: `http://52.14.60.30`,
+    baseUrl: `https://me.maulanaghozi.web.id`,
     tags: [],
     asks: [],
     ask: null,
@@ -60,20 +60,27 @@ export default new Vuex.Store({
         })
     },
     findMyAsk(context) {
-      axios({
-        method: `get`,
-        url: `${context.state.baseUrl}/asks/myask`,
-        headers: {
-          token: localStorage.getItem('token')
-        }
-      })
+      if(!localStorage.getItem("token")){
+        context.commit("LOADER", false);
+        router.push('/login')
+      } else {
+        axios({
+          method: `get`,
+          url: `${context.state.baseUrl}/asks/myask`,
+          headers: {
+            token: localStorage.getItem('token')
+          }
+        })
         .then(({ data }) => {
           context.commit('INITIAL_ASKS', data)
-          context.commit("LOADER", false);
         })
         .catch(err => {
           console.log(err)
         })
+        .finally(() => {
+          context.commit("LOADER", false);
+        })
+      }
     },
     postAsk(context, payload) {
       context.commit('LOADER', true)

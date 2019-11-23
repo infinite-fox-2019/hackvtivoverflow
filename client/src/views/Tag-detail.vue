@@ -59,7 +59,7 @@
 
 <script>
 import axios from "axios";
-let baseUrl = `http://52.14.60.30`;
+let baseUrl = `https://me.maulanaghozi.web.id`;
 export default {
   name: `ask-list`,
   data() {

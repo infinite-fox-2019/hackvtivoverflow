@@ -52,7 +52,7 @@ export default {
       this.$store.commit("LOADER", true);
       axios({
         method: `post`,
-        url: `http://52.14.60.30/user/register`,
+        url: `https://me.maulanaghozi.web.id/user/register`,
         data: {
           name: this.name,
           email: this.email,

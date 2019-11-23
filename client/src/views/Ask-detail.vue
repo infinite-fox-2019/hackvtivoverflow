@@ -28,7 +28,7 @@
       <div class="content" v-for="(answer, i) in ask.answers" :key="i">
         <div class="vote">
           <i class="fas fa-chevron-up fa-2x" @click.prevent="upvoteAnswer(answer._id)"></i>
-          <p v-text="answer.upvote.length - answer.downvote.length">13</p>
+          <p v-text="answer.upvote.length - answer.downvote.length"></p>
           <i class="fas fa-chevron-down fa-2x" @click.prevent="downvoteAnswer(answer._id)"></i>
         </div>
 
@@ -49,7 +49,7 @@
 <script>
 import Wysiwyg from "../components/Wysiwyg.vue";
 import axios from "axios";
-let baseUrl = `http://52.14.60.30`;
+let baseUrl = `https://me.maulanaghozi.web.id`;
 export default {
   name: `ask-detail`,
   data() {
@@ -71,8 +71,12 @@ export default {
       this.content = content;
     },
     postAnswer(id) {
-      axios({
-        method: `post`,
+      if(!localStorage.getItem("token")){
+        this.$router.push('/login')
+      } else {
+
+        axios({
+          method: `post`,
         url: `${baseUrl}/answers/${id}`,
         data: {
           content: this.content
@@ -88,6 +92,7 @@ export default {
         .catch(err => {
           console.log(err);
         });
+      }
     },
     getAsk() {
       let id = this.$route.params.id;
@@ -103,8 +108,11 @@ export default {
         });
     },
     upvoteAsk(id) {
-      axios({
-        method: `patch`,
+      if(!localStorage.getItem("token")){
+        this.$router.push('/login')
+      } else {
+        axios({
+          method: `patch`,
         url: `${baseUrl}/asks/upvote/${id}`,
         headers: {
           token: localStorage.getItem("token")
@@ -116,10 +124,15 @@ export default {
         .catch(err => {
           console.log(err);
         });
+      }
     },
     downvoteAsk(id) {
-      axios({
-        method: `patch`,
+      if(!localStorage.getItem("token")){
+        this.$router.push('/login')
+      } else {
+
+        axios({
+          method: `patch`,
         url: `${baseUrl}/asks/downvote/${id}`,
         headers: {
           token: localStorage.getItem("token")
@@ -131,10 +144,15 @@ export default {
         .catch(err => {
           console.log(err);
         });
+      }
     },
     upvoteAnswer(id) {
-      axios({
-        method: `patch`,
+      if(!localStorage.getItem('token')){
+        this.$router.push('/login')
+      } else {
+
+        axios({
+          method: `patch`,
         url: `${baseUrl}/answers/upvote/${id}`,
         headers: {
           token: localStorage.getItem("token")
@@ -146,10 +164,14 @@ export default {
         .catch(err => {
           console.log(err);
         });
+      }
     },
     downvoteAnswer(id) {
-      axios({
-        method: `patch`,
+      if(!localStorage.getItem("token")){
+        this.$router.push('/login')
+      } else {
+        axios({
+          method: `patch`,
         url: `${baseUrl}/answers/downvote/${id}`,
         headers: {
           token: localStorage.getItem("token")
@@ -161,6 +183,7 @@ export default {
         .catch(err => {
           console.log(err);
         });
+      }
     }
   },
   created() {
